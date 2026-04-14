@@ -7,11 +7,101 @@
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        /* ─── CSS Variables ──────────────────────────────────────── */
+        :root {
+            --jm-indigo: #6366f1;
+            --jm-pink: #ec4899;
+            --jm-navy: #1e1b4b;
+            --jm-slate: #475569;
+            --jm-light: #f8faff;
+            --jm-border: #e2e8f0;
+            --jm-green: #059669;
+            --jm-blue: #2563eb;
+            --jm-amber: #b45309;
+            --jm-radius: 16px;
+        }
+
+        /* ─── Reading progress bar ───────────────────────────────── */
+        .jm-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--jm-indigo), var(--jm-pink));
+            z-index: 2000;
+            width: 0;
+            transition: width .15s linear;
+        }
+
         /* ─── Layout ─────────────────────────────────────────────── */
         .jm-wrap {
-            max-width: 1060px;
+            max-width: 1100px;
             margin: 0 auto;
-            padding: 2rem 1.5rem 4rem;
+            padding: 2rem 2rem 4rem;
+        }
+
+        /* ─── Section navigator (sticky TOC) ─────────────────────── */
+        .jm-nav-strip {
+            position: sticky;
+            top: 68px;
+            z-index: 900;
+            background: rgba(255,255,255,.92);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--jm-border);
+            padding: .65rem 0;
+            margin: 0 -2rem 2.5rem;
+            padding-left: 2rem;
+            padding-right: 2rem;
+            overflow-x: auto;
+            scrollbar-width: none;
+        }
+        .jm-nav-strip::-webkit-scrollbar { display: none; }
+        .jm-nav-list {
+            display: flex;
+            gap: .5rem;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            white-space: nowrap;
+        }
+        .jm-nav-link {
+            display: inline-flex;
+            align-items: center;
+            gap: .4rem;
+            padding: .45rem 1rem;
+            border-radius: 50px;
+            font-size: .82rem;
+            font-weight: 600;
+            color: var(--jm-slate);
+            text-decoration: none;
+            border: 1.5px solid transparent;
+            transition: all .25s;
+            background: transparent;
+        }
+        .jm-nav-link:hover {
+            background: #f5f3ff;
+            color: var(--jm-indigo);
+        }
+        .jm-nav-link.active {
+            background: var(--jm-indigo);
+            color: #fff;
+            border-color: var(--jm-indigo);
+        }
+        .jm-nav-num {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 20px; height: 20px;
+            border-radius: 50%;
+            font-size: .7rem;
+            font-weight: 700;
+            background: rgba(99,102,241,.12);
+            color: var(--jm-indigo);
+        }
+        .jm-nav-link.active .jm-nav-num {
+            background: rgba(255,255,255,.25);
+            color: #fff;
         }
 
         /* ─── Hero banner ────────────────────────────────────────── */
@@ -20,8 +110,8 @@
             overflow: hidden;
             background: linear-gradient(135deg, #1e1b4b 0%, #4f46e5 55%, #db2777 100%);
             color: #fff;
-            border-radius: 16px;
-            padding: 4rem 3rem 3rem;
+            border-radius: var(--jm-radius);
+            padding: 4rem 3.5rem 3.5rem;
             margin-bottom: 2.5rem;
             box-shadow: 0 20px 60px rgba(79,70,229,.25);
         }
@@ -32,6 +122,15 @@
             width: 340px; height: 340px;
             border-radius: 50%;
             background: rgba(255,255,255,.06);
+            pointer-events: none;
+        }
+        .jm-hero::before {
+            content: '';
+            position: absolute;
+            bottom: -120px; left: -60px;
+            width: 260px; height: 260px;
+            border-radius: 50%;
+            background: rgba(255,255,255,.04);
             pointer-events: none;
         }
         .jm-hero-inner { position: relative; z-index: 1; }
@@ -50,16 +149,17 @@
             margin-bottom: 1.2rem;
         }
         .jm-hero h1 {
-            font-size: clamp(1.8rem, 4vw, 2.8rem);
+            font-size: clamp(2rem, 4.5vw, 3rem);
             font-weight: 800;
-            line-height: 1.15;
+            line-height: 1.12;
             margin-bottom: .6rem;
+            letter-spacing: -.02em;
         }
         .jm-hero-sub {
-            font-size: 1.05rem;
-            opacity: .85;
-            max-width: 560px;
-            line-height: 1.6;
+            font-size: 1.08rem;
+            opacity: .88;
+            max-width: 600px;
+            line-height: 1.65;
             margin-bottom: 2rem;
         }
         .jm-pills { display: flex; flex-wrap: wrap; gap: .7rem; }
@@ -70,7 +170,7 @@
             background: rgba(255,255,255,.18);
             border: 1px solid rgba(255,255,255,.35);
             border-radius: 50px;
-            padding: .45rem 1.1rem;
+            padding: .5rem 1.2rem;
             font-size: .9rem;
             font-weight: 600;
         }
@@ -78,15 +178,15 @@
         /* ─── Key-metric cards ───────────────────────────────────── */
         .jm-metrics {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+            grid-template-columns: repeat(4, 1fr);
             gap: 1.2rem;
             margin-bottom: 2.8rem;
         }
         .jm-metric {
             background: #fff;
-            border: 1.5px solid #e2e8f0;
+            border: 1.5px solid var(--jm-border);
             border-radius: 14px;
-            padding: 1.6rem 1.4rem;
+            padding: 1.6rem 1.2rem;
             text-align: center;
             box-shadow: 0 4px 18px rgba(0,0,0,.04);
             transition: transform .25s, box-shadow .25s, border-color .25s;
@@ -94,12 +194,12 @@
         .jm-metric:hover {
             transform: translateY(-4px);
             box-shadow: 0 10px 30px rgba(99,102,241,.12);
-            border-color: #6366f1;
+            border-color: var(--jm-indigo);
         }
         .jm-metric-icon {
             width: 48px; height: 48px;
             border-radius: 12px;
-            background: linear-gradient(135deg, #6366f1, #ec4899);
+            background: linear-gradient(135deg, var(--jm-indigo), var(--jm-pink));
             color: #fff;
             display: flex; align-items: center; justify-content: center;
             font-size: 1.2rem;
@@ -109,42 +209,57 @@
         .jm-metric-val {
             font-size: 1.9rem;
             font-weight: 800;
-            color: #1e1b4b;
+            color: var(--jm-navy);
             line-height: 1;
             margin-bottom: .3rem;
         }
         .jm-metric-lbl {
             font-size: .82rem;
             font-weight: 600;
-            color: #64748b;
+            color: var(--jm-slate);
             text-transform: uppercase;
             letter-spacing: .05em;
         }
 
         /* ─── Section chrome ─────────────────────────────────────── */
-        .jm-section { margin-bottom: 3rem; }
+        .jm-section {
+            margin-bottom: 3rem;
+            scroll-margin-top: 140px;
+        }
         .jm-divider {
             height: 1.5px;
-            background: linear-gradient(90deg, transparent, #6366f1 40%, #ec4899 60%, transparent);
+            background: linear-gradient(90deg, transparent, var(--jm-indigo) 40%, var(--jm-pink) 60%, transparent);
             margin: 3rem 0;
-            opacity: .35;
+            opacity: .3;
         }
         .jm-section-head {
             display: flex;
             align-items: center;
-            gap: .9rem;
-            margin-bottom: .5rem;
+            gap: 1rem;
+            margin-bottom: .6rem;
+        }
+        .jm-section-num {
+            font-size: .75rem;
+            font-weight: 800;
+            color: var(--jm-indigo);
+            background: #ede9fe;
+            width: 32px; height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
         }
         .jm-section-head h2 {
-            font-size: 1.45rem;
+            font-size: 1.5rem;
             font-weight: 800;
-            color: #1e1b4b;
+            color: var(--jm-navy);
             margin: 0;
         }
         .jm-section-icon {
             width: 42px; height: 42px;
             border-radius: 10px;
-            background: linear-gradient(135deg, #6366f1, #ec4899);
+            background: linear-gradient(135deg, var(--jm-indigo), var(--jm-pink));
             color: #fff;
             display: flex; align-items: center; justify-content: center;
             font-size: 1rem;
@@ -152,37 +267,38 @@
             box-shadow: 0 4px 14px rgba(99,102,241,.2);
         }
         .jm-section-sub {
-            font-size: .93rem;
-            color: #64748b;
-            margin-bottom: 1.6rem;
-            padding-left: 3.2rem;
-            line-height: 1.55;
+            font-size: .95rem;
+            color: var(--jm-slate);
+            margin-bottom: 1.8rem;
+            padding-left: 3.3rem;
+            line-height: 1.6;
         }
 
         /* ─── Competency snapshot grid ───────────────────────────── */
         .jm-comp-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-            gap: 1rem;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.1rem;
         }
         .jm-comp-card {
             display: flex;
             gap: 1rem;
             align-items: flex-start;
-            padding: 1.1rem 1.2rem;
-            border-radius: 12px;
+            padding: 1.2rem 1.3rem;
+            border-radius: 14px;
             background: linear-gradient(135deg, #f8faff 0%, #fdf4ff 100%);
-            border: 1.5px solid #e2e8f0;
-            transition: border-color .25s, box-shadow .25s;
+            border: 1.5px solid var(--jm-border);
+            transition: border-color .25s, box-shadow .25s, transform .25s;
         }
         .jm-comp-card:hover {
             border-color: #a5b4fc;
-            box-shadow: 0 6px 22px rgba(99,102,241,.1);
+            box-shadow: 0 8px 26px rgba(99,102,241,.12);
+            transform: translateY(-2px);
         }
         .jm-comp-card-icon {
             width: 44px; height: 44px;
             border-radius: 10px;
-            background: linear-gradient(135deg, #6366f1, #ec4899);
+            background: linear-gradient(135deg, var(--jm-indigo), var(--jm-pink));
             color: #fff;
             display: flex; align-items: center; justify-content: center;
             font-size: 1.05rem;
@@ -192,111 +308,165 @@
         .jm-comp-title {
             font-size: .95rem;
             font-weight: 700;
-            color: #1e1b4b;
+            color: var(--jm-navy);
             margin-bottom: .35rem;
         }
         .jm-comp-desc {
             font-size: .85rem;
-            color: #475569;
-            line-height: 1.5;
+            color: var(--jm-slate);
+            line-height: 1.55;
         }
 
-        /* ─── Skills table ───────────────────────────────────────── */
-        .jm-skills-table {
-            width: 100%;
-            border-collapse: collapse;
+        /* ─── Skills visual cards ────────────────────────────────── */
+        .jm-skills-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+        .jm-skill-card {
+            background: #fff;
+            border: 1.5px solid var(--jm-border);
+            border-radius: 12px;
+            padding: 1.2rem 1.4rem;
+            transition: border-color .25s, box-shadow .25s;
+        }
+        .jm-skill-card:hover {
+            border-color: #a5b4fc;
+            box-shadow: 0 6px 20px rgba(99,102,241,.1);
+        }
+        .jm-skill-card-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: .6rem;
+        }
+        .jm-skill-card-name {
             font-size: .92rem;
-        }
-        .jm-skills-table thead th {
-            text-align: left;
-            font-size: .78rem;
             font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: .06em;
-            color: #64748b;
-            padding: .6rem 1rem;
-            border-bottom: 2px solid #e2e8f0;
+            color: var(--jm-navy);
         }
-        .jm-skills-table tbody tr {
-            border-bottom: 1px solid #f1f5f9;
-            transition: background .2s;
+        .jm-skill-card-pct {
+            font-size: .85rem;
+            font-weight: 800;
+            color: var(--jm-indigo);
         }
-        .jm-skills-table tbody tr:hover { background: #f8faff; }
-        .jm-skills-table td { padding: .75rem 1rem; vertical-align: middle; }
-        .jm-skill-name { font-weight: 600; color: #1e1b4b; }
-        .jm-bar-wrap {
+        .jm-skill-bar-wrap {
             width: 100%;
             height: 8px;
             background: #e2e8f0;
             border-radius: 4px;
             overflow: hidden;
+            margin-bottom: .55rem;
         }
-        .jm-bar {
+        .jm-skill-bar {
             height: 100%;
             border-radius: 4px;
-            background: linear-gradient(90deg, #6366f1, #ec4899);
             width: 0;
             transition: width 1s ease;
         }
+        .jm-skill-bar.bar-expert     { background: linear-gradient(90deg, #6366f1, #8b5cf6); }
+        .jm-skill-bar.bar-advanced   { background: linear-gradient(90deg, #3b82f6, #6366f1); }
+        .jm-skill-bar.bar-proficient { background: linear-gradient(90deg, #f59e0b, #f97316); }
+        .jm-skill-card-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
         .jm-level-badge {
             display: inline-block;
-            padding: .2rem .65rem;
+            padding: .2rem .7rem;
             border-radius: 50px;
-            font-size: .78rem;
+            font-size: .75rem;
             font-weight: 700;
             white-space: nowrap;
         }
-        .level-expert   { background: #ede9fe; color: #5b21b6; }
-        .level-advanced { background: #dbeafe; color: #1e40af; }
-        .level-proficient { background: #fef9c3; color: #854d0e; }
-        .level-solid    { background: #dcfce7; color: #14532d; }
+        .level-expert     { background: #ede9fe; color: #5b21b6; }
+        .level-advanced   { background: #dbeafe; color: #1e40af; }
+        .level-proficient { background: #fef3c7; color: #92400e; }
+        .jm-skill-context {
+            font-size: .78rem;
+            color: #94a3b8;
+            font-weight: 500;
+        }
 
-        /* ─── Responsibility items ───────────────────────────────── */
+        /* ─── Responsibility items (accordion) ───────────────────── */
         .jm-item {
             background: #fff;
-            border: 1.5px solid #e2e8f0;
+            border: 1.5px solid var(--jm-border);
             border-radius: 14px;
-            padding: 1.6rem 1.8rem;
-            margin-bottom: 1.2rem;
+            margin-bottom: 1rem;
             position: relative;
             overflow: hidden;
-            transition: border-color .25s, box-shadow .25s, transform .25s;
+            transition: border-color .25s, box-shadow .25s;
         }
         .jm-item::before {
             content: '';
             position: absolute;
             left: 0; top: 0;
             width: 4px; height: 100%;
-            background: linear-gradient(180deg, #6366f1, #ec4899);
             border-radius: 14px 0 0 14px;
         }
+        .jm-item.align-excellent::before { background: linear-gradient(180deg, #059669, #10b981); }
+        .jm-item.align-strong::before    { background: linear-gradient(180deg, #2563eb, #60a5fa); }
+        .jm-item.align-partial::before   { background: linear-gradient(180deg, #d97706, #fbbf24); }
         .jm-item:hover {
             border-color: #a5b4fc;
-            box-shadow: 0 8px 28px rgba(99,102,241,.12);
-            transform: translateX(3px);
+            box-shadow: 0 6px 24px rgba(99,102,241,.1);
         }
         .jm-item-head {
             display: flex;
             align-items: center;
             gap: 1rem;
-            margin-bottom: .9rem;
+            padding: 1.3rem 1.6rem;
+            cursor: pointer;
+            user-select: none;
         }
         .jm-check {
             width: 34px; height: 34px;
             border-radius: 50%;
-            background: linear-gradient(135deg, #6366f1, #ec4899);
-            color: #fff;
             display: flex; align-items: center; justify-content: center;
-            font-size: .95rem;
+            font-size: .9rem;
             flex-shrink: 0;
-            box-shadow: 0 4px 12px rgba(99,102,241,.25);
+            box-shadow: 0 3px 10px rgba(0,0,0,.08);
         }
-        .jm-item-title { font-size: 1.08rem; font-weight: 700; color: #1e1b4b; }
+        .align-excellent .jm-check { background: #dcfce7; color: #059669; }
+        .align-strong .jm-check    { background: #dbeafe; color: #2563eb; }
+        .align-partial .jm-check   { background: #fef3c7; color: #d97706; }
+        .jm-item-title {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: var(--jm-navy);
+            flex: 1;
+        }
+        .jm-item-pct {
+            font-size: .85rem;
+            font-weight: 700;
+            padding: .25rem .7rem;
+            border-radius: 50px;
+            white-space: nowrap;
+        }
+        .align-excellent .jm-item-pct { background: #dcfce7; color: #059669; }
+        .align-strong .jm-item-pct    { background: #dbeafe; color: #2563eb; }
+        .align-partial .jm-item-pct   { background: #fef3c7; color: #92400e; }
+        .jm-item-chevron {
+            font-size: .85rem;
+            color: #94a3b8;
+            transition: transform .3s;
+            flex-shrink: 0;
+        }
+        .jm-item.open .jm-item-chevron { transform: rotate(180deg); }
         .jm-item-body {
-            padding-left: 2.9rem;
-            color: #475569;
+            padding: 0 1.6rem 1.5rem 4.6rem;
+            color: var(--jm-slate);
             line-height: 1.75;
             font-size: .93rem;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height .4s ease, padding .3s ease;
+        }
+        .jm-item.open .jm-item-body {
+            max-height: 600px;
+            padding-bottom: 1.5rem;
         }
         .jm-tags { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: .8rem; }
         .jm-tag {
@@ -319,48 +489,58 @@
             height: 7px;
             background: #e2e8f0;
             border-radius: 4px;
-            max-width: 180px;
+            max-width: 200px;
             overflow: hidden;
         }
         .jm-strength-fill {
             height: 100%;
-            background: linear-gradient(90deg, #6366f1, #ec4899);
             border-radius: 4px;
             width: 0;
             transition: width 1s ease;
         }
         .lbl-excellent { color: #059669; }
+        .lbl-excellent + .jm-strength-track .jm-strength-fill { background: linear-gradient(90deg, #059669, #34d399); }
         .lbl-strong    { color: #2563eb; }
-        .lbl-good      { color: #0891b2; }
+        .lbl-strong + .jm-strength-track .jm-strength-fill    { background: linear-gradient(90deg, #2563eb, #60a5fa); }
         .lbl-partial   { color: #b45309; }
+        .lbl-partial + .jm-strength-track .jm-strength-fill   { background: linear-gradient(90deg, #d97706, #fbbf24); }
 
         /* ─── What I bring cards ─────────────────────────────────── */
         .jm-strength-cards {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 1.1rem;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.2rem;
         }
         .jm-strength-card {
             border-radius: 14px;
-            padding: 1.4rem 1.3rem;
+            padding: 1.6rem 1.5rem;
             border: 1.5px solid transparent;
             background: linear-gradient(#fff,#fff) padding-box,
-                        linear-gradient(135deg, #6366f1, #ec4899) border-box;
+                        linear-gradient(135deg, var(--jm-indigo), var(--jm-pink)) border-box;
             transition: box-shadow .25s, transform .25s;
         }
         .jm-strength-card:hover {
-            box-shadow: 0 8px 26px rgba(99,102,241,.14);
+            box-shadow: 0 10px 30px rgba(99,102,241,.14);
             transform: translateY(-3px);
         }
         .jm-strength-card-icon {
             font-size: 1.6rem;
-            background: linear-gradient(135deg, #6366f1, #ec4899);
+            background: linear-gradient(135deg, var(--jm-indigo), var(--jm-pink));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            margin-bottom: .7rem;
+            margin-bottom: .8rem;
         }
-        .jm-strength-card h4 { font-size: .97rem; font-weight: 700; color: #1e1b4b; margin-bottom: .5rem; }
-        .jm-strength-card p  { font-size: .87rem; color: #475569; line-height: 1.6; }
+        .jm-strength-card h4 {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--jm-navy);
+            margin-bottom: .5rem;
+        }
+        .jm-strength-card p {
+            font-size: .9rem;
+            color: var(--jm-slate);
+            line-height: 1.65;
+        }
 
         /* ─── Summary box ────────────────────────────────────────── */
         .jm-summary {
@@ -368,7 +548,7 @@
             border: 1.5px solid #6ee7b7;
             border-left: 6px solid #10b981;
             border-radius: 14px;
-            padding: 2.4rem 2.2rem;
+            padding: 2.5rem 2.4rem;
             box-shadow: 0 6px 24px rgba(16,185,129,.08);
         }
         .jm-summary h3 {
@@ -382,39 +562,39 @@
         }
         .jm-summary p  { color: #374151; line-height: 1.8; font-size: .95rem; margin-bottom: .9rem; }
         .jm-summary ul { padding-left: 1.5rem; margin: .8rem 0 1rem; }
-        .jm-summary ul li { color: #374151; line-height: 1.7; font-size: .93rem; margin-bottom: .5rem; }
+        .jm-summary ul li { color: #374151; line-height: 1.7; font-size: .93rem; margin-bottom: .55rem; }
         .jm-summary ul li strong { color: #065f46; }
 
         /* ─── CTA footer ─────────────────────────────────────────── */
         .jm-cta {
             margin-top: 2.8rem;
             text-align: center;
-            background: linear-gradient(135deg, #f8faff, #fff);
-            border: 1.5px solid #e2e8f0;
+            background: linear-gradient(135deg, var(--jm-light), #fff);
+            border: 1.5px solid var(--jm-border);
             border-radius: 14px;
-            padding: 2.5rem 2rem;
+            padding: 2.8rem 2rem;
         }
-        .jm-cta h2 { font-size: 1.3rem; color: #1e1b4b; margin-bottom: .5rem; }
-        .jm-cta p  { color: #64748b; font-size: .93rem; margin-bottom: 1.5rem; }
+        .jm-cta h2 { font-size: 1.35rem; color: var(--jm-navy); margin-bottom: .5rem; }
+        .jm-cta p  { color: var(--jm-slate); font-size: .95rem; margin-bottom: 1.5rem; }
         .jm-cta-btns { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
         .btn-primary, .btn-secondary {
             display: inline-flex;
             align-items: center;
             gap: .55rem;
-            padding: .85rem 1.8rem;
-            border-radius: 8px;
+            padding: .9rem 2rem;
+            border-radius: 10px;
             font-weight: 700;
-            font-size: .93rem;
+            font-size: .95rem;
             text-decoration: none;
             transition: all .25s;
         }
         .btn-primary {
-            background: linear-gradient(135deg, #6366f1, #ec4899);
+            background: linear-gradient(135deg, var(--jm-indigo), var(--jm-pink));
             color: #fff;
             box-shadow: 0 4px 16px rgba(99,102,241,.3);
         }
         .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(99,102,241,.38); }
-        .btn-secondary { background: #fff; color: #6366f1; border: 2px solid #6366f1; }
+        .btn-secondary { background: #fff; color: var(--jm-indigo); border: 2px solid var(--jm-indigo); }
         .btn-secondary:hover { background: #f5f3ff; }
 
         /* ─── Back link ──────────────────────────────────────────── */
@@ -422,8 +602,8 @@
             display: inline-flex;
             align-items: center;
             gap: .5rem;
-            margin-bottom: 1.8rem;
-            color: #6366f1;
+            margin-bottom: 1.5rem;
+            color: var(--jm-indigo);
             font-weight: 600;
             font-size: .92rem;
             text-decoration: none;
@@ -431,24 +611,78 @@
         }
         .jm-back:hover { gap: .8rem; }
 
+        /* ─── Scroll-reveal animation ────────────────────────────── */
+        .jm-reveal {
+            opacity: 0;
+            transform: translateY(24px);
+            transition: opacity .6s ease, transform .6s ease;
+        }
+        .jm-reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ─── Expand / Collapse all button ───────────────────────── */
+        .jm-expand-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: .5rem;
+            padding: .5rem 1rem;
+            border: 1.5px solid var(--jm-border);
+            border-radius: 8px;
+            font-size: .82rem;
+            font-weight: 600;
+            color: var(--jm-slate);
+            background: #fff;
+            cursor: pointer;
+            transition: all .2s;
+            margin-bottom: 1.2rem;
+            float: right;
+        }
+        .jm-expand-btn:hover {
+            border-color: var(--jm-indigo);
+            color: var(--jm-indigo);
+            background: #f5f3ff;
+        }
+
         /* ─── Print ──────────────────────────────────────────────── */
         @media print {
-            .navbar, .jm-back, .jm-cta { display: none !important; }
-            body { font-size: 11pt; }
-            .jm-hero { padding: 1.5rem; border-radius: 0; box-shadow: none; }
-            .jm-item { break-inside: avoid; }
+            .navbar, .jm-back, .jm-cta, .jm-nav-strip, .jm-progress, .jm-expand-btn { display: none !important; }
+            body { font-size: 10.5pt; }
+            .jm-hero { padding: 1.5rem; border-radius: 0; box-shadow: none; page-break-after: avoid; }
+            .jm-section { scroll-margin-top: 0; }
+            .jm-item { break-inside: avoid; border-radius: 8px; }
+            .jm-item-body { max-height: none !important; overflow: visible !important; padding-bottom: 1.5rem !important; }
+            .jm-item-chevron { display: none; }
+            .jm-reveal { opacity: 1 !important; transform: none !important; }
+            .jm-comp-grid { grid-template-columns: repeat(2, 1fr); }
+            .jm-strength-cards { grid-template-columns: repeat(2, 1fr); }
+            .jm-skills-grid { grid-template-columns: repeat(2, 1fr); }
+            .jm-metrics { grid-template-columns: repeat(4, 1fr); }
+            .jm-skill-bar, .jm-strength-fill { transition: none !important; }
+            [data-w] { width: attr(data-w %) !important; }
         }
 
         /* ─── Responsive ─────────────────────────────────────────── */
+        @media (max-width: 900px) {
+            .jm-comp-grid { grid-template-columns: repeat(2, 1fr); }
+            .jm-skills-grid { grid-template-columns: 1fr; }
+            .jm-strength-cards { grid-template-columns: 1fr; }
+        }
         @media (max-width: 680px) {
             .jm-hero { padding: 2.5rem 1.5rem 2rem; }
-            .jm-item-body { padding-left: 0; margin-top: .6rem; }
-            .jm-skills-table thead { display: none; }
-            .jm-skills-table tr, .jm-skills-table td { display: block; }
+            .jm-wrap { padding: 1.5rem 1rem 3rem; }
+            .jm-comp-grid { grid-template-columns: 1fr; }
+            .jm-metrics { grid-template-columns: repeat(2, 1fr); }
+            .jm-item-body { padding-left: 1.6rem; }
+            .jm-nav-strip { margin: 0 -1rem 2rem; padding-left: 1rem; }
         }
     </style>
 </head>
 <body>
+    <!-- Reading progress -->
+    <div class="jm-progress" id="readingProgress"></div>
+
     <!-- Navigation -->
     <nav class="navbar">
         <div class="container">
@@ -462,13 +696,13 @@
         </div>
     </nav>
 
-    <section style="padding-top: 8rem; padding-bottom: 3rem;">
+    <section style="padding-top: 6rem; padding-bottom: 3rem;">
     <div class="jm-wrap">
 
         <a href="index.html" class="jm-back"><i class="fas fa-arrow-left"></i> Back to portfolio</a>
 
         <!-- Hero -->
-        <div class="jm-hero">
+        <div class="jm-hero jm-reveal" id="sec-hero">
             <div class="jm-hero-inner">
                 <div class="jm-hero-eyebrow">
                     <i class="fas fa-building"></i> Aker Solutions &nbsp;·&nbsp; Role Alignment
@@ -486,8 +720,20 @@
             </div>
         </div>
 
-        <!-- Key metrics -->
-        <div class="jm-metrics">
+        <!-- Sticky section navigator -->
+        <nav class="jm-nav-strip" id="sectionNav">
+            <ul class="jm-nav-list">
+                <li><a href="#sec-metrics" class="jm-nav-link"><span class="jm-nav-num">1</span> At a Glance</a></li>
+                <li><a href="#sec-competency" class="jm-nav-link"><span class="jm-nav-num">2</span> Competencies</a></li>
+                <li><a href="#sec-skills" class="jm-nav-link"><span class="jm-nav-num">3</span> Skills</a></li>
+                <li><a href="#sec-responsibilities" class="jm-nav-link"><span class="jm-nav-num">4</span> Responsibilities</a></li>
+                <li><a href="#sec-value" class="jm-nav-link"><span class="jm-nav-num">5</span> Value Add</a></li>
+                <li><a href="#sec-summary" class="jm-nav-link"><span class="jm-nav-num">6</span> Summary</a></li>
+            </ul>
+        </nav>
+
+        <!-- 1. Key metrics -->
+        <div class="jm-metrics jm-reveal" id="sec-metrics">
             <div class="jm-metric">
                 <div class="jm-metric-icon"><i class="fas fa-briefcase"></i></div>
                 <div class="jm-metric-val">15+</div>
@@ -504,15 +750,17 @@
                 <div class="jm-metric-lbl">+ ISO 27001 · NIST</div>
             </div>
             <div class="jm-metric">
-                <div class="jm-metric-icon"><i class="fas fa-language"></i></div>
+                <div class="jm-metric-icon"><i class="fas fa-robot"></i></div>
                 <div class="jm-metric-val">AI Sec</div>
                 <div class="jm-metric-lbl">Security &amp; AI Integration</div>
             </div>
         </div>
 
-        <!-- 1. Competency snapshot -->
-        <div class="jm-section">
+        <!-- 2. Competency snapshot -->
+        <div class="jm-divider"></div>
+        <div class="jm-section jm-reveal" id="sec-competency">
             <div class="jm-section-head">
+                <div class="jm-section-num">01</div>
                 <div class="jm-section-icon"><i class="fas fa-brain"></i></div>
                 <h2>Competency Snapshot</h2>
             </div>
@@ -563,125 +811,208 @@
             </div>
         </div>
 
-        <!-- 2. Skills proficiency -->
+        <!-- 3. Skills proficiency (visual cards) -->
         <div class="jm-divider"></div>
-        <div class="jm-section">
+        <div class="jm-section jm-reveal" id="sec-skills">
             <div class="jm-section-head">
+                <div class="jm-section-num">02</div>
                 <div class="jm-section-icon"><i class="fas fa-chart-bar"></i></div>
                 <h2>Skills &amp; Proficiency</h2>
             </div>
             <p class="jm-section-sub">Self-assessed proficiency aligned with Aker Solutions' stated requirements.</p>
-            <table class="jm-skills-table">
-                <thead>
-                    <tr>
-                        <th style="width:32%">Skill Area</th>
-                        <th style="width:38%">Proficiency</th>
-                        <th style="width:15%">Level</th>
-                        <th style="width:15%">Context</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td class="jm-skill-name">Security Architecture Design</td>
-                        <td><div class="jm-bar-wrap"><div class="jm-bar" data-w="95"></div></div></td>
-                        <td><span class="jm-level-badge level-expert">Expert</span></td>
-                        <td>9 yrs DNB</td>
-                    </tr>
-                    <tr>
-                        <td class="jm-skill-name">Security Governance &amp; Frameworks</td>
-                        <td><div class="jm-bar-wrap"><div class="jm-bar" data-w="92"></div></div></td>
-                        <td><span class="jm-level-badge level-expert">Expert</span></td>
-                        <td>CISM · ISO 27001</td>
-                    </tr>
-                    <tr>
-                        <td class="jm-skill-name">Azure &amp; Cloud Security</td>
-                        <td><div class="jm-bar-wrap"><div class="jm-bar" data-w="88"></div></div></td>
-                        <td><span class="jm-level-badge level-advanced">Advanced</span></td>
-                        <td>IaaS/PaaS projects</td>
-                    </tr>
-                    <tr>
-                        <td class="jm-skill-name">Zero Trust Design</td>
-                        <td><div class="jm-bar-wrap"><div class="jm-bar" data-w="84"></div></div></td>
-                        <td><span class="jm-level-badge level-advanced">Advanced</span></td>
-                        <td>Architecture design</td>
-                    </tr>
-                    <tr>
-                        <td class="jm-skill-name">Identity &amp; Access Management</td>
-                        <td><div class="jm-bar-wrap"><div class="jm-bar" data-w="72"></div></div></td>
-                        <td><span class="jm-level-badge level-proficient">Proficient</span></td>
-                        <td>Security architect support</td>
-                    </tr>
-                    <tr>
-                        <td class="jm-skill-name">Compliance (ISO 27001/NIST CSF/NIS2/GDPR)</td>
-                        <td><div class="jm-bar-wrap"><div class="jm-bar" data-w="91"></div></div></td>
-                        <td><span class="jm-level-badge level-expert">Expert</span></td>
-                        <td>Enterprise &amp; regulated</td>
-                    </tr>
-                    <tr>
-                        <td class="jm-skill-name">Secure SDLC</td>
-                        <td><div class="jm-bar-wrap"><div class="jm-bar" data-w="90"></div></div></td>
-                        <td><span class="jm-level-badge level-expert">Expert</span></td>
-                        <td>Security design reviews</td>
-                    </tr>
-                    <tr>
-                        <td class="jm-skill-name">DevSecOps &amp; CI/CD Security</td>
-                        <td><div class="jm-bar-wrap"><div class="jm-bar" data-w="88"></div></div></td>
-                        <td><span class="jm-level-badge level-advanced">Advanced</span></td>
-                        <td>Pipeline security controls</td>
-                    </tr>
-                    <tr>
-                        <td class="jm-skill-name">Container &amp; Microservice Security</td>
-                        <td><div class="jm-bar-wrap"><div class="jm-bar" data-w="65"></div></div></td>
-                        <td><span class="jm-level-badge level-proficient">Proficient</span></td>
-                        <td>Architecture awareness</td>
-                    </tr>
-                    <tr>
-                        <td class="jm-skill-name">AWS &amp; Azure Cloud Security</td>
-                        <td><div class="jm-bar-wrap"><div class="jm-bar" data-w="87"></div></div></td>
-                        <td><span class="jm-level-badge level-advanced">Advanced</span></td>
-                        <td>Multi-cloud environments</td>
-                    </tr>
-                    <tr>
-                        <td class="jm-skill-name">AI Security</td>
-                        <td><div class="jm-bar-wrap"><div class="jm-bar" data-w="84"></div></div></td>
-                        <td><span class="jm-level-badge level-advanced">Advanced</span></td>
-                        <td>Security tech evaluation</td>
-                    </tr>
-                    <tr>
-                        <td class="jm-skill-name">Secure SDLC Governance (AI Age)</td>
-                        <td><div class="jm-bar-wrap"><div class="jm-bar" data-w="86"></div></div></td>
-                        <td><span class="jm-level-badge level-advanced">Advanced</span></td>
-                        <td>AI code risk & controls</td>
-                    </tr>
-                    <tr>
-                        <td class="jm-skill-name">Stakeholder Communication</td>
-                        <td><div class="jm-bar-wrap"><div class="jm-bar" data-w="89"></div></div></td>
-                        <td><span class="jm-level-badge level-advanced">Advanced</span></td>
-                        <td>Board-level reporting</td>
-                    </tr>
-                    <tr>
-                        <td class="jm-skill-name">Security Arch. in Projects &amp; Programmes</td>
-                        <td><div class="jm-bar-wrap"><div class="jm-bar" data-w="91"></div></div></td>
-                        <td><span class="jm-level-badge level-expert">Expert</span></td>
-                        <td>Cross-domain delivery support</td>
-                    </tr>
-                </tbody>
-            </table>
+            <div class="jm-skills-grid">
+
+                <div class="jm-skill-card">
+                    <div class="jm-skill-card-top">
+                        <span class="jm-skill-card-name">Security Architecture Design</span>
+                        <span class="jm-skill-card-pct">95%</span>
+                    </div>
+                    <div class="jm-skill-bar-wrap"><div class="jm-skill-bar bar-expert" data-w="95"></div></div>
+                    <div class="jm-skill-card-meta">
+                        <span class="jm-level-badge level-expert">Expert</span>
+                        <span class="jm-skill-context">9 yrs DNB</span>
+                    </div>
+                </div>
+
+                <div class="jm-skill-card">
+                    <div class="jm-skill-card-top">
+                        <span class="jm-skill-card-name">Security Governance &amp; Frameworks</span>
+                        <span class="jm-skill-card-pct">92%</span>
+                    </div>
+                    <div class="jm-skill-bar-wrap"><div class="jm-skill-bar bar-expert" data-w="92"></div></div>
+                    <div class="jm-skill-card-meta">
+                        <span class="jm-level-badge level-expert">Expert</span>
+                        <span class="jm-skill-context">CISM · ISO 27001</span>
+                    </div>
+                </div>
+
+                <div class="jm-skill-card">
+                    <div class="jm-skill-card-top">
+                        <span class="jm-skill-card-name">Compliance (ISO 27001/NIST CSF/NIS2/GDPR)</span>
+                        <span class="jm-skill-card-pct">91%</span>
+                    </div>
+                    <div class="jm-skill-bar-wrap"><div class="jm-skill-bar bar-expert" data-w="91"></div></div>
+                    <div class="jm-skill-card-meta">
+                        <span class="jm-level-badge level-expert">Expert</span>
+                        <span class="jm-skill-context">Enterprise &amp; regulated</span>
+                    </div>
+                </div>
+
+                <div class="jm-skill-card">
+                    <div class="jm-skill-card-top">
+                        <span class="jm-skill-card-name">Security Arch. in Projects &amp; Programmes</span>
+                        <span class="jm-skill-card-pct">91%</span>
+                    </div>
+                    <div class="jm-skill-bar-wrap"><div class="jm-skill-bar bar-expert" data-w="91"></div></div>
+                    <div class="jm-skill-card-meta">
+                        <span class="jm-level-badge level-expert">Expert</span>
+                        <span class="jm-skill-context">Cross-domain delivery</span>
+                    </div>
+                </div>
+
+                <div class="jm-skill-card">
+                    <div class="jm-skill-card-top">
+                        <span class="jm-skill-card-name">Secure SDLC</span>
+                        <span class="jm-skill-card-pct">90%</span>
+                    </div>
+                    <div class="jm-skill-bar-wrap"><div class="jm-skill-bar bar-expert" data-w="90"></div></div>
+                    <div class="jm-skill-card-meta">
+                        <span class="jm-level-badge level-expert">Expert</span>
+                        <span class="jm-skill-context">Security design reviews</span>
+                    </div>
+                </div>
+
+                <div class="jm-skill-card">
+                    <div class="jm-skill-card-top">
+                        <span class="jm-skill-card-name">Stakeholder Communication</span>
+                        <span class="jm-skill-card-pct">89%</span>
+                    </div>
+                    <div class="jm-skill-bar-wrap"><div class="jm-skill-bar bar-advanced" data-w="89"></div></div>
+                    <div class="jm-skill-card-meta">
+                        <span class="jm-level-badge level-advanced">Advanced</span>
+                        <span class="jm-skill-context">Board-level reporting</span>
+                    </div>
+                </div>
+
+                <div class="jm-skill-card">
+                    <div class="jm-skill-card-top">
+                        <span class="jm-skill-card-name">Azure &amp; Cloud Security</span>
+                        <span class="jm-skill-card-pct">88%</span>
+                    </div>
+                    <div class="jm-skill-bar-wrap"><div class="jm-skill-bar bar-advanced" data-w="88"></div></div>
+                    <div class="jm-skill-card-meta">
+                        <span class="jm-level-badge level-advanced">Advanced</span>
+                        <span class="jm-skill-context">IaaS/PaaS projects</span>
+                    </div>
+                </div>
+
+                <div class="jm-skill-card">
+                    <div class="jm-skill-card-top">
+                        <span class="jm-skill-card-name">DevSecOps &amp; CI/CD Security</span>
+                        <span class="jm-skill-card-pct">88%</span>
+                    </div>
+                    <div class="jm-skill-bar-wrap"><div class="jm-skill-bar bar-advanced" data-w="88"></div></div>
+                    <div class="jm-skill-card-meta">
+                        <span class="jm-level-badge level-advanced">Advanced</span>
+                        <span class="jm-skill-context">Pipeline security controls</span>
+                    </div>
+                </div>
+
+                <div class="jm-skill-card">
+                    <div class="jm-skill-card-top">
+                        <span class="jm-skill-card-name">AWS &amp; Multi-cloud Security</span>
+                        <span class="jm-skill-card-pct">87%</span>
+                    </div>
+                    <div class="jm-skill-bar-wrap"><div class="jm-skill-bar bar-advanced" data-w="87"></div></div>
+                    <div class="jm-skill-card-meta">
+                        <span class="jm-level-badge level-advanced">Advanced</span>
+                        <span class="jm-skill-context">Multi-cloud environments</span>
+                    </div>
+                </div>
+
+                <div class="jm-skill-card">
+                    <div class="jm-skill-card-top">
+                        <span class="jm-skill-card-name">Secure SDLC Governance (AI Age)</span>
+                        <span class="jm-skill-card-pct">86%</span>
+                    </div>
+                    <div class="jm-skill-bar-wrap"><div class="jm-skill-bar bar-advanced" data-w="86"></div></div>
+                    <div class="jm-skill-card-meta">
+                        <span class="jm-level-badge level-advanced">Advanced</span>
+                        <span class="jm-skill-context">AI code risk &amp; controls</span>
+                    </div>
+                </div>
+
+                <div class="jm-skill-card">
+                    <div class="jm-skill-card-top">
+                        <span class="jm-skill-card-name">Zero Trust Design</span>
+                        <span class="jm-skill-card-pct">84%</span>
+                    </div>
+                    <div class="jm-skill-bar-wrap"><div class="jm-skill-bar bar-advanced" data-w="84"></div></div>
+                    <div class="jm-skill-card-meta">
+                        <span class="jm-level-badge level-advanced">Advanced</span>
+                        <span class="jm-skill-context">Architecture design</span>
+                    </div>
+                </div>
+
+                <div class="jm-skill-card">
+                    <div class="jm-skill-card-top">
+                        <span class="jm-skill-card-name">AI Security</span>
+                        <span class="jm-skill-card-pct">84%</span>
+                    </div>
+                    <div class="jm-skill-bar-wrap"><div class="jm-skill-bar bar-advanced" data-w="84"></div></div>
+                    <div class="jm-skill-card-meta">
+                        <span class="jm-level-badge level-advanced">Advanced</span>
+                        <span class="jm-skill-context">Security tech evaluation</span>
+                    </div>
+                </div>
+
+                <div class="jm-skill-card">
+                    <div class="jm-skill-card-top">
+                        <span class="jm-skill-card-name">Identity &amp; Access Management</span>
+                        <span class="jm-skill-card-pct">72%</span>
+                    </div>
+                    <div class="jm-skill-bar-wrap"><div class="jm-skill-bar bar-proficient" data-w="72"></div></div>
+                    <div class="jm-skill-card-meta">
+                        <span class="jm-level-badge level-proficient">Proficient</span>
+                        <span class="jm-skill-context">Architect support</span>
+                    </div>
+                </div>
+
+                <div class="jm-skill-card">
+                    <div class="jm-skill-card-top">
+                        <span class="jm-skill-card-name">Container &amp; Microservice Security</span>
+                        <span class="jm-skill-card-pct">65%</span>
+                    </div>
+                    <div class="jm-skill-bar-wrap"><div class="jm-skill-bar bar-proficient" data-w="65"></div></div>
+                    <div class="jm-skill-card-meta">
+                        <span class="jm-level-badge level-proficient">Proficient</span>
+                        <span class="jm-skill-context">Architecture awareness</span>
+                    </div>
+                </div>
+
+            </div>
         </div>
 
-        <!-- 3. Responsibilities alignment -->
+        <!-- 4. Responsibilities alignment -->
         <div class="jm-divider"></div>
-        <div class="jm-section">
+        <div class="jm-section jm-reveal" id="sec-responsibilities">
             <div class="jm-section-head">
+                <div class="jm-section-num">03</div>
                 <div class="jm-section-icon"><i class="fas fa-list-check"></i></div>
                 <h2>Responsibilities Alignment</h2>
             </div>
-            <p class="jm-section-sub">How my experience maps to the key responsibilities outlined in the job description.</p>
+            <p class="jm-section-sub">How my experience maps to the key responsibilities outlined in the job description. Click to expand details.</p>
+            <button class="jm-expand-btn" id="expandAllBtn" onclick="toggleAllItems()">
+                <i class="fas fa-expand"></i> <span>Expand all</span>
+            </button>
+            <div style="clear:both"></div>
 
-            <div class="jm-item">
-                <div class="jm-item-head">
+            <div class="jm-item align-excellent">
+                <div class="jm-item-head" onclick="toggleItem(this)">
                     <div class="jm-check"><i class="fas fa-check"></i></div>
                     <div class="jm-item-title">Enterprise Security Architecture Definition</div>
+                    <span class="jm-item-pct">95%</span>
+                    <div class="jm-item-chevron"><i class="fas fa-chevron-down"></i></div>
                 </div>
                 <div class="jm-item-body">
                     During my 9 years at DNB, I was responsible for defining and governing enterprise security architecture across on-premises, cloud, and hybrid environments — including target-state architecture, multi-year roadmaps, and alignment with business strategy.
@@ -697,55 +1028,21 @@
                 </div>
             </div>
 
-            <div class="jm-item">
-                <div class="jm-item-head">
-                    <div class="jm-check"><i class="fas fa-check"></i></div>
-                    <div class="jm-item-title">Zero Trust Architecture &amp; Implementation</div>
-                </div>
-                <div class="jm-item-body">
-                    Contributed to the design of Zero Trust architectures, including identity-based access models and microsegmentation principles, aligned with CISA Zero Trust pillars and enterprise risk requirements.
-                    <div class="jm-tags">
-                        <span class="jm-tag">Zero Trust</span>
-                        <span class="jm-tag">Microsegmentation</span>
-                        <span class="jm-tag">Identity-centric Access</span>
-                    </div>
-                    <div class="jm-strength-row">
-                        <span class="jm-strength-label lbl-strong">Strong alignment</span>
-                        <div class="jm-strength-track"><div class="jm-strength-fill" data-w="84"></div></div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="jm-item">
-                <div class="jm-item-head">
-                    <div class="jm-check"><i class="fas fa-check"></i></div>
-                    <div class="jm-item-title">Cloud Security &amp; Azure Infrastructure</div>
-                </div>
-                <div class="jm-item-body">
-                    Designed security controls for Azure IaaS/PaaS workloads, including governance models, workload protection, and secure landing zone design. Supported cloud modernisation within hybrid environments.
-                    <div class="jm-tags">
-                        <span class="jm-tag">Azure Security</span>
-                        <span class="jm-tag">Landing Zone Design</span>
-                        <span class="jm-tag">Cloud Governance</span>
-                    </div>
-                    <div class="jm-strength-row">
-                        <span class="jm-strength-label lbl-strong">Strong alignment</span>
-                        <div class="jm-strength-track"><div class="jm-strength-fill" data-w="88"></div></div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="jm-item">
-                <div class="jm-item-head">
+            <div class="jm-item align-excellent">
+                <div class="jm-item-head" onclick="toggleItem(this)">
                     <div class="jm-check"><i class="fas fa-check"></i></div>
                     <div class="jm-item-title">Security Governance &amp; Compliance Frameworks</div>
+                    <span class="jm-item-pct">93%</span>
+                    <div class="jm-item-chevron"><i class="fas fa-chevron-down"></i></div>
                 </div>
                 <div class="jm-item-body">
-                    CISM-certified with hands-on experience implementing ISO 27001, NIST CSF 2.0, DORA and GDPR, etc. in a regulated financial institution. Led security architecture governance and compliance-by-design practices.
+                    CISM-certified with hands-on experience implementing ISO 27001, NIST CSF 2.0, NIS2, GDPR, and the Norwegian Security Act in regulated enterprise environments. Led security architecture governance and compliance-by-design practices.
                     <div class="jm-tags">
                         <span class="jm-tag">ISO 27001</span>
                         <span class="jm-tag">NIST CSF 2.0</span>
+                        <span class="jm-tag">NIS2</span>
                         <span class="jm-tag">GDPR</span>
+                        <span class="jm-tag">Norwegian Security Act</span>
                         <span class="jm-tag">Risk Management</span>
                     </div>
                     <div class="jm-strength-row">
@@ -755,30 +1052,12 @@
                 </div>
             </div>
 
-            <div class="jm-item">
-                <div class="jm-item-head">
-                    <div class="jm-check"><i class="fas fa-check"></i></div>
-                    <div class="jm-item-title">Identity &amp; Privileged Access Management</div>
-                </div>
-                <div class="jm-item-body">
-                    Supported multiple projects and programmes as a security architect, providing architectural guidance on identity governance principles, privileged access management concepts, and lifecycle design. While IAM delivery has not been my primary domain, I have consistently contributed security architecture input to enterprise-wide identity initiatives and understand the requirements well.
-                    <div class="jm-tags">
-                        <span class="jm-tag">IAM Advisory</span>
-                        <span class="jm-tag">PAM Principles</span>
-                        <span class="jm-tag">Identity Governance</span>
-                        <span class="jm-tag">Security Arch. Support</span>
-                    </div>
-                    <div class="jm-strength-row">
-                        <span class="jm-strength-label lbl-partial">Partial alignment</span>
-                        <div class="jm-strength-track"><div class="jm-strength-fill" data-w="65"></div></div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="jm-item">
-                <div class="jm-item-head">
+            <div class="jm-item align-excellent">
+                <div class="jm-item-head" onclick="toggleItem(this)">
                     <div class="jm-check"><i class="fas fa-check"></i></div>
                     <div class="jm-item-title">Cross-functional Architecture Governance</div>
+                    <span class="jm-item-pct">92%</span>
+                    <div class="jm-item-chevron"><i class="fas fa-chevron-down"></i></div>
                 </div>
                 <div class="jm-item-body">
                     Worked across infrastructure, cloud, application, and network teams — establishing architecture standards, review processes, and guardrails for secure design. Comfortable influencing without authority in large organisations.
@@ -796,10 +1075,12 @@
                 </div>
             </div>
 
-            <div class="jm-item">
-                <div class="jm-item-head">
+            <div class="jm-item align-strong">
+                <div class="jm-item-head" onclick="toggleItem(this)">
                     <div class="jm-check"><i class="fas fa-check"></i></div>
                     <div class="jm-item-title">Container &amp; Microservices Security</div>
+                    <span class="jm-item-pct">89%</span>
+                    <div class="jm-item-chevron"><i class="fas fa-chevron-down"></i></div>
                 </div>
                 <div class="jm-item-body">
                     Strong background in Secure SDLC and DevSecOps — including threat modelling, secure design reviews, and embedding security controls into CI/CD pipelines. Experience with container security principles and Kubernetes security controls in cloud-native environments.
@@ -811,17 +1092,82 @@
                         <span class="jm-tag">Container Security</span>
                     </div>
                     <div class="jm-strength-row">
-                        <span class="jm-strength-label lbl-excellent">Excellent alignment</span>
+                        <span class="jm-strength-label lbl-strong">Strong alignment</span>
                         <div class="jm-strength-track"><div class="jm-strength-fill" data-w="89"></div></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="jm-item align-strong">
+                <div class="jm-item-head" onclick="toggleItem(this)">
+                    <div class="jm-check"><i class="fas fa-check"></i></div>
+                    <div class="jm-item-title">Cloud Security &amp; Azure Infrastructure</div>
+                    <span class="jm-item-pct">88%</span>
+                    <div class="jm-item-chevron"><i class="fas fa-chevron-down"></i></div>
+                </div>
+                <div class="jm-item-body">
+                    Designed security controls for Azure IaaS/PaaS workloads, including governance models, workload protection, and secure landing zone design. Supported cloud modernisation within hybrid environments.
+                    <div class="jm-tags">
+                        <span class="jm-tag">Azure Security</span>
+                        <span class="jm-tag">Landing Zone Design</span>
+                        <span class="jm-tag">Cloud Governance</span>
+                    </div>
+                    <div class="jm-strength-row">
+                        <span class="jm-strength-label lbl-strong">Strong alignment</span>
+                        <div class="jm-strength-track"><div class="jm-strength-fill" data-w="88"></div></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="jm-item align-strong">
+                <div class="jm-item-head" onclick="toggleItem(this)">
+                    <div class="jm-check"><i class="fas fa-check"></i></div>
+                    <div class="jm-item-title">Zero Trust Architecture &amp; Implementation</div>
+                    <span class="jm-item-pct">84%</span>
+                    <div class="jm-item-chevron"><i class="fas fa-chevron-down"></i></div>
+                </div>
+                <div class="jm-item-body">
+                    Contributed to the design of Zero Trust architectures, including identity-based access models and microsegmentation principles, aligned with CISA Zero Trust pillars and enterprise risk requirements.
+                    <div class="jm-tags">
+                        <span class="jm-tag">Zero Trust</span>
+                        <span class="jm-tag">Microsegmentation</span>
+                        <span class="jm-tag">Identity-centric Access</span>
+                    </div>
+                    <div class="jm-strength-row">
+                        <span class="jm-strength-label lbl-strong">Strong alignment</span>
+                        <div class="jm-strength-track"><div class="jm-strength-fill" data-w="84"></div></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="jm-item align-partial">
+                <div class="jm-item-head" onclick="toggleItem(this)">
+                    <div class="jm-check"><i class="fas fa-minus"></i></div>
+                    <div class="jm-item-title">Identity &amp; Privileged Access Management</div>
+                    <span class="jm-item-pct">65%</span>
+                    <div class="jm-item-chevron"><i class="fas fa-chevron-down"></i></div>
+                </div>
+                <div class="jm-item-body">
+                    Supported multiple projects and programmes as a security architect, providing architectural guidance on identity governance principles, privileged access management concepts, and lifecycle design. While IAM delivery has not been my primary domain, I have consistently contributed security architecture input to enterprise-wide identity initiatives and understand the requirements well.
+                    <div class="jm-tags">
+                        <span class="jm-tag">IAM Advisory</span>
+                        <span class="jm-tag">PAM Principles</span>
+                        <span class="jm-tag">Identity Governance</span>
+                        <span class="jm-tag">Security Arch. Support</span>
+                    </div>
+                    <div class="jm-strength-row">
+                        <span class="jm-strength-label lbl-partial">Partial alignment</span>
+                        <div class="jm-strength-track"><div class="jm-strength-fill" data-w="65"></div></div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- 4. What I bring -->
+        <!-- 5. What I bring -->
         <div class="jm-divider"></div>
-        <div class="jm-section">
+        <div class="jm-section jm-reveal" id="sec-value">
             <div class="jm-section-head">
+                <div class="jm-section-num">04</div>
                 <div class="jm-section-icon"><i class="fas fa-star"></i></div>
                 <h2>What I Bring to This Role</h2>
             </div>
@@ -850,30 +1196,32 @@
             </div>
         </div>
 
-        <!-- 5. Summary -->
+        <!-- 6. Summary -->
         <div class="jm-divider"></div>
-        <div class="jm-summary">
-            <h3><i class="fas fa-file-lines"></i> Summary</h3>
-            <p>
-                My background as an Enterprise Security Architect with 15+ years of experience and CISM certification provides a solid foundation for this role. The position's focus on security architecture, governance, cloud security, and cross-functional collaboration aligns well with the work I have been doing at DNB.
-            </p>
-            <p><strong>Key areas of alignment:</strong></p>
-            <ul>
-                <li><strong>Enterprise Security Architecture:</strong> 9 years designing and governing security architecture across a large, regulated institution</li>
-                <li><strong>Security Governance:</strong> CISM-certified; designed and supported the implementation of security control frameworks</li>
-                <li><strong>Cloud Security:</strong> Azure IaaS/PaaS experience within hybrid enterprise environments</li>
-                <li><strong>Compliance:</strong> Practical application of ISO 27001, NIST CSF 2.0, NIS2, GDPR, and the Norwegian Security Act in regulated enterprise contexts</li>
-                <li><strong>Collaboration:</strong> Extensive experience engaging across business, IT, and executive stakeholder groups</li>
-                <li><strong>Security Technology Lifecycle:</strong> Experience across the full lifecycle — from design and implementation of security technologies, to optimising operational tasks using AI capabilities</li>
-                <li><strong>AI Security &amp; Secure SDLC in the Age of AI:</strong> Hands-on experience evaluating AI capabilities in security technologies; developing governance approaches for Secure SDLC as AI-assisted development introduces new risk categories</li>
-            </ul>
-            <p>
-                I approach this position with confidence in the areas where my experience is directly relevant, and with transparency where I continue to develop — particularly in OT/ICS security (IEC 62443) and containerised microservice security at depth. These are areas I am actively building on.
-            </p>
+        <div class="jm-section jm-reveal" id="sec-summary">
+            <div class="jm-summary">
+                <h3><i class="fas fa-file-lines"></i> Summary</h3>
+                <p>
+                    My background as an Enterprise Security Architect with 15+ years of experience and CISM certification provides a solid foundation for this role. The position's focus on security architecture, governance, cloud security, and cross-functional collaboration aligns well with the work I have been doing at DNB.
+                </p>
+                <p><strong>Key areas of alignment:</strong></p>
+                <ul>
+                    <li><strong>Enterprise Security Architecture:</strong> 9 years designing and governing security architecture across a large, regulated institution</li>
+                    <li><strong>Security Governance:</strong> CISM-certified; designed and supported the implementation of security control frameworks</li>
+                    <li><strong>Cloud Security:</strong> Azure IaaS/PaaS experience within hybrid enterprise environments</li>
+                    <li><strong>Compliance:</strong> Practical application of ISO 27001, NIST CSF 2.0, NIS2, GDPR, and the Norwegian Security Act in regulated enterprise contexts</li>
+                    <li><strong>Collaboration:</strong> Extensive experience engaging across business, IT, and executive stakeholder groups</li>
+                    <li><strong>Security Technology Lifecycle:</strong> Experience across the full lifecycle — from design and implementation of security technologies, to optimising operational tasks using AI capabilities</li>
+                    <li><strong>AI Security &amp; Secure SDLC in the Age of AI:</strong> Hands-on experience evaluating AI capabilities in security technologies; developing governance approaches for Secure SDLC as AI-assisted development introduces new risk categories</li>
+                </ul>
+                <p>
+                    I approach this position with confidence in the areas where my experience is directly relevant, and with transparency where I continue to develop — particularly in OT/ICS security (IEC 62443) and containerised microservice security at depth. These are areas I am actively building on.
+                </p>
+            </div>
         </div>
 
         <!-- CTA -->
-        <div class="jm-cta">
+        <div class="jm-cta jm-reveal">
             <h2>Interested in learning more?</h2>
             <p>View my full CV or return to the portfolio for a broader overview of my background.</p>
             <div class="jm-cta-btns">
@@ -886,22 +1234,134 @@
     </section>
 
     <script>
-        // Animate all bars when their parent section enters the viewport
-        var animated = false;
-        function runBars() {
-            if (animated) return;
-            animated = true;
-            document.querySelectorAll('[data-w]').forEach(function(el) {
-                el.style.width = el.getAttribute('data-w') + '%';
-            });
-        }
-        var obs = new IntersectionObserver(function(entries) {
-            entries.forEach(function(e) { if (e.isIntersecting) runBars(); });
-        }, { threshold: 0.15 });
-        var firstBar = document.querySelector('.jm-skills-table');
-        if (firstBar) obs.observe(firstBar);
+        /* ── Reading progress bar ─────────────────────────────────── */
+        var progressBar = document.getElementById('readingProgress');
+        window.addEventListener('scroll', function() {
+            var scrollTop = window.scrollY;
+            var docHeight = document.documentElement.scrollHeight - window.innerHeight;
+            var pct = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+            progressBar.style.width = pct + '%';
+        });
 
-        // Mobile nav
+        /* ── Scroll reveal animation ─────────────────────────────── */
+        var revealObs = new IntersectionObserver(function(entries) {
+            entries.forEach(function(e) {
+                if (e.isIntersecting) {
+                    e.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.08 });
+        document.querySelectorAll('.jm-reveal').forEach(function(el) {
+            revealObs.observe(el);
+        });
+
+        /* ── Animate bars when visible ────────────────────────────── */
+        var barAnimated = false;
+        var barObs = new IntersectionObserver(function(entries) {
+            entries.forEach(function(e) {
+                if (e.isIntersecting && !barAnimated) {
+                    barAnimated = true;
+                    document.querySelectorAll('[data-w]').forEach(function(el) {
+                        var w = el.getAttribute('data-w');
+                        el.style.width = w + '%';
+                    });
+                }
+            });
+        }, { threshold: 0.1 });
+        var skillsSection = document.getElementById('sec-skills');
+        if (skillsSection) barObs.observe(skillsSection);
+
+        /* ── Active section highlighting in TOC ───────────────────── */
+        var sections = ['sec-metrics', 'sec-competency', 'sec-skills', 'sec-responsibilities', 'sec-value', 'sec-summary'];
+        var navLinks = document.querySelectorAll('.jm-nav-link');
+
+        var sectionObs = new IntersectionObserver(function(entries) {
+            entries.forEach(function(e) {
+                if (e.isIntersecting) {
+                    var id = e.target.id;
+                    navLinks.forEach(function(link) {
+                        link.classList.remove('active');
+                        if (link.getAttribute('href') === '#' + id) {
+                            link.classList.add('active');
+                            link.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+                        }
+                    });
+                }
+            });
+        }, { threshold: 0.25, rootMargin: '-140px 0px -50% 0px' });
+
+        sections.forEach(function(id) {
+            var el = document.getElementById(id);
+            if (el) sectionObs.observe(el);
+        });
+
+        /* ── Smooth scroll for nav links ──────────────────────────── */
+        navLinks.forEach(function(link) {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                var target = document.querySelector(this.getAttribute('href'));
+                if (target) target.scrollIntoView({ behavior: 'smooth' });
+            });
+        });
+
+        /* ── Accordion for responsibility items ───────────────────── */
+        function toggleItem(head) {
+            var item = head.closest('.jm-item');
+            var wasOpen = item.classList.contains('open');
+            item.classList.toggle('open');
+
+            if (!wasOpen) {
+                item.querySelectorAll('[data-w]').forEach(function(el) {
+                    el.style.width = el.getAttribute('data-w') + '%';
+                });
+            }
+        }
+
+        var allExpanded = false;
+        function toggleAllItems() {
+            allExpanded = !allExpanded;
+            var items = document.querySelectorAll('.jm-item');
+            var btn = document.getElementById('expandAllBtn');
+
+            items.forEach(function(item) {
+                if (allExpanded) {
+                    item.classList.add('open');
+                    item.querySelectorAll('[data-w]').forEach(function(el) {
+                        el.style.width = el.getAttribute('data-w') + '%';
+                    });
+                } else {
+                    item.classList.remove('open');
+                }
+            });
+
+            btn.innerHTML = allExpanded
+                ? '<i class="fas fa-compress"></i> <span>Collapse all</span>'
+                : '<i class="fas fa-expand"></i> <span>Expand all</span>';
+        }
+
+        /* ── Keyboard navigation (arrow keys to move between sections) ─ */
+        document.addEventListener('keydown', function(e) {
+            if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+
+            var currentIdx = -1;
+            navLinks.forEach(function(link, i) {
+                if (link.classList.contains('active')) currentIdx = i;
+            });
+
+            if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+                e.preventDefault();
+                var next = Math.min(currentIdx + 1, sections.length - 1);
+                var el = document.getElementById(sections[next]);
+                if (el) el.scrollIntoView({ behavior: 'smooth' });
+            } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+                e.preventDefault();
+                var prev = Math.max(currentIdx - 1, 0);
+                var el = document.getElementById(sections[prev]);
+                if (el) el.scrollIntoView({ behavior: 'smooth' });
+            }
+        });
+
+        /* ── Mobile nav ───────────────────────────────────────────── */
         var ham = document.querySelector('.hamburger');
         var menu = document.querySelector('.nav-menu');
         if (ham) ham.addEventListener('click', function() {

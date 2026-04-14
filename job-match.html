@@ -426,6 +426,117 @@
             }
         }
     </style>
+    <style>
+        /* Additional presentation enhancements */
+        @keyframes floatUp {
+            from { transform: translateY(12px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .highlight-row {
+            display: grid;
+            grid-template-columns: 1fr 320px;
+            gap: 1.5rem;
+            align-items: start;
+            margin-bottom: 2.5rem;
+        }
+
+        .competency-panel {
+            background: linear-gradient(180deg, var(--white) 0%, #fbfdff 100%);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 6px 30px rgba(2,6,23,0.04);
+            animation: floatUp 0.5s ease both;
+        }
+
+        .competency-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1rem;
+        }
+
+        .competency-card {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            padding: 0.8rem;
+            border-radius: 10px;
+            background: linear-gradient(90deg, rgba(99,102,241,0.04), rgba(236,72,153,0.02));
+            border: 1px solid rgba(99,102,241,0.06);
+        }
+
+        .competency-icon {
+            width: 52px;
+            height: 52px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            flex-shrink: 0;
+            box-shadow: 0 6px 18px rgba(99,102,241,0.15);
+        }
+
+        .competency-meta {
+            font-size: 0.92rem;
+            color: var(--text-color);
+            line-height: 1.4;
+            font-weight: 600;
+        }
+
+        .ring-wrap {
+            display: flex;
+            gap: 0.8rem;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+
+        .progress-ring {
+            width: 110px;
+            height: 110px;
+            display: inline-block;
+        }
+
+        .progress-label {
+            text-align: center;
+            font-weight: 700;
+            color: var(--dark-color);
+            margin-top: 0.5rem;
+        }
+
+        .evidence-list {
+            margin-top: 1rem;
+            padding-left: 1.1rem;
+            color: var(--text-color);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .summary-card {
+            position: sticky;
+            top: 120px;
+            background: linear-gradient(180deg, #ffffff, #fbfdff);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1rem;
+            text-align: center;
+        }
+
+        .summary-card h4 { margin: 0 0 0.5rem 0; }
+
+        .summary-key { font-size: 0.95rem; color: var(--text-color); }
+
+        .print-note { font-size: 0.85rem; color: #6b7280; margin-top: 0.6rem; }
+
+        @media (max-width: 900px) {
+            .highlight-row { grid-template-columns: 1fr; }
+            .summary-card { position: static; }
+        }
+    </style>
 </head>
 <body>
     <!-- Navigation -->
@@ -485,6 +596,78 @@
                     <div class="match-stat-number">8+ yrs</div>
                     <div class="match-stat-label">DNB Enterprise Security</div>
                 </div>
+            </div>
+
+            <!-- Highlight Row: Competencies + Summary -->
+            <div class="highlight-row">
+                <div class="competency-panel">
+                    <div class="section-title" style="border-left-width: 6px;">
+                        <i class="fas fa-brain"></i> Core Competency Highlights
+                    </div>
+                    <p class="section-subtitle">At-a-glance view of how your core strengths map to Aker Solutions' priorities.</p>
+
+                    <div class="competency-list">
+                        <div class="competency-card">
+                            <div class="competency-icon"><i class="fas fa-network-wired"></i></div>
+                            <div>
+                                <div class="competency-meta">Enterprise Security Architecture</div>
+                                <div class="evidence-list">Designed enterprise security architecture at DNB covering network, identity, and cloud governance.</div>
+                            </div>
+                        </div>
+
+                        <div class="competency-card">
+                            <div class="competency-icon"><i class="fas fa-lock"></i></div>
+                            <div>
+                                <div class="competency-meta">Zero Trust & Identity</div>
+                                <div class="evidence-list">Led Zero Trust design and identity governance workstreams integrating PAM and IGA solutions.</div>
+                            </div>
+                        </div>
+
+                        <div class="competency-card">
+                            <div class="competency-icon"><i class="fab fa-azure"></i></div>
+                            <div>
+                                <div class="competency-meta">Cloud Security (Azure)</div>
+                                <div class="evidence-list">Secured Azure IaaS/PaaS workloads and CI/CD pipelines across hybrid environments.</div>
+                            </div>
+                        </div>
+
+                        <div class="competency-card">
+                            <div class="competency-icon"><i class="fas fa-gavel"></i></div>
+                            <div>
+                                <div class="competency-meta">Compliance & Governance</div>
+                                <div class="evidence-list">CISM with hands-on ISO27001/NIST mapping and risk-based control frameworks.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <aside class="summary-card">
+                    <h4>Match Snapshot</h4>
+                    <div class="ring-wrap">
+                        <div>
+                            <svg class="progress-ring" data-perc="100" viewBox="0 0 120 120">
+                                <circle cx="60" cy="60" r="52" stroke="#e6eefb" stroke-width="16" fill="transparent" />
+                                <circle class="perc" cx="60" cy="60" r="52" stroke="url(#g1)" stroke-width="16" fill="transparent" stroke-linecap="round" transform="rotate(-90 60 60)" stroke-dasharray="326.7256" stroke-dashoffset="326.7256" />
+                                <defs>
+                                    <linearGradient id="g1" x1="0%" x2="100%">
+                                        <stop offset="0%" stop-color="var(--primary-color)" />
+                                        <stop offset="100%" stop-color="var(--secondary-color)" />
+                                    </linearGradient>
+                                </defs>
+                            </svg>
+                            <div class="progress-label">Overall Match</div>
+                        </div>
+                    </div>
+                    <div style="margin-top: 0.6rem;">
+                        <div class="summary-key">Years:</div>
+                        <div style="font-weight:700; font-size:1.05rem;">15+ Security Years</div>
+                    </div>
+                    <div style="margin-top:0.6rem;">
+                        <div class="summary-key">Cert:</div>
+                        <div style="font-weight:700;">CISM</div>
+                    </div>
+                    <div class="print-note">Use "View Full CV" to generate a printable PDF for interviews.</div>
+                </aside>
             </div>
 
             <!-- Core Responsibilities Match -->
@@ -871,6 +1054,40 @@
                     </div>
                 </div>
             </div>
+            <script>
+                // Animate progress rings and strength bars when visible
+                function animateRings() {
+                    document.querySelectorAll('.progress-ring').forEach(function(svg){
+                        var circle = svg.querySelector('.perc');
+                        var radius = circle.r.baseVal.value;
+                        var circumference = 2 * Math.PI * radius;
+                        var perc = parseFloat(svg.getAttribute('data-perc')) || 0;
+                        circle.style.strokeDasharray = circumference;
+                        circle.style.strokeDashoffset = circumference;
+                        // animate
+                        setTimeout(function(){
+                            var offset = circumference - (perc/100) * circumference;
+                            circle.style.transition = 'stroke-dashoffset 900ms ease-out';
+                            circle.style.strokeDashoffset = offset;
+                        }, 300);
+                    });
+                }
+
+                // IntersectionObserver to trigger animation once
+                var obs = new IntersectionObserver(function(entries){
+                    entries.forEach(function(e){
+                        if(e.isIntersecting){
+                            animateRings();
+                            obs.disconnect();
+                        }
+                    });
+                }, {threshold: 0.3});
+
+                document.addEventListener('DOMContentLoaded', function(){
+                    var target = document.querySelector('.highlight-row');
+                    if(target) obs.observe(target);
+                });
+            </script>
         </div>
     </section>
 

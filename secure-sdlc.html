@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure SDLC – Security Reference Architecture · Angela Li</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --sd-pink: #ec4899;
+            --sd-indigo: #6366f1;
+            --sd-cyan: #06b6d4;
+            --sd-navy: #1e1b4b;
+            --sd-green: #059669;
+            --sd-amber: #d97706;
+            --sd-purple: #8b5cf6;
+            --sd-radius: 18px;
+            --sd-glass: rgba(30,27,75,0.45);
+            --sd-glass-border: rgba(236,72,153,0.12);
+        }
+
+        /* ─── Base ───────────────────────────────────────────── */
+        .sd-page {
+            padding-top: 6rem;
+            padding-bottom: 4rem;
+            background: #0a0820;
+            min-height: 100vh;
+            color: #e2e8f0;
+            overflow-x: hidden;
+        }
+        .sd-page::before {
+            content: '';
+            position: fixed;
+            top: -50%; left: -50%;
+            width: 200%; height: 200%;
+            background:
+                radial-gradient(ellipse at 30% 20%, rgba(236,72,153,0.07) 0%, transparent 50%),
+                radial-gradient(ellipse at 70% 70%, rgba(99,102,241,0.06) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 50%, rgba(6,182,212,0.03) 0%, transparent 60%);
+            pointer-events: none;
+            z-index: 0;
+        }
+        .sd-wrap {
+            max-width: 1080px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ─── Breadcrumb ─────────────────────────────────────── */
+        .sd-breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            font-size: 0.8rem;
+            color: #64748b;
+            margin-bottom: 0.5rem;
+            flex-wrap: wrap;
+        }
+        .sd-breadcrumb a {
+            color: #94a3b8;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        .sd-breadcrumb a:hover { color: #c7d2fe; }
+        .sd-breadcrumb .sep { color: #475569; }
+        .sd-breadcrumb .current { color: #f9a8d4; font-weight: 600; }
+
+        /* ─── Hero ───────────────────────────────────────────── */
+        .sd-hero {
+            text-align: center;
+            padding: 2.5rem 0 2rem;
+            position: relative;
+        }
+        .sd-hero::after {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 50%;
+            transform: translateX(-50%);
+            width: 100px; height: 2px;
+            background: linear-gradient(90deg, var(--sd-pink), var(--sd-indigo));
+            border-radius: 2px;
+        }
+        .sd-hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.35rem 0.9rem;
+            background: rgba(236,72,153,0.1);
+            border: 1px solid rgba(236,72,153,0.2);
+            border-radius: 50px;
+            font-size: 0.72rem;
+            font-weight: 600;
+            color: #f9a8d4;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+        }
+        .sd-hero h1 {
+            font-size: 2.4rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #fff 0%, #f9a8d4 50%, var(--sd-indigo) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.7rem;
+            line-height: 1.2;
+        }
+        .sd-hero-sub {
+            font-size: 1rem;
+            color: #94a3b8;
+            max-width: 640px;
+            margin: 0 auto;
+            line-height: 1.7;
+        }
+
+        /* ─── Section heads ──────────────────────────────────── */
+        .sd-section-head {
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+            margin-bottom: 1.4rem;
+        }
+        .sd-section-num {
+            font-size: 0.68rem;
+            font-weight: 800;
+            color: var(--sd-pink);
+            background: rgba(236,72,153,0.1);
+            width: 30px; height: 30px;
+            border-radius: 9px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        .sd-section-head h2 {
+            font-size: 1.25rem;
+            color: #f1f5f9;
+            margin: 0;
+        }
+
+        .sd-divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(236,72,153,0.2), transparent);
+            margin: 3rem 0;
+        }
+
+        /* ═══ LIFECYCLE FLOW ═════════════════════════════════════ */
+        .sd-lifecycle {
+            display: flex;
+            gap: 0;
+            align-items: stretch;
+            margin-bottom: 1rem;
+            overflow-x: auto;
+            padding-bottom: 0.5rem;
+        }
+        .sd-phase {
+            flex: 1;
+            min-width: 140px;
+            position: relative;
+            text-align: center;
+            padding: 1.4rem 0.6rem 1.2rem;
+            background: var(--sd-glass);
+            border: 1px solid var(--sd-glass-border);
+            transition: transform 0.3s, box-shadow 0.3s, background 0.3s;
+            cursor: default;
+        }
+        .sd-phase:first-child { border-radius: var(--sd-radius) 0 0 var(--sd-radius); }
+        .sd-phase:last-child { border-radius: 0 var(--sd-radius) var(--sd-radius) 0; }
+        .sd-phase:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            right: -1px; top: 50%;
+            transform: translateY(-50%);
+            width: 0; height: 0;
+            border-top: 10px solid transparent;
+            border-bottom: 10px solid transparent;
+            border-left: 10px solid rgba(236,72,153,0.25);
+            z-index: 2;
+        }
+        .sd-phase:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+            background: rgba(236,72,153,0.08);
+        }
+        .sd-phase-num {
+            font-size: 0.65rem;
+            font-weight: 800;
+            color: var(--sd-pink);
+            letter-spacing: 0.05em;
+            margin-bottom: 0.4rem;
+        }
+        .sd-phase-icon {
+            font-size: 1.3rem;
+            color: #f9a8d4;
+            margin-bottom: 0.4rem;
+        }
+        .sd-phase-name {
+            font-size: 0.82rem;
+            font-weight: 700;
+            color: #f1f5f9;
+            line-height: 1.3;
+        }
+
+        /* ═══ PHASE DETAIL CARDS ═════════════════════════════════ */
+        .sd-details {
+            display: grid;
+            gap: 1.2rem;
+        }
+        .sd-detail-card {
+            background: var(--sd-glass);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--sd-glass-border);
+            border-radius: var(--sd-radius);
+            overflow: hidden;
+            transition: transform 0.35s cubic-bezier(.2,.8,.3,1), box-shadow 0.35s;
+            position: relative;
+        }
+        .sd-detail-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            width: 4px; height: 100%;
+            background: var(--phase-color, var(--sd-pink));
+            border-radius: 4px 0 0 4px;
+        }
+        .sd-detail-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 36px rgba(0,0,0,0.25);
+        }
+        .sd-detail-head {
+            padding: 1.2rem 1.4rem 0.6rem 1.8rem;
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+        }
+        .sd-detail-icon {
+            width: 40px; height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            flex-shrink: 0;
+            background: rgba(236,72,153,0.1);
+            color: #f9a8d4;
+        }
+        .sd-detail-title {
+            font-size: 1rem;
+            font-weight: 700;
+            color: #f1f5f9;
+        }
+        .sd-detail-body {
+            padding: 0 1.4rem 1.2rem 1.8rem;
+        }
+        .sd-detail-body p {
+            font-size: 0.85rem;
+            line-height: 1.7;
+            color: #94a3b8;
+            margin: 0 0 0.7rem;
+        }
+
+        /* Activity list inside phase card */
+        .sd-activities {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+        .sd-activity {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.45rem;
+            font-size: 0.8rem;
+            color: #cbd5e1;
+            line-height: 1.5;
+        }
+        .sd-activity i {
+            color: var(--sd-pink);
+            font-size: 0.55rem;
+            margin-top: 0.4rem;
+            flex-shrink: 0;
+        }
+
+        /* Tags */
+        .sd-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.35rem;
+            margin-top: 0.6rem;
+        }
+        .sd-tag {
+            display: inline-block;
+            padding: 0.2rem 0.5rem;
+            border-radius: 6px;
+            font-size: 0.68rem;
+            font-weight: 600;
+            background: rgba(236,72,153,0.08);
+            color: #f9a8d4;
+            border: 1px solid rgba(236,72,153,0.18);
+        }
+        .sd-tag.tag-cyan { background: rgba(6,182,212,0.08); color: #67e8f9; border-color: rgba(6,182,212,0.18); }
+        .sd-tag.tag-green { background: rgba(5,150,105,0.08); color: #6ee7b7; border-color: rgba(5,150,105,0.18); }
+        .sd-tag.tag-amber { background: rgba(180,83,9,0.08); color: #fbbf24; border-color: rgba(180,83,9,0.18); }
+        .sd-tag.tag-purple { background: rgba(139,92,246,0.08); color: #c4b5fd; border-color: rgba(139,92,246,0.18); }
+        .sd-tag.tag-indigo { background: rgba(99,102,241,0.08); color: #a5b4fc; border-color: rgba(99,102,241,0.18); }
+
+        /* Phase colour variants */
+        .phase-plan { --phase-color: var(--sd-indigo); }
+        .phase-plan .sd-detail-icon { background: rgba(99,102,241,0.12); color: #a5b4fc; }
+        .phase-design { --phase-color: var(--sd-cyan); }
+        .phase-design .sd-detail-icon { background: rgba(6,182,212,0.12); color: #67e8f9; }
+        .phase-develop { --phase-color: var(--sd-pink); }
+        .phase-test { --phase-color: var(--sd-amber); }
+        .phase-test .sd-detail-icon { background: rgba(180,83,9,0.12); color: #fbbf24; }
+        .phase-deploy { --phase-color: var(--sd-green); }
+        .phase-deploy .sd-detail-icon { background: rgba(5,150,105,0.12); color: #6ee7b7; }
+        .phase-operate { --phase-color: var(--sd-purple); }
+        .phase-operate .sd-detail-icon { background: rgba(139,92,246,0.12); color: #c4b5fd; }
+
+        /* ═══ AI SECTION ═════════════════════════════════════════ */
+        .sd-ai-card {
+            background: linear-gradient(135deg, rgba(236,72,153,0.06), rgba(99,102,241,0.06));
+            border: 1px solid rgba(236,72,153,0.15);
+            border-radius: var(--sd-radius);
+            padding: 1.6rem 1.8rem;
+            position: relative;
+            overflow: hidden;
+        }
+        .sd-ai-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--sd-pink), var(--sd-indigo), var(--sd-cyan));
+        }
+        .sd-ai-card h3 {
+            font-size: 1.05rem;
+            color: #f1f5f9;
+            margin-bottom: 0.6rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .sd-ai-card h3 i { color: #f9a8d4; }
+        .sd-ai-card p {
+            font-size: 0.85rem;
+            line-height: 1.7;
+            color: #94a3b8;
+            margin-bottom: 0.7rem;
+        }
+        .sd-ai-items {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 0.6rem;
+        }
+        .sd-ai-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.5rem;
+            font-size: 0.82rem;
+            color: #cbd5e1;
+            line-height: 1.55;
+        }
+        .sd-ai-item i {
+            color: var(--sd-pink);
+            font-size: 0.6rem;
+            margin-top: 0.35rem;
+            flex-shrink: 0;
+        }
+
+        /* ─── Scroll reveal ──────────────────────────────────── */
+        .sd-reveal {
+            opacity: 0;
+            transform: translateY(24px);
+            transition: opacity 0.7s cubic-bezier(.2,.8,.3,1), transform 0.7s cubic-bezier(.2,.8,.3,1);
+        }
+        .sd-reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ─── Footer ─────────────────────────────────────────── */
+        .sd-footer {
+            text-align: center;
+            font-size: 0.8rem;
+            color: #475569;
+            padding: 2rem 0 1rem;
+            margin-top: 2rem;
+        }
+
+        /* ─── Print ──────────────────────────────────────────── */
+        @media print {
+            .navbar { display: none !important; }
+            .sd-page { background: #fff; color: #1e293b; padding-top: 1rem; }
+            .sd-page::before { display: none; }
+            .sd-hero h1 { -webkit-text-fill-color: #1e1b4b; }
+            .sd-detail-card, .sd-ai-card { background: #fff; border-color: #cbd5e1; }
+            .sd-phase { background: #f8fafc; border-color: #cbd5e1; }
+            .sd-reveal { opacity: 1 !important; transform: none !important; }
+        }
+
+        /* ─── Responsive ─────────────────────────────────────── */
+        @media (max-width: 768px) {
+            .sd-hero h1 { font-size: 1.6rem; }
+            .sd-lifecycle { flex-direction: column; }
+            .sd-phase { border-radius: 12px !important; }
+            .sd-phase:not(:last-child)::after { display: none; }
+            .sd-activities { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="logo"><h1>AL</h1></div>
+            <ul class="nav-menu">
+                <li><a href="index.html" class="nav-link">Home</a></li>
+                <li><a href="index.html#about" class="nav-link">About</a></li>
+                <li><a href="index.html#expertise" class="nav-link">Expertise</a></li>
+                <li><a href="index.html#projects" class="nav-link">Projects</a></li>
+                <li><a href="cv.html" class="nav-link">CV</a></li>
+                <li><a href="job-match.html" class="nav-link">Job Match</a></li>
+                <li><a href="security-ref.html" class="nav-link active">Security Ref.</a></li>
+                <li><a href="index.html#contact" class="nav-link">Contact</a></li>
+            </ul>
+            <div class="hamburger"><span></span><span></span><span></span></div>
+        </div>
+    </nav>
+
+    <div class="sd-page">
+        <div class="sd-wrap">
+
+            <!-- Breadcrumb -->
+            <nav class="sd-breadcrumb">
+                <a href="index.html">Home</a>
+                <span class="sep">/</span>
+                <a href="security-ref.html">Security Ref. Architecture</a>
+                <span class="sep">/</span>
+                <span class="current">Secure SDLC</span>
+            </nav>
+
+            <!-- ─── Hero ───────────────────────────────────────── -->
+            <div class="sd-hero sd-reveal">
+                <div class="sd-hero-badge"><i class="fas fa-code"></i> Application Security</div>
+                <h1>Secure SDLC &amp; DevSecOps</h1>
+                <p class="sd-hero-sub">
+                    Security activities embedded throughout the software development lifecycle — from requirements through to operations — ensuring security is a continuous, integrated practice rather than a late-stage gate.
+                </p>
+            </div>
+
+            <!-- ═══════════════════════════════════════════════════
+                 01 · LIFECYCLE FLOW
+                 ═══════════════════════════════════════════════════ -->
+            <div class="sd-reveal">
+                <div class="sd-section-head">
+                    <div class="sd-section-num">01</div>
+                    <h2>SDLC Lifecycle Phases</h2>
+                </div>
+
+                <div class="sd-lifecycle">
+                    <div class="sd-phase">
+                        <div class="sd-phase-num">01</div>
+                        <div class="sd-phase-icon"><i class="fas fa-clipboard-list"></i></div>
+                        <div class="sd-phase-name">Plan &amp;<br>Requirements</div>
+                    </div>
+                    <div class="sd-phase">
+                        <div class="sd-phase-num">02</div>
+                        <div class="sd-phase-icon"><i class="fas fa-drafting-compass"></i></div>
+                        <div class="sd-phase-name">Architecture<br>&amp; Design</div>
+                    </div>
+                    <div class="sd-phase">
+                        <div class="sd-phase-num">03</div>
+                        <div class="sd-phase-icon"><i class="fas fa-code"></i></div>
+                        <div class="sd-phase-name">Development<br>&amp; Build</div>
+                    </div>
+                    <div class="sd-phase">
+                        <div class="sd-phase-num">04</div>
+                        <div class="sd-phase-icon"><i class="fas fa-vial"></i></div>
+                        <div class="sd-phase-name">Testing &amp;<br>Verification</div>
+                    </div>
+                    <div class="sd-phase">
+                        <div class="sd-phase-num">05</div>
+                        <div class="sd-phase-icon"><i class="fas fa-rocket"></i></div>
+                        <div class="sd-phase-name">Deploy &amp;<br>Release</div>
+                    </div>
+                    <div class="sd-phase">
+                        <div class="sd-phase-num">06</div>
+                        <div class="sd-phase-icon"><i class="fas fa-chart-line"></i></div>
+                        <div class="sd-phase-name">Operate &amp;<br>Monitor</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sd-divider"></div>
+
+            <!-- ═══════════════════════════════════════════════════
+                 02 · PHASE DETAILS
+                 ═══════════════════════════════════════════════════ -->
+            <div class="sd-reveal">
+                <div class="sd-section-head">
+                    <div class="sd-section-num">02</div>
+                    <h2>Security Activities by Phase</h2>
+                </div>
+            </div>
+
+            <div class="sd-details">
+
+                <!-- Phase 1: Plan & Requirements -->
+                <div class="sd-detail-card phase-plan sd-reveal">
+                    <div class="sd-detail-head">
+                        <div class="sd-detail-icon"><i class="fas fa-clipboard-list"></i></div>
+                        <div class="sd-detail-title">01 &mdash; Plan &amp; Requirements</div>
+                    </div>
+                    <div class="sd-detail-body">
+                        <p>Establishing security requirements early — identifying regulatory obligations, risk context, and security objectives before any design or development begins.</p>
+                        <div class="sd-activities">
+                            <div class="sd-activity"><i class="fas fa-circle"></i> Security requirements gathering</div>
+                            <div class="sd-activity"><i class="fas fa-circle"></i> Risk classification &amp; data sensitivity</div>
+                            <div class="sd-activity"><i class="fas fa-circle"></i> Regulatory &amp; compliance mapping</div>
+                            <div class="sd-activity"><i class="fas fa-circle"></i> Abuse case &amp; misuse case analysis</div>
+                            <div class="sd-activity"><i class="fas fa-circle"></i> Security acceptance criteria definition</div>
+                            <div class="sd-activity"><i class="fas fa-circle"></i> Supply chain risk assessment</div>
+                        </div>
+                        <div class="sd-tags">
+                            <span class="sd-tag tag-indigo">Risk Assessment</span>
+                            <span class="sd-tag tag-indigo">Compliance</span>
+                            <span class="sd-tag tag-indigo">Requirements</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Phase 2: Architecture & Design -->
+                <div class="sd-detail-card phase-design sd-reveal">
+                    <div class="sd-detail-head">
+                        <div class="sd-detail-icon"><i class="fas fa-drafting-compass"></i></div>
+                        <div class="sd-detail-title">02 &mdash; Architecture &amp; Design</div>
+                    </div>
+                    <div class="sd-detail-body">
+                        <p>Ensuring security is built into the architecture from the start — through threat modelling, secure design patterns, and architecture review processes that identify vulnerabilities before code is written.</p>
+                        <div class="sd-activities">
+                            <div class="sd-activity"><i class="fas fa-circle"></i> Threat modelling (STRIDE, PASTA)</div>
+                            <div class="sd-activity"><i class="fas fa-circle"></i> Secure architecture design reviews</div>
+                            <div class="sd-activity"><i class="fas fa-circle"></i> Security design patterns &amp; guardrails</div>
+                            <div class="sd-activity"><i class="fas fa-circle"></i> Attack surface analysis</div>
+                            <div class="sd-activity"><i class="fas fa-circle"></i> Authentication &amp; authorisation design</div>
+                            <div class="sd-activity"><i class="fas fa-circle"></i> Data flow &amp; trust boundary mapping</div>
+                        </div>
+                        <div class="sd-tags">
+                            <span class="sd-tag tag-cyan">Threat Modelling</span>
+                            <span class="sd-tag tag-cyan">Design Reviews</span>
+                            <span class="sd-tag tag-cyan">Architecture Patterns</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Phase 3: Development & Build -->
+                <div class="sd-detail-card phase-develop sd-reveal">
+                    <div class="sd-detail-head">
+                        <div class="sd-detail-icon"><i class="fas fa-code"></i></div>
+                        <div class="sd-detail-title">03 &mdash; Development &amp; Build</div>
+                    </div>
+                    <div class="sd-detail-body">
+                        <p>Embedding security into the development workflow — through secure coding standards, automated analysis in the IDE and CI pipeline, and dependency management to reduce vulnerabilities at the source.</p>
+                        <div class="sd-activities">
+                            <div class="sd-activity"><i class="fas fa-circle"></i> Secure coding standards &amp; guidelines</div>
+                            <div class="sd-activity"><i class="fas fa-circle"></i> SAST (Static Application Security Testing)</div>
+                            <div class="sd-activity"><i class="fas fa-circle"></i> SCA (Software Composition Analysis)</div>
+                            <div class="sd-activity"><i class="fas fa-circle"></i> Secret detection &amp; management</div>
+                            <div class="sd-activity"><i class="fas fa-circle"></i> Dependency vulnerability scanning</div>
+                            <div class="sd-activity"><i class="fas fa-circle"></i> Code review with security focus</div>
+                        </div>
+                        <div class="sd-tags">
+                            <span class="sd-tag">SAST</span>
+                            <span class="sd-tag">SCA</span>
+                            <span class="sd-tag">Secure Coding</span>
+                            <span class="sd-tag">CI/CD Security</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Phase 4: Testing & Verification -->
+                <div class="sd-detail-card phase-test sd-reveal">
+                    <div class="sd-detail-head">
+                        <div class="sd-detail-icon"><i class="fas fa-vial"></i></div>
+                        <div class="sd-detail-title">04 &mdash; Testing &amp; Verification</div>
+                    </div>
+                    <div class="sd-detail-body">
+                        <p>Validating security controls through dynamic testing, penetration testing, and security-focused verification to confirm that identified threats are mitigated and security requirements are met.</p>
+                        <div class="sd-activities">
+                            <div class="sd-activity"><i class="fas fa-circle"></i> DAST (Dynamic Application Security Testing)</div>
+                            <div class="sd-activity"><i class="fas fa-circle"></i> Penetration testing</div>
+                            <div class="sd-activity"><i class="fas fa-circle"></i> IAST (Interactive AST)</div>
+                            <div class="sd-activity"><i class="fas fa-circle"></i> Security regression testing</div>
+                            <div class="sd-activity"><i class="fas fa-circle"></i> API security testing</div>
+                            <div class="sd-activity"><i class="fas fa-circle"></i> Container image scanning</div>
+                        </div>
+                        <div class="sd-tags">
+                            <span class="sd-tag tag-amber">DAST</span>
+                            <span class="sd-tag tag-amber">Pen Testing</span>
+                            <span class="sd-tag tag-amber">API Security</span>
+                            <span class="sd-tag tag-amber">Container Scanning</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Phase 5: Deploy & Release -->
+                <div class="sd-detail-card phase-deploy sd-reveal">
+                    <div class="sd-detail-head">
+                        <div class="sd-detail-icon"><i class="fas fa-rocket"></i></div>
+                        <div class="sd-detail-title">05 &mdash; Deploy &amp; Release</div>
+                    </div>
+                    <div class="sd-detail-body">
+                        <p>Ensuring secure deployment practices — hardened configurations, infrastructure-as-code security checks, and automated security gates in the release pipeline.</p>
+                        <div class="sd-activities">
+                            <div class="sd-activity"><i class="fas fa-circle"></i> Infrastructure-as-Code security scanning</div>
+                            <div class="sd-activity"><i class="fas fa-circle"></i> Configuration hardening &amp; baselines</div>
+                            <div class="sd-activity"><i class="fas fa-circle"></i> Security gate / sign-off in pipeline</div>
+                            <div class="sd-activity"><i class="fas fa-circle"></i> Secrets &amp; certificate management</div>
+                            <div class="sd-activity"><i class="fas fa-circle"></i> Environment segregation &amp; access controls</div>
+                            <div class="sd-activity"><i class="fas fa-circle"></i> Release security checklist</div>
+                        </div>
+                        <div class="sd-tags">
+                            <span class="sd-tag tag-green">IaC Scanning</span>
+                            <span class="sd-tag tag-green">Hardening</span>
+                            <span class="sd-tag tag-green">Security Gates</span>
+                            <span class="sd-tag tag-green">DevSecOps</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Phase 6: Operate & Monitor -->
+                <div class="sd-detail-card phase-operate sd-reveal">
+                    <div class="sd-detail-head">
+                        <div class="sd-detail-icon"><i class="fas fa-chart-line"></i></div>
+                        <div class="sd-detail-title">06 &mdash; Operate &amp; Monitor</div>
+                    </div>
+                    <div class="sd-detail-body">
+                        <p>Continuous security monitoring in production — runtime application protection, vulnerability management, and incident response integration to maintain security posture post-deployment.</p>
+                        <div class="sd-activities">
+                            <div class="sd-activity"><i class="fas fa-circle"></i> Runtime application security monitoring</div>
+                            <div class="sd-activity"><i class="fas fa-circle"></i> Vulnerability management &amp; patching</div>
+                            <div class="sd-activity"><i class="fas fa-circle"></i> Security logging &amp; alerting</div>
+                            <div class="sd-activity"><i class="fas fa-circle"></i> Incident response playbooks</div>
+                            <div class="sd-activity"><i class="fas fa-circle"></i> Post-incident security reviews</div>
+                            <div class="sd-activity"><i class="fas fa-circle"></i> Continuous compliance validation</div>
+                        </div>
+                        <div class="sd-tags">
+                            <span class="sd-tag tag-purple">Monitoring</span>
+                            <span class="sd-tag tag-purple">Incident Response</span>
+                            <span class="sd-tag tag-purple">Vulnerability Mgmt</span>
+                            <span class="sd-tag tag-purple">Compliance</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="sd-divider"></div>
+
+            <!-- ═══════════════════════════════════════════════════
+                 03 · AI & SECURE SDLC
+                 ═══════════════════════════════════════════════════ -->
+            <div class="sd-reveal">
+                <div class="sd-section-head">
+                    <div class="sd-section-num">03</div>
+                    <h2>Secure SDLC in the Age of AI</h2>
+                </div>
+            </div>
+
+            <div class="sd-ai-card sd-reveal">
+                <h3><i class="fas fa-robot"></i> AI-Assisted Development &mdash; New Risk Categories</h3>
+                <p>AI-assisted development tools (Copilot, ChatGPT, etc.) introduce new risk categories that traditional Secure SDLC frameworks must evolve to address. Security controls need to adapt to govern AI-generated code quality, intellectual property risks, and prompt-injection threats.</p>
+                <div class="sd-ai-items">
+                    <div class="sd-ai-item"><i class="fas fa-circle"></i> AI-generated code review &amp; validation requirements</div>
+                    <div class="sd-ai-item"><i class="fas fa-circle"></i> Prompt injection &amp; model manipulation risks</div>
+                    <div class="sd-ai-item"><i class="fas fa-circle"></i> IP &amp; licensing risks from training data</div>
+                    <div class="sd-ai-item"><i class="fas fa-circle"></i> AI model supply chain security</div>
+                    <div class="sd-ai-item"><i class="fas fa-circle"></i> Governance policies for AI-assisted development</div>
+                    <div class="sd-ai-item"><i class="fas fa-circle"></i> Security testing of AI-generated outputs</div>
+                    <div class="sd-ai-item"><i class="fas fa-circle"></i> Data leakage through AI tool interactions</div>
+                    <div class="sd-ai-item"><i class="fas fa-circle"></i> Evolving security maturity models for AI-era SDLC</div>
+                </div>
+            </div>
+
+            <div class="sd-footer">
+                Secure SDLC &mdash; Security Reference Architecture &middot; Angela Li &middot; Security Architect, CISM
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        // Scroll-reveal
+        const els = document.querySelectorAll('.sd-reveal');
+        const obs = new IntersectionObserver((entries) => {
+            entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+        }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+        els.forEach(el => obs.observe(el));
+    </script>
+    <script src="script.js"></script>
+</body>
+</html>

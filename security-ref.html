@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* ─── CSS Variables ──────────────────────────────────── */
+        /* ─── Variables ──────────────────────────────────────── */
         :root {
             --sr-indigo: #6366f1;
             --sr-pink: #ec4899;
@@ -15,139 +15,257 @@
             --sr-navy: #1e1b4b;
             --sr-slate: #475569;
             --sr-light: #f8faff;
-            --sr-border: #e2e8f0;
             --sr-green: #059669;
             --sr-blue: #2563eb;
             --sr-amber: #b45309;
-            --sr-radius: 16px;
+            --sr-purple: #8b5cf6;
+            --sr-radius: 18px;
+            --sr-glass: rgba(30,27,75,0.45);
+            --sr-glass-border: rgba(99,102,241,0.12);
         }
 
-        /* ─── Page layout ────────────────────────────────────── */
+        /* ─── Base ───────────────────────────────────────────── */
         .sr-page {
-            padding-top: 7rem;
+            padding-top: 6rem;
             padding-bottom: 4rem;
-            background: linear-gradient(135deg, #0f0b2e 0%, #1e1b4b 40%, #1a1145 100%);
+            background: #0a0820;
             min-height: 100vh;
             color: #e2e8f0;
+            overflow-x: hidden;
+        }
+        .sr-page::before {
+            content: '';
+            position: fixed;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background:
+                radial-gradient(ellipse at 20% 20%, rgba(99,102,241,0.08) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 80%, rgba(236,72,153,0.06) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 50%, rgba(6,182,212,0.04) 0%, transparent 60%);
+            pointer-events: none;
+            z-index: 0;
         }
         .sr-wrap {
-            max-width: 1140px;
+            max-width: 1180px;
             margin: 0 auto;
             padding: 0 1.5rem;
+            position: relative;
+            z-index: 1;
         }
 
-        /* ─── Page header ────────────────────────────────────── */
-        .sr-header {
+        /* ─── Hero Header ────────────────────────────────────── */
+        .sr-hero {
             text-align: center;
-            margin-bottom: 3rem;
+            padding: 3rem 0 2.5rem;
+            position: relative;
         }
-        .sr-header h1 {
-            font-size: 2.2rem;
-            background: linear-gradient(135deg, var(--sr-indigo), var(--sr-pink));
+        .sr-hero::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120px;
+            height: 2px;
+            background: linear-gradient(90deg, var(--sr-indigo), var(--sr-pink));
+            border-radius: 2px;
+        }
+        .sr-hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.4rem 1rem;
+            background: rgba(99,102,241,0.1);
+            border: 1px solid rgba(99,102,241,0.2);
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #a5b4fc;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            margin-bottom: 1.2rem;
+        }
+        .sr-hero h1 {
+            font-size: 2.6rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #fff 0%, #a5b4fc 50%, var(--sr-pink) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.8rem;
+            line-height: 1.2;
         }
-        .sr-header .sr-subtitle {
+        .sr-hero-sub {
             font-size: 1.05rem;
             color: #94a3b8;
-            max-width: 700px;
+            max-width: 660px;
             margin: 0 auto;
-            line-height: 1.6;
+            line-height: 1.7;
         }
 
-        /* ─── Model Overview Diagram ─────────────────────────── */
-        .sr-model {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 0;
-            margin-bottom: 3rem;
-            border-radius: var(--sr-radius);
-            overflow: hidden;
-            border: 1px solid rgba(99,102,241,0.2);
+        /* ─── Back link ──────────────────────────────────────── */
+        .sr-back {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            color: #94a3b8;
+            font-size: 0.82rem;
+            text-decoration: none;
+            transition: color 0.25s;
+            margin-bottom: 0.5rem;
         }
-        .sr-model-layer {
-            display: grid;
-            grid-template-columns: 180px 1fr;
-            align-items: stretch;
-            border-bottom: 1px solid rgba(99,102,241,0.15);
+        .sr-back:hover { color: #c7d2fe; }
+
+        /* ─── Section titles ─────────────────────────────────── */
+        .sr-section-head {
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+            margin-bottom: 1.6rem;
         }
-        .sr-model-layer:last-child { border-bottom: none; }
-        .sr-model-label {
+        .sr-section-num {
+            font-size: 0.7rem;
+            font-weight: 800;
+            color: var(--sr-indigo);
             background: rgba(99,102,241,0.12);
+            width: 32px;
+            height: 32px;
+            border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 1rem 0.8rem;
-            font-weight: 700;
-            font-size: 0.78rem;
-            text-transform: uppercase;
-            letter-spacing: 0.08em;
-            color: #a5b4fc;
-            text-align: center;
-            line-height: 1.3;
-            border-right: 1px solid rgba(99,102,241,0.15);
+            flex-shrink: 0;
         }
-        .sr-model-caps {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-            padding: 0.9rem 1rem;
-            background: rgba(15,11,46,0.5);
+        .sr-section-head h2 {
+            font-size: 1.35rem;
+            color: #f1f5f9;
+            margin: 0;
         }
-        .sr-cap-chip {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.35rem;
-            padding: 0.35rem 0.75rem;
-            border-radius: 20px;
-            font-size: 0.78rem;
-            font-weight: 500;
-            cursor: default;
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-        .sr-cap-chip:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-        }
-        .sr-cap-chip i { font-size: 0.7rem; }
-
-        /* Layer colours */
-        .layer-governance .sr-cap-chip { background: rgba(99,102,241,0.2); color: #a5b4fc; border: 1px solid rgba(99,102,241,0.3); }
-        .layer-architecture .sr-cap-chip { background: rgba(6,182,212,0.15); color: #67e8f9; border: 1px solid rgba(6,182,212,0.3); }
-        .layer-application .sr-cap-chip { background: rgba(236,72,153,0.15); color: #f9a8d4; border: 1px solid rgba(236,72,153,0.3); }
-        .layer-infra .sr-cap-chip { background: rgba(5,150,105,0.15); color: #6ee7b7; border: 1px solid rgba(5,150,105,0.3); }
-        .layer-data .sr-cap-chip { background: rgba(180,83,9,0.15); color: #fbbf24; border: 1px solid rgba(180,83,9,0.3); }
-        .layer-operations .sr-cap-chip { background: rgba(139,92,246,0.15); color: #c4b5fd; border: 1px solid rgba(139,92,246,0.3); }
 
         /* ─── Divider ────────────────────────────────────────── */
         .sr-divider {
             height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(99,102,241,0.3), transparent);
-            margin: 2.5rem 0;
+            background: linear-gradient(90deg, transparent, rgba(99,102,241,0.2), transparent);
+            margin: 3rem 0;
         }
 
-        /* ─── Domain Cards ───────────────────────────────────── */
+        /* ═══ CAPABILITY MODEL (layered) ═════════════════════════ */
+        .sr-model {
+            display: grid;
+            gap: 6px;
+            margin-bottom: 1rem;
+        }
+        .sr-model-layer {
+            display: grid;
+            grid-template-columns: 170px 1fr;
+            border-radius: 12px;
+            overflow: hidden;
+            background: var(--sr-glass);
+            border: 1px solid var(--sr-glass-border);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .sr-model-layer:hover {
+            transform: translateX(4px);
+            box-shadow: -4px 0 20px rgba(99,102,241,0.08);
+        }
+        .sr-model-label {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem 0.6rem;
+            font-weight: 700;
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            letter-spacing: 0.07em;
+            text-align: center;
+            line-height: 1.35;
+            border-right: 1px solid var(--sr-glass-border);
+        }
+        .sr-model-caps {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.45rem;
+            padding: 0.85rem 1rem;
+            align-items: center;
+        }
+        .sr-cap-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            padding: 0.3rem 0.7rem;
+            border-radius: 20px;
+            font-size: 0.74rem;
+            font-weight: 500;
+            transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
+            cursor: default;
+        }
+        .sr-cap-chip:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+        }
+        .sr-cap-chip i { font-size: 0.65rem; opacity: 0.8; }
+
+        /* Layer label + chip colours */
+        .layer-governance .sr-model-label { color: #a5b4fc; background: rgba(99,102,241,0.08); }
+        .layer-governance .sr-cap-chip { background: rgba(99,102,241,0.15); color: #c7d2fe; border: 1px solid rgba(99,102,241,0.25); }
+        .layer-architecture .sr-model-label { color: #67e8f9; background: rgba(6,182,212,0.08); }
+        .layer-architecture .sr-cap-chip { background: rgba(6,182,212,0.12); color: #a5f3fc; border: 1px solid rgba(6,182,212,0.25); }
+        .layer-application .sr-model-label { color: #f9a8d4; background: rgba(236,72,153,0.08); }
+        .layer-application .sr-cap-chip { background: rgba(236,72,153,0.12); color: #fbcfe8; border: 1px solid rgba(236,72,153,0.25); }
+        .layer-infra .sr-model-label { color: #6ee7b7; background: rgba(5,150,105,0.08); }
+        .layer-infra .sr-cap-chip { background: rgba(5,150,105,0.12); color: #a7f3d0; border: 1px solid rgba(5,150,105,0.25); }
+        .layer-data .sr-model-label { color: #fbbf24; background: rgba(180,83,9,0.08); }
+        .layer-data .sr-cap-chip { background: rgba(180,83,9,0.12); color: #fde68a; border: 1px solid rgba(180,83,9,0.25); }
+        .layer-operations .sr-model-label { color: #c4b5fd; background: rgba(139,92,246,0.08); }
+        .layer-operations .sr-cap-chip { background: rgba(139,92,246,0.12); color: #ddd6fe; border: 1px solid rgba(139,92,246,0.25); }
+
+        /* ═══ DOMAIN CARDS ═══════════════════════════════════════ */
         .sr-domains {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 2rem;
+            gap: 1.2rem;
         }
         .sr-domain-card {
-            background: rgba(30,27,75,0.6);
-            border: 1px solid rgba(99,102,241,0.15);
+            background: var(--sr-glass);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--sr-glass-border);
             border-radius: var(--sr-radius);
             overflow: hidden;
-            transition: transform 0.3s, box-shadow 0.3s;
+            transition: transform 0.35s cubic-bezier(.2,.8,.3,1), box-shadow 0.35s, border-color 0.35s;
+            position: relative;
+        }
+        .sr-domain-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--card-accent, var(--sr-indigo)), transparent);
+            opacity: 0;
+            transition: opacity 0.35s;
         }
         .sr-domain-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 12px 40px rgba(0,0,0,0.35);
+            transform: translateY(-4px);
+            box-shadow: 0 16px 48px rgba(0,0,0,0.3);
+            border-color: rgba(99,102,241,0.25);
         }
+        .sr-domain-card:hover::before { opacity: 1; }
+
+        /* Card accent overrides */
+        .sr-domain-card.accent-indigo { --card-accent: #6366f1; }
+        .sr-domain-card.accent-cyan { --card-accent: #06b6d4; }
+        .sr-domain-card.accent-pink { --card-accent: #ec4899; }
+        .sr-domain-card.accent-green { --card-accent: #059669; }
+        .sr-domain-card.accent-amber { --card-accent: #d97706; }
+        .sr-domain-card.accent-purple { --card-accent: #8b5cf6; }
+        .sr-domain-card.accent-blue { --card-accent: #2563eb; }
+
         .sr-domain-head {
-            padding: 1.2rem 1.4rem 0.8rem;
+            padding: 1.3rem 1.4rem 0.6rem;
             display: flex;
             align-items: center;
             gap: 0.8rem;
@@ -159,127 +277,117 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.1rem;
+            font-size: 1.05rem;
             flex-shrink: 0;
         }
         .sr-domain-head h3 {
-            font-size: 1.05rem;
+            font-size: 1rem;
             color: #f1f5f9;
             margin: 0;
             line-height: 1.3;
+            font-weight: 700;
         }
         .sr-domain-body {
-            padding: 0 1.4rem 1rem;
+            padding: 0 1.4rem 1.2rem;
         }
         .sr-domain-body p {
-            font-size: 0.88rem;
-            line-height: 1.65;
+            font-size: 0.85rem;
+            line-height: 1.7;
             color: #94a3b8;
             margin: 0 0 0.8rem;
         }
         .sr-domain-caps-list {
             display: flex;
             flex-wrap: wrap;
-            gap: 0.4rem;
+            gap: 0.35rem;
         }
         .sr-domain-tag {
             display: inline-block;
-            padding: 0.25rem 0.6rem;
+            padding: 0.22rem 0.55rem;
             border-radius: 6px;
-            font-size: 0.72rem;
+            font-size: 0.7rem;
             font-weight: 600;
-            background: rgba(99,102,241,0.12);
+            background: rgba(99,102,241,0.1);
             color: #a5b4fc;
-            border: 1px solid rgba(99,102,241,0.2);
+            border: 1px solid rgba(99,102,241,0.18);
         }
-
-        /* Domain icon colours */
-        .icon-governance { background: rgba(99,102,241,0.2); color: #a5b4fc; }
-        .icon-architecture { background: rgba(6,182,212,0.15); color: #67e8f9; }
-        .icon-application { background: rgba(236,72,153,0.15); color: #f9a8d4; }
-        .icon-infra { background: rgba(5,150,105,0.15); color: #6ee7b7; }
-        .icon-data { background: rgba(180,83,9,0.15); color: #fbbf24; }
-        .icon-operations { background: rgba(139,92,246,0.15); color: #c4b5fd; }
-        .icon-identity { background: rgba(37,99,235,0.15); color: #93c5fd; }
-        .icon-ai { background: rgba(236,72,153,0.15); color: #f9a8d4; }
-
-        /* Domain tag colour variants */
-        .tag-cyan { background: rgba(6,182,212,0.12); color: #67e8f9; border-color: rgba(6,182,212,0.25); }
-        .tag-pink { background: rgba(236,72,153,0.12); color: #f9a8d4; border-color: rgba(236,72,153,0.25); }
-        .tag-green { background: rgba(5,150,105,0.12); color: #6ee7b7; border-color: rgba(5,150,105,0.25); }
-        .tag-amber { background: rgba(180,83,9,0.12); color: #fbbf24; border-color: rgba(180,83,9,0.25); }
-        .tag-purple { background: rgba(139,92,246,0.12); color: #c4b5fd; border-color: rgba(139,92,246,0.25); }
-        .tag-blue { background: rgba(37,99,235,0.12); color: #93c5fd; border-color: rgba(37,99,235,0.25); }
-
-        /* ─── Section heading ────────────────────────────────── */
-        .sr-section-title {
-            font-size: 1.3rem;
-            color: #f1f5f9;
-            margin-bottom: 1.2rem;
-            display: flex;
-            align-items: center;
-            gap: 0.6rem;
-        }
-        .sr-section-title i {
-            color: var(--sr-indigo);
-            font-size: 1.1rem;
-        }
-
-        /* ─── Footer note ────────────────────────────────────── */
-        .sr-footer-note {
-            text-align: center;
-            font-size: 0.85rem;
-            color: #64748b;
-            padding: 2rem 0;
-            border-top: 1px solid rgba(99,102,241,0.1);
-            margin-top: 2rem;
-        }
-
-        /* ─── Back link ──────────────────────────────────────── */
-        .sr-back {
+        /* Sub-page link in card */
+        .sr-card-link {
             display: inline-flex;
             align-items: center;
-            gap: 0.4rem;
-            color: #a5b4fc;
-            font-size: 0.85rem;
+            gap: 0.35rem;
+            margin-top: 0.7rem;
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: var(--card-accent, var(--sr-indigo));
             text-decoration: none;
-            margin-bottom: 2rem;
-            transition: color 0.2s;
+            transition: gap 0.25s, color 0.25s;
         }
-        .sr-back:hover { color: #c7d2fe; }
+        .sr-card-link:hover { gap: 0.6rem; color: #fff; }
+        .sr-card-link i { font-size: 0.65rem; transition: transform 0.25s; }
+        .sr-card-link:hover i { transform: translateX(2px); }
+
+        /* Icon colours */
+        .icon-governance { background: rgba(99,102,241,0.15); color: #a5b4fc; }
+        .icon-architecture { background: rgba(6,182,212,0.12); color: #67e8f9; }
+        .icon-application { background: rgba(236,72,153,0.12); color: #f9a8d4; }
+        .icon-infra { background: rgba(5,150,105,0.12); color: #6ee7b7; }
+        .icon-data { background: rgba(180,83,9,0.12); color: #fbbf24; }
+        .icon-operations { background: rgba(139,92,246,0.12); color: #c4b5fd; }
+        .icon-identity { background: rgba(37,99,235,0.12); color: #93c5fd; }
+        .icon-ai { background: rgba(236,72,153,0.12); color: #f9a8d4; }
+
+        /* Tag colour variants */
+        .tag-cyan { background: rgba(6,182,212,0.1); color: #67e8f9; border-color: rgba(6,182,212,0.2); }
+        .tag-pink { background: rgba(236,72,153,0.1); color: #f9a8d4; border-color: rgba(236,72,153,0.2); }
+        .tag-green { background: rgba(5,150,105,0.1); color: #6ee7b7; border-color: rgba(5,150,105,0.2); }
+        .tag-amber { background: rgba(180,83,9,0.1); color: #fbbf24; border-color: rgba(180,83,9,0.2); }
+        .tag-purple { background: rgba(139,92,246,0.1); color: #c4b5fd; border-color: rgba(139,92,246,0.2); }
+        .tag-blue { background: rgba(37,99,235,0.1); color: #93c5fd; border-color: rgba(37,99,235,0.2); }
+
+        /* ─── Scroll reveal animation ────────────────────────── */
+        .sr-reveal {
+            opacity: 0;
+            transform: translateY(24px);
+            transition: opacity 0.7s cubic-bezier(.2,.8,.3,1), transform 0.7s cubic-bezier(.2,.8,.3,1);
+        }
+        .sr-reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ─── Footer ─────────────────────────────────────────── */
+        .sr-footer-note {
+            text-align: center;
+            font-size: 0.82rem;
+            color: #475569;
+            padding: 2.5rem 0 1rem;
+            margin-top: 2rem;
+        }
 
         /* ─── Print ──────────────────────────────────────────── */
         @media print {
             .navbar, .sr-back { display: none !important; }
             .sr-page { background: #fff; color: #1e293b; padding-top: 1rem; }
-            .sr-header h1 { -webkit-text-fill-color: #1e1b4b; }
-            .sr-header .sr-subtitle { color: #475569; }
-            .sr-model { border-color: #cbd5e1; }
-            .sr-model-label { background: #f1f5f9; color: #334155; border-color: #cbd5e1; }
-            .sr-model-caps { background: #fff; }
+            .sr-page::before { display: none; }
+            .sr-hero h1 { -webkit-text-fill-color: #1e1b4b; }
+            .sr-hero-sub, .sr-hero-badge { color: #475569; }
+            .sr-model-layer { background: #f8fafc; border-color: #cbd5e1; }
+            .sr-model-label { background: #f1f5f9 !important; color: #334155 !important; }
             .sr-cap-chip { border-color: #cbd5e1 !important; color: #334155 !important; background: #f8fafc !important; }
             .sr-domain-card { background: #fff; border-color: #cbd5e1; box-shadow: none !important; transform: none !important; }
             .sr-domain-head h3 { color: #1e293b; }
             .sr-domain-body p { color: #475569; }
             .sr-domain-tag { background: #f1f5f9; color: #334155; border-color: #cbd5e1; }
-            .sr-section-title { color: #1e293b; }
-            .sr-footer-note { color: #64748b; border-color: #e2e8f0; }
+            .sr-reveal { opacity: 1 !important; transform: none !important; }
         }
 
         /* ─── Responsive ─────────────────────────────────────── */
         @media (max-width: 768px) {
-            .sr-model-layer {
-                grid-template-columns: 1fr;
-            }
-            .sr-model-label {
-                padding: 0.6rem;
-                border-right: none;
-                border-bottom: 1px solid rgba(99,102,241,0.15);
-            }
-            .sr-domains {
-                grid-template-columns: 1fr;
-            }
-            .sr-header h1 { font-size: 1.6rem; }
+            .sr-hero h1 { font-size: 1.7rem; }
+            .sr-model-layer { grid-template-columns: 1fr; }
+            .sr-model-label { border-right: none; border-bottom: 1px solid var(--sr-glass-border); padding: 0.6rem; }
+            .sr-domains { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -287,9 +395,7 @@
     <!-- Navigation -->
     <nav class="navbar">
         <div class="container">
-            <div class="logo">
-                <h1>AL</h1>
-            </div>
+            <div class="logo"><h1>AL</h1></div>
             <ul class="nav-menu">
                 <li><a href="index.html" class="nav-link">Home</a></li>
                 <li><a href="index.html#about" class="nav-link">About</a></li>
@@ -300,11 +406,7 @@
                 <li><a href="security-ref.html" class="nav-link active">Security Ref.</a></li>
                 <li><a href="index.html#contact" class="nav-link">Contact</a></li>
             </ul>
-            <div class="hamburger">
-                <span></span>
-                <span></span>
-                <span></span>
-            </div>
+            <div class="hamburger"><span></span><span></span><span></span></div>
         </div>
     </nav>
 
@@ -312,93 +414,94 @@
         <div class="sr-wrap">
             <a href="index.html" class="sr-back"><i class="fas fa-arrow-left"></i> Back to Home</a>
 
-            <!-- ─── Page Header ────────────────────────────────── -->
-            <div class="sr-header">
-                <h1><i class="fas fa-shield-halved"></i> Security Reference Architecture</h1>
-                <p class="sr-subtitle">
-                    A model view of security capability domains I have worked across — spanning governance, architecture, application security, infrastructure, data protection, identity, and security operations.
+            <!-- ─── Hero ───────────────────────────────────────── -->
+            <div class="sr-hero sr-reveal">
+                <div class="sr-hero-badge"><i class="fas fa-shield-halved"></i> Reference Architecture</div>
+                <h1>Security Capability Model</h1>
+                <p class="sr-hero-sub">
+                    A structured view of security capability domains I have worked across — spanning governance, architecture, application security, infrastructure, data protection, identity, and security operations.
                 </p>
             </div>
 
             <!-- ═══════════════════════════════════════════════════
-                 CAPABILITY MODEL OVERVIEW (layered diagram)
+                 01 · CAPABILITY MODEL OVERVIEW
                  ═══════════════════════════════════════════════════ -->
-            <h2 class="sr-section-title"><i class="fas fa-layer-group"></i> Capability Model Overview</h2>
-
-            <div class="sr-model">
-                <!-- Layer 1: Governance & Risk -->
-                <div class="sr-model-layer layer-governance">
-                    <div class="sr-model-label">Governance<br>&amp; Risk</div>
-                    <div class="sr-model-caps">
-                        <span class="sr-cap-chip"><i class="fas fa-gavel"></i> Security Policy &amp; Standards</span>
-                        <span class="sr-cap-chip"><i class="fas fa-scale-balanced"></i> Risk Management</span>
-                        <span class="sr-cap-chip"><i class="fas fa-clipboard-check"></i> Compliance (ISO 27001 / NIST CSF / GDPR)</span>
-                        <span class="sr-cap-chip"><i class="fas fa-file-shield"></i> Security Control Frameworks</span>
-                        <span class="sr-cap-chip"><i class="fas fa-book"></i> Architecture Governance</span>
-                        <span class="sr-cap-chip"><i class="fas fa-handshake"></i> Stakeholder Engagement</span>
-                    </div>
+            <div class="sr-reveal">
+                <div class="sr-section-head">
+                    <div class="sr-section-num">01</div>
+                    <h2>Capability Layers</h2>
                 </div>
 
-                <!-- Layer 2: Security Architecture -->
-                <div class="sr-model-layer layer-architecture">
-                    <div class="sr-model-label">Security<br>Architecture</div>
-                    <div class="sr-model-caps">
-                        <span class="sr-cap-chip"><i class="fas fa-sitemap"></i> Enterprise Security Architecture</span>
-                        <span class="sr-cap-chip"><i class="fas fa-shield-alt"></i> Zero Trust Architecture</span>
-                        <span class="sr-cap-chip"><i class="fas fa-cloud"></i> Cloud Security Architecture</span>
-                        <span class="sr-cap-chip"><i class="fas fa-diagram-project"></i> Security Reference Patterns</span>
-                        <span class="sr-cap-chip"><i class="fas fa-arrows-spin"></i> Architecture Reviews</span>
-                        <span class="sr-cap-chip"><i class="fas fa-road"></i> Target-State &amp; Roadmaps</span>
+                <div class="sr-model">
+                    <!-- Governance & Risk -->
+                    <div class="sr-model-layer layer-governance">
+                        <div class="sr-model-label">Governance<br>&amp; Risk</div>
+                        <div class="sr-model-caps">
+                            <span class="sr-cap-chip"><i class="fas fa-gavel"></i> Security Policy &amp; Standards</span>
+                            <span class="sr-cap-chip"><i class="fas fa-scale-balanced"></i> Risk Management</span>
+                            <span class="sr-cap-chip"><i class="fas fa-clipboard-check"></i> Compliance (ISO 27001 / NIST CSF / GDPR)</span>
+                            <span class="sr-cap-chip"><i class="fas fa-file-shield"></i> Security Control Frameworks</span>
+                            <span class="sr-cap-chip"><i class="fas fa-book"></i> Architecture Governance</span>
+                            <span class="sr-cap-chip"><i class="fas fa-handshake"></i> Stakeholder Engagement</span>
+                        </div>
                     </div>
-                </div>
-
-                <!-- Layer 3: Application Security -->
-                <div class="sr-model-layer layer-application">
-                    <div class="sr-model-label">Application<br>Security</div>
-                    <div class="sr-model-caps">
-                        <span class="sr-cap-chip"><i class="fas fa-code"></i> Secure SDLC</span>
-                        <span class="sr-cap-chip"><i class="fas fa-bug"></i> Threat Modelling</span>
-                        <span class="sr-cap-chip"><i class="fas fa-magnifying-glass-chart"></i> Secure Design Reviews</span>
-                        <span class="sr-cap-chip"><i class="fas fa-gears"></i> DevSecOps / CI-CD Security</span>
-                        <span class="sr-cap-chip"><i class="fas fa-cubes"></i> Container &amp; Microservices Security</span>
-                        <span class="sr-cap-chip"><i class="fas fa-robot"></i> AI Security &amp; Secure SDLC (AI Age)</span>
+                    <!-- Security Architecture -->
+                    <div class="sr-model-layer layer-architecture">
+                        <div class="sr-model-label">Security<br>Architecture</div>
+                        <div class="sr-model-caps">
+                            <span class="sr-cap-chip"><i class="fas fa-sitemap"></i> Enterprise Security Architecture</span>
+                            <span class="sr-cap-chip"><i class="fas fa-shield-alt"></i> Zero Trust Architecture</span>
+                            <span class="sr-cap-chip"><i class="fas fa-cloud"></i> Cloud Security Architecture</span>
+                            <span class="sr-cap-chip"><i class="fas fa-diagram-project"></i> Security Reference Patterns</span>
+                            <span class="sr-cap-chip"><i class="fas fa-arrows-spin"></i> Architecture Reviews</span>
+                            <span class="sr-cap-chip"><i class="fas fa-road"></i> Target-State &amp; Roadmaps</span>
+                        </div>
                     </div>
-                </div>
-
-                <!-- Layer 4: Infrastructure & Cloud -->
-                <div class="sr-model-layer layer-infra">
-                    <div class="sr-model-label">Infrastructure<br>&amp; Cloud</div>
-                    <div class="sr-model-caps">
-                        <span class="sr-cap-chip"><i class="fab fa-microsoft"></i> Azure Security (IaaS/PaaS)</span>
-                        <span class="sr-cap-chip"><i class="fab fa-aws"></i> AWS Security</span>
-                        <span class="sr-cap-chip"><i class="fas fa-server"></i> Hybrid Cloud Architectures</span>
-                        <span class="sr-cap-chip"><i class="fas fa-network-wired"></i> Network Security</span>
-                        <span class="sr-cap-chip"><i class="fas fa-lock"></i> Cloud Governance &amp; Posture</span>
-                        <span class="sr-cap-chip"><i class="fas fa-puzzle-piece"></i> Microsegmentation</span>
+                    <!-- Application Security -->
+                    <div class="sr-model-layer layer-application">
+                        <div class="sr-model-label">Application<br>Security</div>
+                        <div class="sr-model-caps">
+                            <span class="sr-cap-chip"><i class="fas fa-code"></i> Secure SDLC</span>
+                            <span class="sr-cap-chip"><i class="fas fa-bug"></i> Threat Modelling</span>
+                            <span class="sr-cap-chip"><i class="fas fa-magnifying-glass-chart"></i> Secure Design Reviews</span>
+                            <span class="sr-cap-chip"><i class="fas fa-gears"></i> DevSecOps / CI-CD Security</span>
+                            <span class="sr-cap-chip"><i class="fas fa-cubes"></i> Container &amp; Microservices Security</span>
+                            <span class="sr-cap-chip"><i class="fas fa-robot"></i> AI Security &amp; Secure SDLC (AI Age)</span>
+                        </div>
                     </div>
-                </div>
-
-                <!-- Layer 5: Data & Identity -->
-                <div class="sr-model-layer layer-data">
-                    <div class="sr-model-label">Data &amp;<br>Identity</div>
-                    <div class="sr-model-caps">
-                        <span class="sr-cap-chip"><i class="fas fa-database"></i> Data Protection &amp; Privacy</span>
-                        <span class="sr-cap-chip"><i class="fas fa-key"></i> Encryption &amp; Key Management</span>
-                        <span class="sr-cap-chip"><i class="fas fa-user-shield"></i> Identity &amp; Access Management</span>
-                        <span class="sr-cap-chip"><i class="fas fa-user-lock"></i> Privileged Access Management</span>
-                        <span class="sr-cap-chip"><i class="fas fa-id-card"></i> Least-Privilege Enforcement</span>
+                    <!-- Infrastructure & Cloud -->
+                    <div class="sr-model-layer layer-infra">
+                        <div class="sr-model-label">Infrastructure<br>&amp; Cloud</div>
+                        <div class="sr-model-caps">
+                            <span class="sr-cap-chip"><i class="fab fa-microsoft"></i> Azure Security (IaaS/PaaS)</span>
+                            <span class="sr-cap-chip"><i class="fab fa-aws"></i> AWS Security</span>
+                            <span class="sr-cap-chip"><i class="fas fa-server"></i> Hybrid Cloud Architectures</span>
+                            <span class="sr-cap-chip"><i class="fas fa-network-wired"></i> Network Security</span>
+                            <span class="sr-cap-chip"><i class="fas fa-lock"></i> Cloud Governance &amp; Posture</span>
+                            <span class="sr-cap-chip"><i class="fas fa-puzzle-piece"></i> Microsegmentation</span>
+                        </div>
                     </div>
-                </div>
-
-                <!-- Layer 6: Security Operations -->
-                <div class="sr-model-layer layer-operations">
-                    <div class="sr-model-label">Security<br>Operations</div>
-                    <div class="sr-model-caps">
-                        <span class="sr-cap-chip"><i class="fas fa-tower-broadcast"></i> Security Monitoring</span>
-                        <span class="sr-cap-chip"><i class="fas fa-bell"></i> Incident Response</span>
-                        <span class="sr-cap-chip"><i class="fas fa-chart-line"></i> Vulnerability Management</span>
-                        <span class="sr-cap-chip"><i class="fas fa-brain"></i> AI-Driven Threat Detection</span>
-                        <span class="sr-cap-chip"><i class="fas fa-rotate"></i> Continuous Compliance</span>
+                    <!-- Data & Identity -->
+                    <div class="sr-model-layer layer-data">
+                        <div class="sr-model-label">Data &amp;<br>Identity</div>
+                        <div class="sr-model-caps">
+                            <span class="sr-cap-chip"><i class="fas fa-database"></i> Data Protection &amp; Privacy</span>
+                            <span class="sr-cap-chip"><i class="fas fa-key"></i> Encryption &amp; Key Management</span>
+                            <span class="sr-cap-chip"><i class="fas fa-user-shield"></i> Identity &amp; Access Management</span>
+                            <span class="sr-cap-chip"><i class="fas fa-user-lock"></i> Privileged Access Management</span>
+                            <span class="sr-cap-chip"><i class="fas fa-id-card"></i> Least-Privilege Enforcement</span>
+                        </div>
+                    </div>
+                    <!-- Security Operations -->
+                    <div class="sr-model-layer layer-operations">
+                        <div class="sr-model-label">Security<br>Operations</div>
+                        <div class="sr-model-caps">
+                            <span class="sr-cap-chip"><i class="fas fa-tower-broadcast"></i> Security Monitoring</span>
+                            <span class="sr-cap-chip"><i class="fas fa-bell"></i> Incident Response</span>
+                            <span class="sr-cap-chip"><i class="fas fa-chart-line"></i> Vulnerability Management</span>
+                            <span class="sr-cap-chip"><i class="fas fa-brain"></i> AI-Driven Threat Detection</span>
+                            <span class="sr-cap-chip"><i class="fas fa-rotate"></i> Continuous Compliance</span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -406,14 +509,19 @@
             <div class="sr-divider"></div>
 
             <!-- ═══════════════════════════════════════════════════
-                 DETAILED CAPABILITY DOMAINS
+                 02 · SECURITY CAPABILITY DOMAINS
                  ═══════════════════════════════════════════════════ -->
-            <h2 class="sr-section-title"><i class="fas fa-th-large"></i> Security Capability Domains</h2>
+            <div class="sr-reveal">
+                <div class="sr-section-head">
+                    <div class="sr-section-num">02</div>
+                    <h2>Security Capability Domains</h2>
+                </div>
+            </div>
 
             <div class="sr-domains">
 
-                <!-- 1. Security Governance & Risk -->
-                <div class="sr-domain-card">
+                <!-- 1 · Security Governance & Risk -->
+                <div class="sr-domain-card accent-indigo sr-reveal">
                     <div class="sr-domain-head">
                         <div class="sr-domain-icon icon-governance"><i class="fas fa-gavel"></i></div>
                         <h3>Security Governance &amp; Risk Management</h3>
@@ -432,8 +540,8 @@
                     </div>
                 </div>
 
-                <!-- 2. Enterprise Security Architecture -->
-                <div class="sr-domain-card">
+                <!-- 2 · Enterprise Security Architecture -->
+                <div class="sr-domain-card accent-cyan sr-reveal">
                     <div class="sr-domain-head">
                         <div class="sr-domain-icon icon-architecture"><i class="fas fa-sitemap"></i></div>
                         <h3>Enterprise Security Architecture</h3>
@@ -451,8 +559,8 @@
                     </div>
                 </div>
 
-                <!-- 3. Cloud Security -->
-                <div class="sr-domain-card">
+                <!-- 3 · Cloud Security -->
+                <div class="sr-domain-card accent-green sr-reveal">
                     <div class="sr-domain-head">
                         <div class="sr-domain-icon icon-infra"><i class="fas fa-cloud"></i></div>
                         <h3>Cloud Security (Azure &amp; AWS)</h3>
@@ -470,8 +578,8 @@
                     </div>
                 </div>
 
-                <!-- 4. Zero Trust Architecture -->
-                <div class="sr-domain-card">
+                <!-- 4 · Zero Trust -->
+                <div class="sr-domain-card accent-cyan sr-reveal">
                     <div class="sr-domain-head">
                         <div class="sr-domain-icon icon-architecture"><i class="fas fa-shield-alt"></i></div>
                         <h3>Zero Trust Architecture</h3>
@@ -488,8 +596,8 @@
                     </div>
                 </div>
 
-                <!-- 5. Secure SDLC & DevSecOps -->
-                <div class="sr-domain-card">
+                <!-- 5 · Secure SDLC & DevSecOps ★ with sub-page link -->
+                <div class="sr-domain-card accent-pink sr-reveal">
                     <div class="sr-domain-head">
                         <div class="sr-domain-icon icon-application"><i class="fas fa-code"></i></div>
                         <h3>Secure SDLC &amp; DevSecOps</h3>
@@ -504,11 +612,12 @@
                             <span class="sr-domain-tag tag-pink">AppSec Strategy</span>
                             <span class="sr-domain-tag tag-pink">Maturity Models</span>
                         </div>
+                        <a href="secure-sdlc.html" class="sr-card-link">Explore Secure SDLC <i class="fas fa-arrow-right"></i></a>
                     </div>
                 </div>
 
-                <!-- 6. Container & Microservices Security -->
-                <div class="sr-domain-card">
+                <!-- 6 · Container & Microservices -->
+                <div class="sr-domain-card accent-pink sr-reveal">
                     <div class="sr-domain-head">
                         <div class="sr-domain-icon icon-application"><i class="fas fa-cubes"></i></div>
                         <h3>Container &amp; Microservices Security</h3>
@@ -525,8 +634,8 @@
                     </div>
                 </div>
 
-                <!-- 7. Identity & Access Management -->
-                <div class="sr-domain-card">
+                <!-- 7 · Identity & Access Management -->
+                <div class="sr-domain-card accent-blue sr-reveal">
                     <div class="sr-domain-head">
                         <div class="sr-domain-icon icon-identity"><i class="fas fa-user-shield"></i></div>
                         <h3>Identity &amp; Access Management</h3>
@@ -542,8 +651,8 @@
                     </div>
                 </div>
 
-                <!-- 8. Data Protection & Privacy -->
-                <div class="sr-domain-card">
+                <!-- 8 · Data Protection & Privacy -->
+                <div class="sr-domain-card accent-amber sr-reveal">
                     <div class="sr-domain-head">
                         <div class="sr-domain-icon icon-data"><i class="fas fa-database"></i></div>
                         <h3>Data Protection &amp; Privacy</h3>
@@ -560,8 +669,8 @@
                     </div>
                 </div>
 
-                <!-- 9. AI Security -->
-                <div class="sr-domain-card">
+                <!-- 9 · AI Security -->
+                <div class="sr-domain-card accent-pink sr-reveal">
                     <div class="sr-domain-head">
                         <div class="sr-domain-icon icon-ai"><i class="fas fa-robot"></i></div>
                         <h3>AI Security &amp; Secure SDLC in the Age of AI</h3>
@@ -578,8 +687,8 @@
                     </div>
                 </div>
 
-                <!-- 10. Security Operations -->
-                <div class="sr-domain-card">
+                <!-- 10 · Security Operations -->
+                <div class="sr-domain-card accent-purple sr-reveal">
                     <div class="sr-domain-head">
                         <div class="sr-domain-icon icon-operations"><i class="fas fa-tower-broadcast"></i></div>
                         <h3>Security Operations &amp; Monitoring</h3>
@@ -595,8 +704,8 @@
                     </div>
                 </div>
 
-                <!-- 11. Network Security -->
-                <div class="sr-domain-card">
+                <!-- 11 · Network & Infrastructure -->
+                <div class="sr-domain-card accent-green sr-reveal">
                     <div class="sr-domain-head">
                         <div class="sr-domain-icon icon-infra"><i class="fas fa-network-wired"></i></div>
                         <h3>Network &amp; Infrastructure Security</h3>
@@ -612,8 +721,8 @@
                     </div>
                 </div>
 
-                <!-- 12. Cross-functional Security -->
-                <div class="sr-domain-card">
+                <!-- 12 · Cross-functional -->
+                <div class="sr-domain-card accent-indigo sr-reveal">
                     <div class="sr-domain-head">
                         <div class="sr-domain-icon icon-governance"><i class="fas fa-arrows-spin"></i></div>
                         <h3>Cross-functional Security Architecture</h3>
@@ -634,10 +743,17 @@
             <div class="sr-footer-note">
                 Security Reference Architecture &mdash; Angela Li &middot; Security Architect, CISM
             </div>
-
         </div>
     </div>
 
+    <script>
+        // Scroll-reveal
+        const revealEls = document.querySelectorAll('.sr-reveal');
+        const revealObs = new IntersectionObserver((entries) => {
+            entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); revealObs.unobserve(e.target); } });
+        }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+        revealEls.forEach(el => revealObs.observe(el));
+    </script>
     <script src="script.js"></script>
 </body>
 </html>

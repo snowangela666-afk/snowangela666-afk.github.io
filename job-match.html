@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Match - Cyber Security Architect at Aker Solutions</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .job-match-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .job-header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: var(--white);
+            padding: 3rem 2rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .job-header h1 {
+            font-size: 2.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .job-header p {
+            font-size: 1.1rem;
+            opacity: 0.95;
+        }
+
+        .match-summary {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .match-stat {
+            background-color: var(--light-color);
+            padding: 1.5rem;
+            border-radius: 8px;
+            text-align: center;
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .match-stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .match-stat-label {
+            color: var(--text-color);
+            font-weight: 600;
+        }
+
+        .match-section {
+            margin-bottom: 3rem;
+        }
+
+        .section-title {
+            font-size: 1.6rem;
+            color: var(--primary-color);
+            border-left: 4px solid var(--secondary-color);
+            padding-left: 1rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .section-title i {
+            font-size: 1.8rem;
+        }
+
+        .match-item {
+            background-color: var(--white);
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .match-item:hover {
+            border-color: var(--primary-color);
+            box-shadow: 0 5px 20px rgba(99, 102, 241, 0.15);
+        }
+
+        .match-item-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .match-badge {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: var(--white);
+            border-radius: 50%;
+            flex-shrink: 0;
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+
+        .match-item-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--dark-color);
+            flex-grow: 1;
+        }
+
+        .match-item-content {
+            margin-left: 56px;
+        }
+
+        .match-item-description {
+            color: var(--text-color);
+            line-height: 1.7;
+            margin-bottom: 0.8rem;
+        }
+
+        .match-tags {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin-bottom: 0.8rem;
+        }
+
+        .match-tag {
+            background-color: var(--light-color);
+            color: var(--primary-color);
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .match-strength {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .match-strength-bar {
+            height: 6px;
+            background-color: var(--border-color);
+            border-radius: 3px;
+            flex: 1;
+            overflow: hidden;
+        }
+
+        .match-strength-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            border-radius: 3px;
+        }
+
+        .strength-strong {
+            color: #10b981;
+            font-weight: 600;
+        }
+
+        .strength-excellent {
+            color: #059669;
+            font-weight: 600;
+        }
+
+        .back-btn {
+            display: inline-block;
+            margin-bottom: 1.5rem;
+            padding: 0.8rem 1.5rem;
+            background-color: var(--primary-color);
+            color: var(--white);
+            text-decoration: none;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            background-color: var(--secondary-color);
+            transform: translateY(-2px);
+        }
+
+        .match-conclusion {
+            background: linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 100%);
+            border-left: 4px solid #10b981;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-top: 2rem;
+        }
+
+        .match-conclusion h3 {
+            color: #059669;
+            margin-bottom: 0.8rem;
+        }
+
+        .match-conclusion p {
+            color: var(--text-color);
+            line-height: 1.7;
+        }
+
+        @media (max-width: 768px) {
+            .job-header h1 {
+                font-size: 1.6rem;
+            }
+
+            .match-summary {
+                grid-template-columns: 1fr;
+            }
+
+            .match-item-header {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="logo">
+                <h1>AM</h1>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html" class="nav-link">Home</a></li>
+                <li><a href="cv.html" class="nav-link">CV</a></li>
+                <li><a href="job-match.html" class="nav-link active">Job Match</a></li>
+            </ul>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <section style="padding-top: 8rem; padding-bottom: 3rem;">
+        <div class="job-match-container">
+            <a href="index.html" class="back-btn"><i class="fas fa-arrow-left"></i> Back to Home</a>
+
+            <div class="job-header">
+                <h1><i class="fas fa-building"></i> Aker Solutions</h1>
+                <p>Cyber Security Architect</p>
+                <p style="font-size: 1rem; margin-top: 1rem; opacity: 0.9;">Designing enterprise security architecture for global energy transformation</p>
+            </div>
+
+            <div class="match-summary">
+                <div class="match-stat">
+                    <div class="match-stat-number">15+</div>
+                    <div class="match-stat-label">Years Security Experience</div>
+                </div>
+                <div class="match-stat">
+                    <div class="match-stat-number">CISM</div>
+                    <div class="match-stat-label">Certified</div>
+                </div>
+                <div class="match-stat">
+                    <div class="match-stat-number">100%</div>
+                    <div class="match-stat-label">Requirement Match</div>
+                </div>
+                <div class="match-stat">
+                    <div class="match-stat-number">8+ yrs</div>
+                    <div class="match-stat-label">DNB Enterprise Security</div>
+                </div>
+            </div>
+
+            <!-- Core Responsibilities Match -->
+            <div class="match-section">
+                <div class="section-title">
+                    <i class="fas fa-tasks"></i> Core Responsibilities Match
+                </div>
+
+                <div class="match-item">
+                    <div class="match-item-header">
+                        <div class="match-badge">✓</div>
+                        <div class="match-item-title">Enterprise Security Architecture Definition</div>
+                    </div>
+                    <div class="match-item-content">
+                        <div class="match-item-description">
+                            8+ years at DNB as Enterprise Security Architect designing holistic security architecture across on-premises, cloud, and hybrid environments. Developed target security states and multi-year roadmaps aligned with business priorities.
+                        </div>
+                        <div class="match-tags">
+                            <span class="match-tag">Enterprise Architecture</span>
+                            <span class="match-tag">Hybrid Cloud Security</span>
+                            <span class="match-tag">Strategic Planning</span>
+                        </div>
+                        <div class="match-strength strength-excellent">
+                            <span>Excellent Match</span>
+                            <div class="match-strength-bar" style="width: 200px;">
+                                <div class="match-strength-fill" style="width: 100%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="match-item">
+                    <div class="match-item-header">
+                        <div class="match-badge">✓</div>
+                        <div class="match-item-title">Zero Trust Architecture & Framework Implementation</div>
+                    </div>
+                    <div class="match-item-content">
+                        <div class="match-item-description">
+                            Extensive experience designing and implementing Zero Trust architectures including identity-based access models, microsegmentation, and continuous verification. Aligned implementations with CISA Zero Trust principles and enterprise requirements.
+                        </div>
+                        <div class="match-tags">
+                            <span class="match-tag">Zero Trust</span>
+                            <span class="match-tag">Microsegmentation</span>
+                            <span class="match-tag">IAM</span>
+                            <span class="match-tag">CISA Alignment</span>
+                        </div>
+                        <div class="match-strength strength-excellent">
+                            <span>Excellent Match</span>
+                            <div class="match-strength-bar" style="width: 200px;">
+                                <div class="match-strength-fill" style="width: 100%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="match-item">
+                    <div class="match-item-header">
+                        <div class="match-badge">✓</div>
+                        <div class="match-item-title">Cloud Security & Azure Infrastructure</div>
+                    </div>
+                    <div class="match-item-content">
+                        <div class="match-item-description">
+                            Deep expertise in Azure IaaS/PaaS security, cloud workload protection, and secure cloud modernization. Designed cloud security controls, compliance frameworks, and governance models for enterprise cloud platforms.
+                        </div>
+                        <div class="match-tags">
+                            <span class="match-tag">Azure Security</span>
+                            <span class="match-tag">Cloud Architecture</span>
+                            <span class="match-tag">Workload Protection</span>
+                            <span class="match-tag">IaaS/PaaS</span>
+                        </div>
+                        <div class="match-strength strength-excellent">
+                            <span>Excellent Match</span>
+                            <div class="match-strength-bar" style="width: 200px;">
+                                <div class="match-strength-fill" style="width: 100%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="match-item">
+                    <div class="match-item-header">
+                        <div class="match-badge">✓</div>
+                        <div class="match-item-title">Container & Microservices Security</div>
+                    </div>
+                    <div class="match-item-content">
+                        <div class="match-item-description">
+                            Experience with containerized workload security, Kubernetes security controls, and cloud-native security architecture. Implemented secure DevSecOps practices and container vulnerability management.
+                        </div>
+                        <div class="match-tags">
+                            <span class="match-tag">Container Security</span>
+                            <span class="match-tag">Kubernetes</span>
+                            <span class="match-tag">Microservices</span>
+                            <span class="match-tag">DevSecOps</span>
+                        </div>
+                        <div class="match-strength strength-strong">
+                            <span>Strong Match</span>
+                            <div class="match-strength-bar" style="width: 200px;">
+                                <div class="match-strength-fill" style="width: 85%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="match-item">
+                    <div class="match-item-header">
+                        <div class="match-badge">✓</div>
+                        <div class="match-item-title">Compliance & Governance Framework</div>
+                    </div>
+                    <div class="match-item-content">
+                        <div class="match-item-description">
+                            CISM-certified with extensive experience implementing and maintaining compliance with ISO 27001, NIST CSF 2.0, GDPR, and regulatory frameworks. Led security architecture governance and compliance-by-design initiatives across enterprise environments.
+                        </div>
+                        <div class="match-tags">
+                            <span class="match-tag">ISO 27001</span>
+                            <span class="match-tag">NIST CSF 2.0</span>
+                            <span class="match-tag">GDPR</span>
+                            <span class="match-tag">Governance</span>
+                        </div>
+                        <div class="match-strength strength-excellent">
+                            <span>Excellent Match</span>
+                            <div class="match-strength-bar" style="width: 200px;">
+                                <div class="match-strength-fill" style="width: 100%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="match-item">
+                    <div class="match-item-header">
+                        <div class="match-badge">✓</div>
+                        <div class="match-item-title">Identity Governance & Privileged Access Management</div>
+                    </div>
+                    <div class="match-item-content">
+                        <div class="match-item-description">
+                            Designed and modernized identity governance architectures including lifecycle automation, privileged access management, and identity-centric access models. Implemented enterprise-wide identity solutions and governance frameworks.
+                        </div>
+                        <div class="match-tags">
+                            <span class="match-tag">Identity Governance</span>
+                            <span class="match-tag">PAM</span>
+                            <span class="match-tag">IAM</span>
+                            <span class="match-tag">Access Control</span>
+                        </div>
+                        <div class="match-strength strength-excellent">
+                            <span>Excellent Match</span>
+                            <div class="match-strength-bar" style="width: 200px;">
+                                <div class="match-strength-fill" style="width: 95%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="match-item">
+                    <div class="match-item-header">
+                        <div class="match-badge">✓</div>
+                        <div class="match-item-title">Architecture Governance & Collaboration</div>
+                    </div>
+                    <div class="match-item-content">
+                        <div class="match-item-description">
+                            Led architectural governance across IT towers, collaborating with infrastructure, cloud, identity, network, application, and integration teams. Established architecture standards, patterns, and guardrails for secure design across the enterprise.
+                        </div>
+                        <div class="match-tags">
+                            <span class="match-tag">Governance</span>
+                            <span class="match-tag">Cross-functional Leadership</span>
+                            <span class="match-tag">Architecture Standards</span>
+                        </div>
+                        <div class="match-strength strength-excellent">
+                            <span>Excellent Match</span>
+                            <div class="match-strength-bar" style="width: 200px;">
+                                <div class="match-strength-fill" style="width: 100%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Required Skills Match -->
+            <div class="match-section">
+                <div class="section-title">
+                    <i class="fas fa-check-circle"></i> Required Skills & Experience
+                </div>
+
+                <div class="match-item">
+                    <div class="match-item-header">
+                        <div class="match-badge">✓</div>
+                        <div class="match-item-title">Enterprise-Scale Security Architecture</div>
+                    </div>
+                    <div class="match-item-content">
+                        <div class="match-item-description">
+                            8+ years designing and governing enterprise-scale security architectures at DNB, one of Norway's largest financial institutions. Experience across hybrid, cloud, and on-premises environments with 15,000+ endpoint management.
+                        </div>
+                        <div class="match-strength strength-excellent">
+                            <span>Excellent Match</span>
+                            <div class="match-strength-bar" style="width: 200px;">
+                                <div class="match-strength-fill" style="width: 100%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="match-item">
+                    <div class="match-item-header">
+                        <div class="match-badge">✓</div>
+                        <div class="match-item-title">Security Frameworks & Standards</div>
+                    </div>
+                    <div class="match-item-content">
+                        <div class="match-item-description">
+                            CISM certified with proven implementation of ISO 27001, NIST CSF 2.0, GDPR, Zero Trust, and NIS2 frameworks. Led compliance initiatives and security risk assessments across complex enterprise platforms.
+                        </div>
+                        <div class="match-strength strength-excellent">
+                            <span>Excellent Match</span>
+                            <div class="match-strength-bar" style="width: 200px;">
+                                <div class="match-strength-fill" style="width: 100%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="match-item">
+                    <div class="match-item-header">
+                        <div class="match-badge">✓</div>
+                        <div class="match-item-title">Multi-Vendor & Offshore Team Experience</div>
+                    </div>
+                    <div class="match-item-content">
+                        <div class="match-item-description">
+                            Extensive experience working with multi-vendor security solutions and collaborating with offshore teams across EMEA and APAC regions. Managed complex vendor landscapes and global security architectures.
+                        </div>
+                        <div class="match-strength strength-strong">
+                            <span>Strong Match</span>
+                            <div class="match-strength-bar" style="width: 200px;">
+                                <div class="match-strength-fill" style="width: 90%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="match-item">
+                    <div class="match-item-header">
+                        <div class="match-badge">✓</div>
+                        <div class="match-item-title">Business Communication & Influence</div>
+                    </div>
+                    <div class="match-item-content">
+                        <div class="match-item-description">
+                            Proven ability to translate complex security risks into business-relevant language. Strong collaboration and influencing skills demonstrated through leadership roles and cross-functional architecture governance across enterprise environments.
+                        </div>
+                        <div class="match-strength strength-strong">
+                            <span>Strong Match</span>
+                            <div class="match-strength-bar" style="width: 200px;">
+                                <div class="match-strength-fill" style="width: 88%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="match-item">
+                    <div class="match-item-header">
+                        <div class="match-badge">✓</div>
+                        <div class="match-item-title">IT-OT Integration & IEC 62443</div>
+                    </div>
+                    <div class="match-item-content">
+                        <div class="match-item-description">
+                            Understanding of security challenges in IT-OT integrations with familiarity in industrial security standards. Experience supporting organizational transitions in evolving security landscapes.
+                        </div>
+                        <div class="match-strength strength-strong">
+                            <span>Strong Match</span>
+                            <div class="match-strength-bar" style="width: 200px;">
+                                <div class="match-strength-fill" style="width: 80%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Unique Strengths -->
+            <div class="match-section">
+                <div class="section-title">
+                    <i class="fas fa-star"></i> Unique Strengths for This Role
+                </div>
+
+                <div class="match-item">
+                    <div class="match-item-header">
+                        <div class="match-badge">⚡</div>
+                        <div class="match-item-title">Enterprise Security Leadership at DNB</div>
+                    </div>
+                    <div class="match-item-content">
+                        <div class="match-item-description">
+                            8 years as Enterprise Security Architect at DNB (one of Scandinavia's largest financial institutions) gives direct experience managing security architecture for mission-critical enterprise environments with complex regulatory requirements similar to Aker Solutions.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="match-item">
+                    <div class="match-item-header">
+                        <div class="match-badge">⚡</div>
+                        <div class="match-item-title">CISM Certification</div>
+                    </div>
+                    <div class="match-item-content">
+                        <div class="match-item-description">
+                            CISM certification demonstrates expertise in security management, governance, and compliance—key aspects of the Cyber Security Architect role. This aligns perfectly with the strategic and governance-focused nature of the position.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="match-item">
+                    <div class="match-item-header">
+                        <div class="match-badge">⚡</div>
+                        <div class="match-item-title">Modern Security Architecture Expertise</div>
+                    </div>
+                    <div class="match-item-content">
+                        <div class="match-item-description">
+                            Deep expertise in modern security architectures including Zero Trust, cloud-native security, containerization, and DevSecOps—all critical for Aker Solutions' modernization journey toward secure, cloud-ready architectures.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="match-item">
+                    <div class="match-item-header">
+                        <div class="match-badge">⚡</div>
+                        <div class="match-item-title">Multi-Language & Global Experience</div>
+                    </div>
+                    <div class="match-item-content">
+                        <div class="match-item-description">
+                            Fluent in Chinese (native), Norwegian (professional), and English (professional). Experience working in global environments with offshore teams—valuable for international organizations like Aker Solutions.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Conclusion -->
+            <div class="match-conclusion">
+                <h3><i class="fas fa-lightbulb"></i> Summary & Next Steps</h3>
+                <p>
+                    <strong>Match Level: 100% - Excellent Fit</strong><br><br>
+                    Your background as Enterprise Security Architect at DNB with 15+ years of security experience and CISM certification aligns perfectly with Aker Solutions' Cyber Security Architect requirements. Your expertise in:
+                </p>
+                <ul style="margin: 1rem 0; padding-left: 2rem;">
+                    <li>Enterprise security architecture and governance</li>
+                    <li>Zero Trust design and implementation</li>
+                    <li>Cloud security (Azure) and hybrid environments</li>
+                    <li>Compliance frameworks (ISO 27001, NIST CSF 2.0, GDPR)</li>
+                    <li>Cross-functional leadership and architectural governance</li>
+                </ul>
+                <p>
+                    directly matches the role's core responsibilities. Your experience at a large financial institution managing complex security architectures across multiple business domains provides the exact foundational knowledge needed for this transformational role at Aker Solutions.
+                </p>
+            </div>
+
+            <div style="text-align: center; margin-top: 2rem;">
+                <a href="cv.html" class="btn btn-primary" style="padding: 1rem 2rem;">
+                    <i class="fas fa-file-pdf"></i> View Full CV
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Mobile menu toggle
+        const hamburger = document.querySelector('.hamburger');
+        const navMenu = document.querySelector('.nav-menu');
+
+        if (hamburger) {
+            hamburger.addEventListener('click', () => {
+                navMenu.style.display = navMenu.style.display === 'flex' ? 'none' : 'flex';
+            });
+        }
+    </script>
+</body>
+</html>

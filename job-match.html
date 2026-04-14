@@ -3,538 +3,446 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Job Match - Cyber Security Architect at Aker Solutions</title>
+    <title>Role Alignment – Cyber Security Architect · Aker Solutions</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        .job-match-container {
-            max-width: 1100px;
+        /* ─── Layout ─────────────────────────────────────────────── */
+        .jm-wrap {
+            max-width: 1060px;
             margin: 0 auto;
-            padding: 2rem;
+            padding: 2rem 1.5rem 4rem;
         }
 
-        .job-header {
-            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
-            color: var(--white);
-            padding: 4rem 2rem;
-            border-radius: 12px;
-            margin-bottom: 3rem;
-            text-align: center;
+        /* ─── Hero banner ────────────────────────────────────────── */
+        .jm-hero {
             position: relative;
             overflow: hidden;
+            background: linear-gradient(135deg, #1e1b4b 0%, #4f46e5 55%, #db2777 100%);
+            color: #fff;
+            border-radius: 16px;
+            padding: 4rem 3rem 3rem;
+            margin-bottom: 2.5rem;
+            box-shadow: 0 20px 60px rgba(79,70,229,.25);
         }
-
-        .job-header::before {
+        .jm-hero::after {
             content: '';
             position: absolute;
-            top: -50%;
-            right: -10%;
-            width: 400px;
-            height: 400px;
-            background: rgba(255, 255, 255, 0.1);
+            top: -80px; right: -80px;
+            width: 340px; height: 340px;
             border-radius: 50%;
+            background: rgba(255,255,255,.06);
+            pointer-events: none;
         }
-
-        .job-header-content {
-            position: relative;
-            z-index: 1;
-        }
-
-        .job-header h1 {
-            font-size: 2.8rem;
-            margin-bottom: 0.5rem;
-            font-weight: 700;
-        }
-
-        .job-company {
-            font-size: 1.3rem;
-            opacity: 0.9;
-            margin-bottom: 1.5rem;
-        }
-
-        .job-header p {
-            font-size: 1.1rem;
-            opacity: 0.95;
-            line-height: 1.6;
-        }
-
-        .match-badge-large {
-            display: inline-block;
-            background-color: rgba(255, 255, 255, 0.2);
-            border: 2px solid rgba(255, 255, 255, 0.8);
-            color: var(--white);
-            padding: 0.8rem 2rem;
+        .jm-hero-inner { position: relative; z-index: 1; }
+        .jm-hero-eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: .5rem;
+            background: rgba(255,255,255,.15);
+            border: 1px solid rgba(255,255,255,.3);
             border-radius: 50px;
-            font-weight: 700;
-            font-size: 1.2rem;
-            margin-top: 1.5rem;
+            padding: .35rem 1rem;
+            font-size: .85rem;
+            font-weight: 600;
+            letter-spacing: .05em;
+            text-transform: uppercase;
+            margin-bottom: 1.2rem;
+        }
+        .jm-hero h1 {
+            font-size: clamp(1.8rem, 4vw, 2.8rem);
+            font-weight: 800;
+            line-height: 1.15;
+            margin-bottom: .6rem;
+        }
+        .jm-hero-sub {
+            font-size: 1.05rem;
+            opacity: .85;
+            max-width: 560px;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+        }
+        .jm-pills { display: flex; flex-wrap: wrap; gap: .7rem; }
+        .jm-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: .45rem;
+            background: rgba(255,255,255,.18);
+            border: 1px solid rgba(255,255,255,.35);
+            border-radius: 50px;
+            padding: .45rem 1.1rem;
+            font-size: .9rem;
+            font-weight: 600;
         }
 
-        .match-summary {
+        /* ─── Key-metric cards ───────────────────────────────────── */
+        .jm-metrics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+            gap: 1.2rem;
+            margin-bottom: 2.8rem;
+        }
+        .jm-metric {
+            background: #fff;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 14px;
+            padding: 1.6rem 1.4rem;
+            text-align: center;
+            box-shadow: 0 4px 18px rgba(0,0,0,.04);
+            transition: transform .25s, box-shadow .25s, border-color .25s;
+        }
+        .jm-metric:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 30px rgba(99,102,241,.12);
+            border-color: #6366f1;
+        }
+        .jm-metric-icon {
+            width: 48px; height: 48px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #6366f1, #ec4899);
+            color: #fff;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.2rem;
+            margin: 0 auto .9rem;
+            box-shadow: 0 6px 18px rgba(99,102,241,.25);
+        }
+        .jm-metric-val {
+            font-size: 1.9rem;
+            font-weight: 800;
+            color: #1e1b4b;
+            line-height: 1;
+            margin-bottom: .3rem;
+        }
+        .jm-metric-lbl {
+            font-size: .82rem;
+            font-weight: 600;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: .05em;
+        }
+
+        /* ─── Section chrome ─────────────────────────────────────── */
+        .jm-section { margin-bottom: 3rem; }
+        .jm-divider {
+            height: 1.5px;
+            background: linear-gradient(90deg, transparent, #6366f1 40%, #ec4899 60%, transparent);
+            margin: 3rem 0;
+            opacity: .35;
+        }
+        .jm-section-head {
+            display: flex;
+            align-items: center;
+            gap: .9rem;
+            margin-bottom: .5rem;
+        }
+        .jm-section-head h2 {
+            font-size: 1.45rem;
+            font-weight: 800;
+            color: #1e1b4b;
+            margin: 0;
+        }
+        .jm-section-icon {
+            width: 42px; height: 42px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #6366f1, #ec4899);
+            color: #fff;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1rem;
+            flex-shrink: 0;
+            box-shadow: 0 4px 14px rgba(99,102,241,.2);
+        }
+        .jm-section-sub {
+            font-size: .93rem;
+            color: #64748b;
+            margin-bottom: 1.6rem;
+            padding-left: 3.2rem;
+            line-height: 1.55;
+        }
+
+        /* ─── Competency snapshot grid ───────────────────────────── */
+        .jm-comp-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+            gap: 1rem;
+        }
+        .jm-comp-card {
+            display: flex;
+            gap: 1rem;
+            align-items: flex-start;
+            padding: 1.1rem 1.2rem;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #f8faff 0%, #fdf4ff 100%);
+            border: 1.5px solid #e2e8f0;
+            transition: border-color .25s, box-shadow .25s;
+        }
+        .jm-comp-card:hover {
+            border-color: #a5b4fc;
+            box-shadow: 0 6px 22px rgba(99,102,241,.1);
+        }
+        .jm-comp-card-icon {
+            width: 44px; height: 44px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #6366f1, #ec4899);
+            color: #fff;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.05rem;
+            flex-shrink: 0;
+            box-shadow: 0 4px 12px rgba(99,102,241,.18);
+        }
+        .jm-comp-title {
+            font-size: .95rem;
+            font-weight: 700;
+            color: #1e1b4b;
+            margin-bottom: .35rem;
+        }
+        .jm-comp-desc {
+            font-size: .85rem;
+            color: #475569;
+            line-height: 1.5;
+        }
+
+        /* ─── Skills table ───────────────────────────────────────── */
+        .jm-skills-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: .92rem;
+        }
+        .jm-skills-table thead th {
+            text-align: left;
+            font-size: .78rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: .06em;
+            color: #64748b;
+            padding: .6rem 1rem;
+            border-bottom: 2px solid #e2e8f0;
+        }
+        .jm-skills-table tbody tr {
+            border-bottom: 1px solid #f1f5f9;
+            transition: background .2s;
+        }
+        .jm-skills-table tbody tr:hover { background: #f8faff; }
+        .jm-skills-table td { padding: .75rem 1rem; vertical-align: middle; }
+        .jm-skill-name { font-weight: 600; color: #1e1b4b; }
+        .jm-bar-wrap {
+            width: 100%;
+            height: 8px;
+            background: #e2e8f0;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        .jm-bar {
+            height: 100%;
+            border-radius: 4px;
+            background: linear-gradient(90deg, #6366f1, #ec4899);
+            width: 0;
+            transition: width 1s ease;
+        }
+        .jm-level-badge {
+            display: inline-block;
+            padding: .2rem .65rem;
+            border-radius: 50px;
+            font-size: .78rem;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+        .level-expert   { background: #ede9fe; color: #5b21b6; }
+        .level-advanced { background: #dbeafe; color: #1e40af; }
+        .level-solid    { background: #dcfce7; color: #14532d; }
+
+        /* ─── Responsibility items ───────────────────────────────── */
+        .jm-item {
+            background: #fff;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 14px;
+            padding: 1.6rem 1.8rem;
+            margin-bottom: 1.2rem;
+            position: relative;
+            overflow: hidden;
+            transition: border-color .25s, box-shadow .25s, transform .25s;
+        }
+        .jm-item::before {
+            content: '';
+            position: absolute;
+            left: 0; top: 0;
+            width: 4px; height: 100%;
+            background: linear-gradient(180deg, #6366f1, #ec4899);
+            border-radius: 14px 0 0 14px;
+        }
+        .jm-item:hover {
+            border-color: #a5b4fc;
+            box-shadow: 0 8px 28px rgba(99,102,241,.12);
+            transform: translateX(3px);
+        }
+        .jm-item-head {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: .9rem;
+        }
+        .jm-check {
+            width: 34px; height: 34px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #6366f1, #ec4899);
+            color: #fff;
+            display: flex; align-items: center; justify-content: center;
+            font-size: .95rem;
+            flex-shrink: 0;
+            box-shadow: 0 4px 12px rgba(99,102,241,.25);
+        }
+        .jm-item-title { font-size: 1.08rem; font-weight: 700; color: #1e1b4b; }
+        .jm-item-body {
+            padding-left: 2.9rem;
+            color: #475569;
+            line-height: 1.75;
+            font-size: .93rem;
+        }
+        .jm-tags { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: .8rem; }
+        .jm-tag {
+            background: #ede9fe;
+            color: #5b21b6;
+            border-radius: 50px;
+            padding: .22rem .75rem;
+            font-size: .78rem;
+            font-weight: 600;
+        }
+        .jm-strength-row {
+            display: flex;
+            align-items: center;
+            gap: .85rem;
+            margin-top: .9rem;
+        }
+        .jm-strength-label { font-size: .82rem; font-weight: 700; white-space: nowrap; }
+        .jm-strength-track {
+            flex: 1;
+            height: 7px;
+            background: #e2e8f0;
+            border-radius: 4px;
+            max-width: 180px;
+            overflow: hidden;
+        }
+        .jm-strength-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #6366f1, #ec4899);
+            border-radius: 4px;
+            width: 0;
+            transition: width 1s ease;
+        }
+        .lbl-excellent { color: #059669; }
+        .lbl-strong    { color: #2563eb; }
+        .lbl-good      { color: #0891b2; }
+
+        /* ─── What I bring cards ─────────────────────────────────── */
+        .jm-strength-cards {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 3rem;
+            gap: 1.1rem;
         }
-
-        .match-stat {
-            background: linear-gradient(135deg, var(--white) 0%, var(--light-color) 100%);
-            padding: 2rem;
-            border-radius: 12px;
-            text-align: center;
-            border: 2px solid var(--border-color);
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        .jm-strength-card {
+            border-radius: 14px;
+            padding: 1.4rem 1.3rem;
+            border: 1.5px solid transparent;
+            background: linear-gradient(#fff,#fff) padding-box,
+                        linear-gradient(135deg, #6366f1, #ec4899) border-box;
+            transition: box-shadow .25s, transform .25s;
         }
-
-        .match-stat:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 25px rgba(99, 102, 241, 0.15);
-            border-color: var(--primary-color);
+        .jm-strength-card:hover {
+            box-shadow: 0 8px 26px rgba(99,102,241,.14);
+            transform: translateY(-3px);
         }
-
-        .match-stat-icon {
-            font-size: 2rem;
-            margin-bottom: 0.8rem;
-            color: var(--primary-color);
-        }
-
-        .match-stat-number {
-            font-size: 2.5rem;
-            font-weight: 700;
-            color: var(--primary-color);
-            margin-bottom: 0.5rem;
-        }
-
-        .match-stat-label {
-            color: var(--text-color);
-            font-weight: 600;
-            font-size: 0.95rem;
-        }
-
-        .section-divider {
-            height: 2px;
-            background: linear-gradient(90deg, transparent, var(--primary-color), transparent);
-            margin: 3rem 0;
-        }
-
-        .match-section {
-            margin-bottom: 3rem;
-        }
-
-        .section-title {
-            font-size: 1.8rem;
-            color: var(--primary-color);
-            border-left: 6px solid var(--secondary-color);
-            padding-left: 1.2rem;
-            margin-bottom: 2rem;
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            font-weight: 700;
-        }
-
-        .section-title i {
-            font-size: 2rem;
-        }
-
-        .section-subtitle {
-            color: var(--text-color);
-            font-size: 1.05rem;
-            margin-bottom: 1.5rem;
-            opacity: 0.8;
-        }
-
-        .match-item {
-            background: linear-gradient(135deg, var(--white) 0%, rgba(241, 245, 249, 0.5) 100%);
-            border: 2px solid var(--border-color);
-            border-radius: 12px;
-            padding: 2rem;
-            margin-bottom: 1.5rem;
-            transition: all 0.3s ease;
-            position: relative;
-        }
-
-        .match-item::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 0;
-            height: 100%;
-            width: 4px;
-            background: linear-gradient(180deg, var(--primary-color), var(--secondary-color));
-            border-radius: 12px 0 0 12px;
-        }
-
-        .match-item:hover {
-            border-color: var(--primary-color);
-            box-shadow: 0 8px 30px rgba(99, 102, 241, 0.15);
-            transform: translateX(4px);
-        }
-
-        .match-item-header {
-            display: flex;
-            align-items: flex-start;
-            gap: 1.5rem;
-            margin-bottom: 1.2rem;
-        }
-
-        .match-badge {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 50px;
-            height: 50px;
-            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
-            color: var(--white);
-            border-radius: 50%;
-            flex-shrink: 0;
-            font-weight: 700;
-            font-size: 1.4rem;
-            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
-        }
-
-        .match-item-title {
-            font-size: 1.25rem;
-            font-weight: 700;
-            color: var(--dark-color);
-            flex-grow: 1;
-            line-height: 1.4;
-        }
-
-        .match-item-content {
-            margin-left: 66px;
-        }
-
-        .match-item-description {
-            color: var(--text-color);
-            line-height: 1.8;
-            margin-bottom: 1.2rem;
-            font-size: 0.95rem;
-        }
-
-        .match-tags {
-            display: flex;
-            gap: 0.6rem;
-            flex-wrap: wrap;
-            margin-bottom: 1.2rem;
-        }
-
-        .match-tag {
-            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
-            color: var(--white);
-            padding: 0.5rem 1rem;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            font-weight: 600;
-            box-shadow: 0 2px 8px rgba(99, 102, 241, 0.2);
-        }
-
-        .match-strength {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            font-size: 0.9rem;
-            font-weight: 600;
-        }
-
-        .match-strength-bar {
-            height: 8px;
-            background-color: var(--border-color);
-            border-radius: 4px;
-            flex: 1;
-            overflow: hidden;
-            max-width: 200px;
-        }
-
-        .match-strength-fill {
-            height: 100%;
-            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
-            border-radius: 4px;
-            transition: width 0.5s ease;
-        }
-
-        .strength-excellent {
-            color: #059669;
-            font-weight: 700;
-        }
-
-        .strength-strong {
-            color: #0891b2;
-            font-weight: 700;
-        }
-
-        .back-btn {
-            display: inline-block;
-            margin-bottom: 2rem;
-            padding: 0.9rem 1.8rem;
-            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
-            color: var(--white);
-            text-decoration: none;
-            border-radius: 8px;
-            transition: all 0.3s ease;
-            font-weight: 600;
-            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.2);
-        }
-
-        .back-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 25px rgba(99, 102, 241, 0.3);
-        }
-
-        .match-conclusion {
-            background: linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 100%);
-            border: 2px solid #10b981;
-            border-left: 6px solid #10b981;
-            padding: 2.5rem;
-            border-radius: 12px;
-            margin-top: 3rem;
-            box-shadow: 0 4px 20px rgba(16, 185, 129, 0.1);
-        }
-
-        .match-conclusion h3 {
-            color: #059669;
-            margin-bottom: 1rem;
-            font-size: 1.5rem;
-            display: flex;
-            align-items: center;
-            gap: 0.8rem;
-        }
-
-        .match-conclusion h3 i {
-            font-size: 1.8rem;
-        }
-
-        .match-conclusion p {
-            color: var(--text-color);
-            line-height: 1.8;
-            margin-bottom: 1rem;
-            font-size: 0.95rem;
-        }
-
-        .match-conclusion ul {
-            margin: 1rem 0;
-            padding-left: 2rem;
-        }
-
-        .match-conclusion ul li {
-            margin-bottom: 0.6rem;
-            color: var(--text-color);
-            line-height: 1.6;
-        }
-
-        .cta-section {
-            text-align: center;
-            margin-top: 3rem;
-            padding: 3rem 2rem;
-            background: linear-gradient(135deg, var(--light-color) 0%, var(--white) 100%);
-            border-radius: 12px;
-            border: 2px solid var(--border-color);
-        }
-
-        .cta-section h2 {
+        .jm-strength-card-icon {
             font-size: 1.6rem;
-            color: var(--dark-color);
+            background: linear-gradient(135deg, #6366f1, #ec4899);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: .7rem;
+        }
+        .jm-strength-card h4 { font-size: .97rem; font-weight: 700; color: #1e1b4b; margin-bottom: .5rem; }
+        .jm-strength-card p  { font-size: .87rem; color: #475569; line-height: 1.6; }
+
+        /* ─── Summary box ────────────────────────────────────────── */
+        .jm-summary {
+            background: linear-gradient(135deg, #f0fdf4, #ecfdf5);
+            border: 1.5px solid #6ee7b7;
+            border-left: 6px solid #10b981;
+            border-radius: 14px;
+            padding: 2.4rem 2.2rem;
+            box-shadow: 0 6px 24px rgba(16,185,129,.08);
+        }
+        .jm-summary h3 {
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: #065f46;
             margin-bottom: 1rem;
-        }
-
-        .cta-buttons {
             display: flex;
-            gap: 1rem;
-            justify-content: center;
-            flex-wrap: wrap;
+            align-items: center;
+            gap: .7rem;
         }
+        .jm-summary p  { color: #374151; line-height: 1.8; font-size: .95rem; margin-bottom: .9rem; }
+        .jm-summary ul { padding-left: 1.5rem; margin: .8rem 0 1rem; }
+        .jm-summary ul li { color: #374151; line-height: 1.7; font-size: .93rem; margin-bottom: .5rem; }
+        .jm-summary ul li strong { color: #065f46; }
 
+        /* ─── CTA footer ─────────────────────────────────────────── */
+        .jm-cta {
+            margin-top: 2.8rem;
+            text-align: center;
+            background: linear-gradient(135deg, #f8faff, #fff);
+            border: 1.5px solid #e2e8f0;
+            border-radius: 14px;
+            padding: 2.5rem 2rem;
+        }
+        .jm-cta h2 { font-size: 1.3rem; color: #1e1b4b; margin-bottom: .5rem; }
+        .jm-cta p  { color: #64748b; font-size: .93rem; margin-bottom: 1.5rem; }
+        .jm-cta-btns { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
         .btn-primary, .btn-secondary {
             display: inline-flex;
             align-items: center;
-            gap: 0.6rem;
-            padding: 1rem 2rem;
+            gap: .55rem;
+            padding: .85rem 1.8rem;
             border-radius: 8px;
-            font-weight: 600;
-            text-decoration: none;
-            transition: all 0.3s ease;
-            font-size: 0.95rem;
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
-            color: var(--white);
-            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 25px rgba(99, 102, 241, 0.4);
-        }
-
-        .btn-secondary {
-            background-color: var(--white);
-            color: var(--primary-color);
-            border: 2px solid var(--primary-color);
-        }
-
-        .btn-secondary:hover {
-            background-color: var(--light-color);
-        }
-
-        .feature-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1rem;
-            margin-top: 1.5rem;
-        }
-
-        .feature-item {
-            background-color: var(--white);
-            padding: 1rem;
-            border-radius: 8px;
-            border: 1px solid var(--border-color);
-            text-align: center;
-        }
-
-        .feature-item i {
-            font-size: 1.5rem;
-            color: var(--primary-color);
-            margin-bottom: 0.5rem;
-        }
-
-        .feature-item p {
-            font-size: 0.85rem;
-            color: var(--text-color);
-        }
-
-        @media (max-width: 768px) {
-            .job-header h1 {
-                font-size: 2rem;
-            }
-
-            .match-summary {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .section-title {
-                font-size: 1.4rem;
-            }
-
-            .match-item-header {
-                flex-direction: column;
-            }
-
-            .cta-buttons {
-                flex-direction: column;
-            }
-        }
-    </style>
-    <style>
-        /* Additional presentation enhancements */
-        @keyframes floatUp {
-            from { transform: translateY(12px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
-
-        .highlight-row {
-            display: grid;
-            grid-template-columns: 1fr 320px;
-            gap: 1.5rem;
-            align-items: start;
-            margin-bottom: 2.5rem;
-        }
-
-        .competency-panel {
-            background: linear-gradient(180deg, var(--white) 0%, #fbfdff 100%);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 1.5rem;
-            box-shadow: 0 6px 30px rgba(2,6,23,0.04);
-            animation: floatUp 0.5s ease both;
-        }
-
-        .competency-list {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 1rem;
-        }
-
-        .competency-card {
-            display: flex;
-            gap: 1rem;
-            align-items: center;
-            padding: 0.8rem;
-            border-radius: 10px;
-            background: linear-gradient(90deg, rgba(99,102,241,0.04), rgba(236,72,153,0.02));
-            border: 1px solid rgba(99,102,241,0.06);
-        }
-
-        .competency-icon {
-            width: 52px;
-            height: 52px;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.2rem;
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-            color: white;
-            flex-shrink: 0;
-            box-shadow: 0 6px 18px rgba(99,102,241,0.15);
-        }
-
-        .competency-meta {
-            font-size: 0.92rem;
-            color: var(--text-color);
-            line-height: 1.4;
-            font-weight: 600;
-        }
-
-        .ring-wrap {
-            display: flex;
-            gap: 0.8rem;
-            align-items: center;
-            justify-content: center;
-            padding: 1rem;
-        }
-
-        .progress-ring {
-            width: 110px;
-            height: 110px;
-            display: inline-block;
-        }
-
-        .progress-label {
-            text-align: center;
             font-weight: 700;
-            color: var(--dark-color);
-            margin-top: 0.5rem;
+            font-size: .93rem;
+            text-decoration: none;
+            transition: all .25s;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #6366f1, #ec4899);
+            color: #fff;
+            box-shadow: 0 4px 16px rgba(99,102,241,.3);
+        }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(99,102,241,.38); }
+        .btn-secondary { background: #fff; color: #6366f1; border: 2px solid #6366f1; }
+        .btn-secondary:hover { background: #f5f3ff; }
+
+        /* ─── Back link ──────────────────────────────────────────── */
+        .jm-back {
+            display: inline-flex;
+            align-items: center;
+            gap: .5rem;
+            margin-bottom: 1.8rem;
+            color: #6366f1;
+            font-weight: 600;
+            font-size: .92rem;
+            text-decoration: none;
+            transition: gap .2s;
+        }
+        .jm-back:hover { gap: .8rem; }
+
+        /* ─── Print ──────────────────────────────────────────────── */
+        @media print {
+            .navbar, .jm-back, .jm-cta { display: none !important; }
+            body { font-size: 11pt; }
+            .jm-hero { padding: 1.5rem; border-radius: 0; box-shadow: none; }
+            .jm-item { break-inside: avoid; }
         }
 
-        .evidence-list {
-            margin-top: 1rem;
-            padding-left: 1.1rem;
-            color: var(--text-color);
-            font-size: 0.95rem;
-            line-height: 1.6;
-        }
-
-        .summary-card {
-            position: sticky;
-            top: 120px;
-            background: linear-gradient(180deg, #ffffff, #fbfdff);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 1rem;
-            text-align: center;
-        }
-
-        .summary-card h4 { margin: 0 0 0.5rem 0; }
-
-        .summary-key { font-size: 0.95rem; color: var(--text-color); }
-
-        .print-note { font-size: 0.85rem; color: #6b7280; margin-top: 0.6rem; }
-
-        @media (max-width: 900px) {
-            .highlight-row { grid-template-columns: 1fr; }
-            .summary-card { position: static; }
+        /* ─── Responsive ─────────────────────────────────────────── */
+        @media (max-width: 680px) {
+            .jm-hero { padding: 2.5rem 1.5rem 2rem; }
+            .jm-item-body { padding-left: 0; margin-top: .6rem; }
+            .jm-skills-table thead { display: none; }
+            .jm-skills-table tr, .jm-skills-table td { display: block; }
         }
     </style>
 </head>
@@ -542,565 +450,426 @@
     <!-- Navigation -->
     <nav class="navbar">
         <div class="container">
-            <div class="logo">
-                <h1>AM</h1>
-            </div>
+            <div class="logo"><h1>AL</h1></div>
             <ul class="nav-menu">
                 <li><a href="index.html" class="nav-link">Home</a></li>
                 <li><a href="cv.html" class="nav-link">CV</a></li>
-                <li><a href="job-match.html" class="nav-link active">Job Match</a></li>
+                <li><a href="job-match.html" class="nav-link active">Role Alignment</a></li>
             </ul>
-            <div class="hamburger">
-                <span></span>
-                <span></span>
-                <span></span>
-            </div>
+            <div class="hamburger"><span></span><span></span><span></span></div>
         </div>
     </nav>
 
     <section style="padding-top: 8rem; padding-bottom: 3rem;">
-        <div class="job-match-container">
-            <a href="index.html" class="back-btn"><i class="fas fa-arrow-left"></i> Back to Home</a>
+    <div class="jm-wrap">
 
-            <div class="job-header">
-                <div class="job-header-content">
-                    <div class="job-company">
-                        <i class="fas fa-building"></i> Aker Solutions
-                    </div>
-                    <h1>Cyber Security Architect</h1>
-                    <p>Designing enterprise security architecture for global energy transformation</p>
-                    <div class="match-badge-large">
-                        <i class="fas fa-check-circle"></i> Strong Alignment
-                    </div>
+        <a href="index.html" class="jm-back"><i class="fas fa-arrow-left"></i> Back to portfolio</a>
+
+        <!-- Hero -->
+        <div class="jm-hero">
+            <div class="jm-hero-inner">
+                <div class="jm-hero-eyebrow">
+                    <i class="fas fa-building"></i> Aker Solutions &nbsp;·&nbsp; Role Alignment
                 </div>
-            </div>
-
-            <div class="match-summary">
-                <div class="match-stat">
-                    <div class="match-stat-icon"><i class="fas fa-briefcase"></i></div>
-                    <div class="match-stat-number">15+</div>
-                    <div class="match-stat-label">Years Security Experience</div>
-                </div>
-                <div class="match-stat">
-                    <div class="match-stat-icon"><i class="fas fa-certificate"></i></div>
-                    <div class="match-stat-number">CISM</div>
-                    <div class="match-stat-label">Certified</div>
-                </div>
-                <div class="match-stat">
-                    <div class="match-stat-icon"><i class="fas fa-check"></i></div>
-                    <div class="match-stat-number">Strong</div>
-                    <div class="match-stat-label">Overall Fit</div>
-                </div>
-                <div class="match-stat">
-                    <div class="match-stat-icon"><i class="fas fa-star"></i></div>
-                    <div class="match-stat-number">8+ yrs</div>
-                    <div class="match-stat-label">DNB Enterprise Security</div>
-                </div>
-            </div>
-
-            <!-- Highlight Row: Competencies + Summary -->
-            <div class="highlight-row">
-                <div class="competency-panel">
-                    <div class="section-title" style="border-left-width: 6px;">
-                        <i class="fas fa-brain"></i> Core Competency Highlights
-                    </div>
-                    <p class="section-subtitle">At-a-glance view of how your core strengths map to Aker Solutions' priorities.</p>
-
-                    <div class="competency-list">
-                        <div class="competency-card">
-                            <div class="competency-icon"><i class="fas fa-network-wired"></i></div>
-                            <div>
-                                <div class="competency-meta">Enterprise Security Architecture</div>
-                                <div class="evidence-list">Designed enterprise security architecture at DNB covering network, identity, and cloud governance.</div>
-                            </div>
-                        </div>
-
-                        <div class="competency-card">
-                            <div class="competency-icon"><i class="fas fa-lock"></i></div>
-                            <div>
-                                <div class="competency-meta">Zero Trust & Identity</div>
-                                <div class="evidence-list">Have designed and involved in the implementation of security control framework.</div>
-                            </div>
-                        </div>
-
-                        <div class="competency-card">
-                            <div class="competency-icon"><i class="fab fa-azure"></i></div>
-                            <div>
-                                <div class="competency-meta">Cloud Security (Azure)</div>
-                                <div class="evidence-list">Secured Azure IaaS/PaaS workloads and CI/CD pipelines across hybrid environments.</div>
-                            </div>
-                        </div>
-
-                        <div class="competency-card">
-                            <div class="competency-icon"><i class="fas fa-gavel"></i></div>
-                            <div>
-                                <div class="competency-meta">Compliance & Governance</div>
-                                <div class="evidence-list">CISM with hands-on ISO27001/NIST mapping and risk-based control frameworks.</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <aside class="summary-card">
-                    <h4>Match Snapshot</h4>
-                    <div class="ring-wrap">
-                        <div>
-                            <svg class="progress-ring" data-perc="100" viewBox="0 0 120 120">
-                                <circle cx="60" cy="60" r="52" stroke="#e6eefb" stroke-width="16" fill="transparent" />
-                                <circle class="perc" cx="60" cy="60" r="52" stroke="url(#g1)" stroke-width="16" fill="transparent" stroke-linecap="round" transform="rotate(-90 60 60)" stroke-dasharray="326.7256" stroke-dashoffset="326.7256" />
-                                <defs>
-                                    <linearGradient id="g1" x1="0%" x2="100%">
-                                        <stop offset="0%" stop-color="var(--primary-color)" />
-                                        <stop offset="100%" stop-color="var(--secondary-color)" />
-                                    </linearGradient>
-                                </defs>
-                            </svg>
-                            <div class="progress-label">Overall Match</div>
-                        </div>
-                    </div>
-                    <div style="margin-top: 0.6rem;">
-                        <div class="summary-key">Years:</div>
-                        <div style="font-weight:700; font-size:1.05rem;">15+ Security Years</div>
-                    </div>
-                    <div style="margin-top:0.6rem;">
-                        <div class="summary-key">Cert:</div>
-                        <div style="font-weight:700;">CISM</div>
-                    </div>
-                    <div class="print-note">Use "View Full CV" to generate a printable PDF for interviews.</div>
-                </aside>
-            </div>
-
-            <!-- Core Responsibilities Match -->
-            <div class="match-section">
-                <div class="section-title">
-                    <i class="fas fa-tasks"></i> Core Responsibilities Match
-                </div>
-                <p class="section-subtitle">How your experience directly aligns with key role responsibilities</p>
-
-                <div class="match-item">
-                    <div class="match-item-header">
-                        <div class="match-badge">✓</div>
-                        <div class="match-item-title">Enterprise Security Architecture Definition</div>
-                    </div>
-                    <div class="match-item-content">
-                        <div class="match-item-description">
-                            8+ years at DNB as Enterprise Security Architect designing holistic security architecture across on-premises, cloud, and hybrid environments. Developed target security states and multi-year roadmaps aligned with business priorities.
-                        </div>
-                        <div class="match-tags">
-                            <span class="match-tag">Enterprise Architecture</span>
-                            <span class="match-tag">Hybrid Cloud Security</span>
-                            <span class="match-tag">Strategic Planning</span>
-                        </div>
-                        <div class="match-strength strength-excellent">
-                            <span>Excellent Match</span>
-                            <div class="match-strength-bar" style="width: 200px;">
-                                <div class="match-strength-fill" style="width: 100%;"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="match-item">
-                    <div class="match-item-header">
-                        <div class="match-badge">✓</div>
-                        <div class="match-item-title">Zero Trust Architecture & Framework Implementation</div>
-                    </div>
-                    <div class="match-item-content">
-                        <div class="match-item-description">
-                            Extensive experience designing and implementing Zero Trust architectures including identity-based access models, microsegmentation, and continuous verification. Aligned implementations with CISA Zero Trust principles and enterprise requirements.
-                        </div>
-                        <div class="match-tags">
-                            <span class="match-tag">Zero Trust</span>
-                            <span class="match-tag">Microsegmentation</span>
-                            <span class="match-tag">IAM</span>
-                            <span class="match-tag">CISA Alignment</span>
-                        </div>
-                        <div class="match-strength strength-excellent">
-                            <span>Excellent Match</span>
-                            <div class="match-strength-bar" style="width: 200px;">
-                                <div class="match-strength-fill" style="width: 100%;"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="match-item">
-                    <div class="match-item-header">
-                        <div class="match-badge">✓</div>
-                        <div class="match-item-title">Cloud Security & Azure Infrastructure</div>
-                    </div>
-                    <div class="match-item-content">
-                        <div class="match-item-description">
-                            Deep expertise in Azure IaaS/PaaS security, cloud workload protection, and secure cloud modernization. Designed cloud security controls, compliance frameworks, and governance models for enterprise cloud platforms.
-                        </div>
-                        <div class="match-tags">
-                            <span class="match-tag">Azure Security</span>
-                            <span class="match-tag">Cloud Architecture</span>
-                            <span class="match-tag">Workload Protection</span>
-                            <span class="match-tag">IaaS/PaaS</span>
-                        </div>
-                        <div class="match-strength strength-excellent">
-                            <span>Excellent Match</span>
-                            <div class="match-strength-bar" style="width: 200px;">
-                                <div class="match-strength-fill" style="width: 100%;"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="match-item">
-                    <div class="match-item-header">
-                        <div class="match-badge">✓</div>
-                        <div class="match-item-title">Container & Microservices Security</div>
-                    </div>
-                    <div class="match-item-content">
-                        <div class="match-item-description">
-                            Experience with containerized workload security, Kubernetes security controls, and cloud-native security architecture. Implemented secure DevSecOps practices and container vulnerability management.
-                        </div>
-                        <div class="match-tags">
-                            <span class="match-tag">Container Security</span>
-                            <span class="match-tag">Kubernetes</span>
-                            <span class="match-tag">Microservices</span>
-                            <span class="match-tag">DevSecOps</span>
-                        </div>
-                        <div class="match-strength strength-strong">
-                            <span>Strong Match</span>
-                            <div class="match-strength-bar" style="width: 200px;">
-                                <div class="match-strength-fill" style="width: 85%;"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="match-item">
-                    <div class="match-item-header">
-                        <div class="match-badge">✓</div>
-                        <div class="match-item-title">Compliance & Governance Framework</div>
-                    </div>
-                    <div class="match-item-content">
-                        <div class="match-item-description">
-                            CISM-certified with extensive experience implementing and maintaining compliance with ISO 27001, NIST CSF 2.0, GDPR, and regulatory frameworks. Led security architecture governance and compliance-by-design initiatives across enterprise environments.
-                        </div>
-                        <div class="match-tags">
-                            <span class="match-tag">ISO 27001</span>
-                            <span class="match-tag">NIST CSF 2.0</span>
-                            <span class="match-tag">GDPR</span>
-                            <span class="match-tag">Governance</span>
-                        </div>
-                        <div class="match-strength strength-excellent">
-                            <span>Excellent Match</span>
-                            <div class="match-strength-bar" style="width: 200px;">
-                                <div class="match-strength-fill" style="width: 100%;"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="match-item">
-                    <div class="match-item-header">
-                        <div class="match-badge">✓</div>
-                        <div class="match-item-title">Identity Governance & Privileged Access Management</div>
-                    </div>
-                    <div class="match-item-content">
-                        <div class="match-item-description">
-                            Designed and modernized identity governance architectures including lifecycle automation, privileged access management, and identity-centric access models. Implemented enterprise-wide identity solutions and governance frameworks.
-                        </div>
-                        <div class="match-tags">
-                            <span class="match-tag">Identity Governance</span>
-                            <span class="match-tag">PAM</span>
-                            <span class="match-tag">IAM</span>
-                            <span class="match-tag">Access Control</span>
-                        </div>
-                        <div class="match-strength strength-excellent">
-                            <span>Excellent Match</span>
-                            <div class="match-strength-bar" style="width: 200px;">
-                                <div class="match-strength-fill" style="width: 95%;"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="match-item">
-                    <div class="match-item-header">
-                        <div class="match-badge">✓</div>
-                        <div class="match-item-title">Architecture Governance & Collaboration</div>
-                    </div>
-                    <div class="match-item-content">
-                        <div class="match-item-description">
-                            Led architectural governance across IT towers, collaborating with infrastructure, cloud, identity, network, application, and integration teams. Established architecture standards, patterns, and guardrails for secure design across the enterprise.
-                        </div>
-                        <div class="match-tags">
-                            <span class="match-tag">Governance</span>
-                            <span class="match-tag">Cross-functional Leadership</span>
-                            <span class="match-tag">Architecture Standards</span>
-                        </div>
-                        <div class="match-strength strength-excellent">
-                            <span>Excellent Match</span>
-                            <div class="match-strength-bar" style="width: 200px;">
-                                <div class="match-strength-fill" style="width: 100%;"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Required Skills Match -->
-            <div class="section-divider"></div>
-            <div class="match-section">
-                <div class="section-title">
-                    <i class="fas fa-check-circle"></i> Required Skills & Experience
-                </div>
-                <p class="section-subtitle">Demonstrated capabilities in all required areas</p>
-
-                <div class="match-item">
-                    <div class="match-item-header">
-                        <div class="match-badge">✓</div>
-                        <div class="match-item-title">Enterprise-Scale Security Architecture</div>
-                    </div>
-                    <div class="match-item-content">
-                        <div class="match-item-description">
-                            8+ years designing and governing enterprise-scale security architectures at DNB, one of Norway's largest financial institutions. Experience across hybrid, cloud, and on-premises environments with 15,000+ endpoint management.
-                        </div>
-                        <div class="match-strength strength-excellent">
-                            <span>Excellent Match</span>
-                            <div class="match-strength-bar" style="width: 200px;">
-                                <div class="match-strength-fill" style="width: 100%;"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="match-item">
-                    <div class="match-item-header">
-                        <div class="match-badge">✓</div>
-                        <div class="match-item-title">Security Frameworks & Standards</div>
-                    </div>
-                    <div class="match-item-content">
-                        <div class="match-item-description">
-                            CISM certified with proven implementation of ISO 27001, NIST CSF 2.0, GDPR, Zero Trust, and NIS2 frameworks. Led compliance initiatives and security risk assessments across complex enterprise platforms.
-                        </div>
-                        <div class="match-strength strength-excellent">
-                            <span>Excellent Match</span>
-                            <div class="match-strength-bar" style="width: 200px;">
-                                <div class="match-strength-fill" style="width: 100%;"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="match-item">
-                    <div class="match-item-header">
-                        <div class="match-badge">✓</div>
-                        <div class="match-item-title">Multi-Vendor & Offshore Team Experience</div>
-                    </div>
-                    <div class="match-item-content">
-                        <div class="match-item-description">
-                            Extensive experience working with multi-vendor security solutions and collaborating with offshore teams across EMEA and APAC regions. Managed complex vendor landscapes and global security architectures.
-                        </div>
-                        <div class="match-strength strength-strong">
-                            <span>Strong Match</span>
-                            <div class="match-strength-bar" style="width: 200px;">
-                                <div class="match-strength-fill" style="width: 90%;"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="match-item">
-                    <div class="match-item-header">
-                        <div class="match-badge">✓</div>
-                        <div class="match-item-title">Business Communication & Influence</div>
-                    </div>
-                    <div class="match-item-content">
-                        <div class="match-item-description">
-                            Proven ability to translate complex security risks into business-relevant language. Strong collaboration and influencing skills demonstrated through leadership roles and cross-functional architecture governance across enterprise environments.
-                        </div>
-                        <div class="match-strength strength-strong">
-                            <span>Strong Match</span>
-                            <div class="match-strength-bar" style="width: 200px;">
-                                <div class="match-strength-fill" style="width: 88%;"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="match-item">
-                    <div class="match-item-header">
-                        <div class="match-badge">✓</div>
-                        <div class="match-item-title">IT-OT Integration & IEC 62443</div>
-                    </div>
-                    <div class="match-item-content">
-                        <div class="match-item-description">
-                            Understanding of security challenges in IT-OT integrations with familiarity in industrial security standards. Experience supporting organizational transitions in evolving security landscapes.
-                        </div>
-                        <div class="match-strength strength-strong">
-                            <span>Strong Match</span>
-                            <div class="match-strength-bar" style="width: 200px;">
-                                <div class="match-strength-fill" style="width: 80%;"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Unique Strengths -->
-            <div class="section-divider"></div>
-            <div class="match-section">
-                <div class="section-title">
-                    <i class="fas fa-star"></i> Unique Strengths for This Role
-                </div>
-                <p class="section-subtitle">Distinctive advantages that make you ideal for Aker Solutions</p>
-
-                <div class="match-item">
-                    <div class="match-item-header">
-                        <div class="match-badge">⚡</div>
-                        <div class="match-item-title">Enterprise Security Leadership at DNB</div>
-                    </div>
-                    <div class="match-item-content">
-                        <div class="match-item-description">
-                            8 years as Enterprise Security Architect at DNB (one of Scandinavia's largest financial institutions) gives direct experience managing security architecture for mission-critical enterprise environments with complex regulatory requirements similar to Aker Solutions.
-                        </div>
-                    </div>
-                </div>
-
-                <div class="match-item">
-                    <div class="match-item-header">
-                        <div class="match-badge">⚡</div>
-                        <div class="match-item-title">CISM Certification</div>
-                    </div>
-                    <div class="match-item-content">
-                        <div class="match-item-description">
-                            CISM certification demonstrates expertise in security management, governance, and compliance—key aspects of the Cyber Security Architect role. This aligns perfectly with the strategic and governance-focused nature of the position.
-                        </div>
-                    </div>
-                </div>
-
-                <div class="match-item">
-                    <div class="match-item-header">
-                        <div class="match-badge">⚡</div>
-                        <div class="match-item-title">Modern Security Architecture Expertise</div>
-                    </div>
-                    <div class="match-item-content">
-                        <div class="match-item-description">
-                            Deep expertise in modern security architectures including Zero Trust, cloud-native security, containerization, and DevSecOps—all critical for Aker Solutions' modernization journey toward secure, cloud-ready architectures.
-                        </div>
-                    </div>
-                </div>
-
-                <div class="match-item">
-                    <div class="match-item-header">
-                        <div class="match-badge">⚡</div>
-                        <div class="match-item-title">Multi-Language & Global Experience</div>
-                    </div>
-                    <div class="match-item-content">
-                        <div class="match-item-description">
-                            Fluent in Chinese (native), Norwegian (professional), and English (professional). Experience working in global environments with offshore teams—valuable for international organizations like Aker Solutions.
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Conclusion -->
-            <div class="section-divider"></div>
-            <div class="match-conclusion">
-                <h3><i class="fas fa-lightbulb"></i> Executive Summary</h3>
-                <p>
-                    <strong style="color: #059669; font-size: 1.1rem;">Strong Candidate: Well-Aligned with Role Requirements</strong>
+                <h1>Cyber Security Architect</h1>
+                <p class="jm-hero-sub">
+                    A structured review of how my background, experience, and certifications
+                    relate to the requirements of this position.
                 </p>
-                <p>
-                    Your background as Enterprise Security Architect at DNB with 15+ years of security experience and CISM certification aligns perfectly with Aker Solutions' Cyber Security Architect requirements.
-                </p>
-                <p><strong>Your Core Strengths:</strong></p>
-                <ul>
-                    <li><strong>Enterprise Security Architecture & Governance:</strong> 8+ years at DNB designing and governing enterprise-scale security architectures</li>
-                    <li><strong>Zero Trust Expertise:</strong> Proven design and implementation of Zero Trust architectures with identity-based access models</li>
-                    <li><strong>Cloud Security (Azure):</strong> Deep expertise in Azure IaaS/PaaS security and hybrid cloud environments</li>
-                    <li><strong>Compliance Frameworks:</strong> CISM-certified with implementations of ISO 27001, NIST CSF 2.0, GDPR, and regulatory requirements</li>
-                    <li><strong>Cross-functional Leadership:</strong> Demonstrated ability to collaborate across IT towers and influence architecture decisions</li>
-                    <li><strong>Modern Security Architectures:</strong> Container security, microservices, DevSecOps, and cloud-native security patterns</li>
-                </ul>
-                <p style="margin-top: 1.5rem;">
-                    Your experience managing complex security architectures at a large financial institution provides the exact foundational knowledge needed for this transformational role. The combination of technical depth, strategic thinking, and proven governance experience makes you an excellent candidate for leading Aker Solutions' security architecture evolution.
-                </p>
-            </div>
-
-            <div class="cta-section">
-                <h2>Ready to Present Your Profile?</h2>
-                <p style="margin-bottom: 1.5rem;">Use these resources to showcase your fit for the role</p>
-                <div class="cta-buttons">
-                    <a href="cv.html" class="btn-primary">
-                        <i class="fas fa-file-pdf"></i> View Full CV
-                    </a>
-                    <a href="index.html" class="btn-secondary">
-                        <i class="fas fa-home"></i> Back to Home
-                    </a>
-                </div>
-                <div class="feature-grid">
-                    <div class="feature-item">
-                        <i class="fas fa-mobile-alt"></i>
-                        <p>Mobile Responsive</p>
-                    </div>
-                    <div class="feature-item">
-                        <i class="fas fa-share-alt"></i>
-                        <p>Easy to Share</p>
-                    </div>
-                    <div class="feature-item">
-                        <i class="fas fa-print"></i>
-                        <p>Print Friendly</p>
-                    </div>
-                    <div class="feature-item">
-                        <i class="fas fa-award"></i>
-                        <p>Professional Quality</p>
-                    </div>
+                <div class="jm-pills">
+                    <span class="jm-pill"><i class="fas fa-shield-halved"></i> Security Architecture</span>
+                    <span class="jm-pill"><i class="fas fa-certificate"></i> CISM Certified</span>
+                    <span class="jm-pill"><i class="fas fa-cloud"></i> Cloud &amp; Hybrid</span>
+                    <span class="jm-pill"><i class="fas fa-globe"></i> Oslo, Norway</span>
                 </div>
             </div>
-            <script>
-                // Animate progress rings and strength bars when visible
-                function animateRings() {
-                    document.querySelectorAll('.progress-ring').forEach(function(svg){
-                        var circle = svg.querySelector('.perc');
-                        var radius = circle.r.baseVal.value;
-                        var circumference = 2 * Math.PI * radius;
-                        var perc = parseFloat(svg.getAttribute('data-perc')) || 0;
-                        circle.style.strokeDasharray = circumference;
-                        circle.style.strokeDashoffset = circumference;
-                        // animate
-                        setTimeout(function(){
-                            var offset = circumference - (perc/100) * circumference;
-                            circle.style.transition = 'stroke-dashoffset 900ms ease-out';
-                            circle.style.strokeDashoffset = offset;
-                        }, 300);
-                    });
-                }
-
-                // IntersectionObserver to trigger animation once
-                var obs = new IntersectionObserver(function(entries){
-                    entries.forEach(function(e){
-                        if(e.isIntersecting){
-                            animateRings();
-                            obs.disconnect();
-                        }
-                    });
-                }, {threshold: 0.3});
-
-                document.addEventListener('DOMContentLoaded', function(){
-                    var target = document.querySelector('.highlight-row');
-                    if(target) obs.observe(target);
-                });
-            </script>
         </div>
+
+        <!-- Key metrics -->
+        <div class="jm-metrics">
+            <div class="jm-metric">
+                <div class="jm-metric-icon"><i class="fas fa-briefcase"></i></div>
+                <div class="jm-metric-val">15+</div>
+                <div class="jm-metric-lbl">Years in Security</div>
+            </div>
+            <div class="jm-metric">
+                <div class="jm-metric-icon"><i class="fas fa-building-columns"></i></div>
+                <div class="jm-metric-val">8 yrs</div>
+                <div class="jm-metric-lbl">Enterprise Arch. at DNB</div>
+            </div>
+            <div class="jm-metric">
+                <div class="jm-metric-icon"><i class="fas fa-certificate"></i></div>
+                <div class="jm-metric-val">CISM</div>
+                <div class="jm-metric-lbl">+ ISO 27001 · NIST</div>
+            </div>
+            <div class="jm-metric">
+                <div class="jm-metric-icon"><i class="fas fa-language"></i></div>
+                <div class="jm-metric-val">3</div>
+                <div class="jm-metric-lbl">Business Languages</div>
+            </div>
+        </div>
+
+        <!-- 1. Competency snapshot -->
+        <div class="jm-section">
+            <div class="jm-section-head">
+                <div class="jm-section-icon"><i class="fas fa-brain"></i></div>
+                <h2>Competency Snapshot</h2>
+            </div>
+            <p class="jm-section-sub">Four areas where my experience most directly supports the role.</p>
+            <div class="jm-comp-grid">
+                <div class="jm-comp-card">
+                    <div class="jm-comp-card-icon"><i class="fas fa-network-wired"></i></div>
+                    <div>
+                        <div class="jm-comp-title">Enterprise Security Architecture</div>
+                        <div class="jm-comp-desc">Designed and governed enterprise security architecture at DNB across different security areas — covering strategy, standards, and delivery.</div>
+                    </div>
+                </div>
+                <div class="jm-comp-card">
+                    <div class="jm-comp-card-icon"><i class="fas fa-shield-halved"></i></div>
+                    <div>
+                        <div class="jm-comp-title">Security Governance</div>
+                        <div class="jm-comp-desc">Have designed and been involved in the implementation of security control frameworks, including risk-based governance models and policy structures.</div>
+                    </div>
+                </div>
+                <div class="jm-comp-card">
+                    <div class="jm-comp-card-icon"><i class="fas fa-cloud"></i></div>
+                    <div>
+                        <div class="jm-comp-title">Cloud Security (Azure &amp; AWS)</div>
+                        <div class="jm-comp-desc">Experience securing workloads across both Azure (IaaS/PaaS) and AWS environments, including hybrid cloud architectures, cloud-native controls, and governance frameworks.</div>
+                    </div>
+                </div>
+                <div class="jm-comp-card">
+                    <div class="jm-comp-card-icon"><i class="fas fa-gavel"></i></div>
+                    <div>
+                        <div class="jm-comp-title">Compliance &amp; Risk Management</div>
+                        <div class="jm-comp-desc">CISM-certified. Practical experience applying ISO 27001, NIST CSF, and GDPR within regulated financial environments.</div>
+                    </div>
+                </div>
+                <div class="jm-comp-card">
+                    <div class="jm-comp-card-icon"><i class="fas fa-code"></i></div>
+                    <div>
+                        <div class="jm-comp-title">Secure SDLC &amp; DevSecOps</div>
+                        <div class="jm-comp-desc">Strong background integrating security into the software development lifecycle — including threat modelling, secure design reviews, and embedding security controls into CI/CD pipelines.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2. Skills proficiency -->
+        <div class="jm-divider"></div>
+        <div class="jm-section">
+            <div class="jm-section-head">
+                <div class="jm-section-icon"><i class="fas fa-chart-bar"></i></div>
+                <h2>Skills &amp; Proficiency</h2>
+            </div>
+            <p class="jm-section-sub">Self-assessed proficiency aligned with Aker Solutions' stated requirements.</p>
+            <table class="jm-skills-table">
+                <thead>
+                    <tr>
+                        <th style="width:32%">Skill Area</th>
+                        <th style="width:38%">Proficiency</th>
+                        <th style="width:15%">Level</th>
+                        <th style="width:15%">Context</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="jm-skill-name">Security Architecture Design</td>
+                        <td><div class="jm-bar-wrap"><div class="jm-bar" data-w="95"></div></div></td>
+                        <td><span class="jm-level-badge level-expert">Expert</span></td>
+                        <td>8+ yrs DNB</td>
+                    </tr>
+                    <tr>
+                        <td class="jm-skill-name">Security Governance &amp; Frameworks</td>
+                        <td><div class="jm-bar-wrap"><div class="jm-bar" data-w="92"></div></div></td>
+                        <td><span class="jm-level-badge level-expert">Expert</span></td>
+                        <td>CISM · ISO 27001</td>
+                    </tr>
+                    <tr>
+                        <td class="jm-skill-name">Azure &amp; Cloud Security</td>
+                        <td><div class="jm-bar-wrap"><div class="jm-bar" data-w="88"></div></div></td>
+                        <td><span class="jm-level-badge level-advanced">Advanced</span></td>
+                        <td>IaaS/PaaS projects</td>
+                    </tr>
+                    <tr>
+                        <td class="jm-skill-name">Zero Trust Design</td>
+                        <td><div class="jm-bar-wrap"><div class="jm-bar" data-w="84"></div></div></td>
+                        <td><span class="jm-level-badge level-advanced">Advanced</span></td>
+                        <td>Architecture design</td>
+                    </tr>
+                    <tr>
+                        <td class="jm-skill-name">Identity &amp; Access Management</td>
+                        <td><div class="jm-bar-wrap"><div class="jm-bar" data-w="86"></div></div></td>
+                        <td><span class="jm-level-badge level-advanced">Advanced</span></td>
+                        <td>Enterprise IAM prog.</td>
+                    </tr>
+                    <tr>
+                        <td class="jm-skill-name">Compliance (ISO/NIST/GDPR)</td>
+                        <td><div class="jm-bar-wrap"><div class="jm-bar" data-w="91"></div></div></td>
+                        <td><span class="jm-level-badge level-expert">Expert</span></td>
+                        <td>Financial sector</td>
+                    </tr>
+                    <tr>
+                        <td class="jm-skill-name">Secure SDLC</td>
+                        <td><div class="jm-bar-wrap"><div class="jm-bar" data-w="90"></div></div></td>
+                        <td><span class="jm-level-badge level-expert">Expert</span></td>
+                        <td>Security design reviews</td>
+                    </tr>
+                    <tr>
+                        <td class="jm-skill-name">DevSecOps &amp; CI/CD Security</td>
+                        <td><div class="jm-bar-wrap"><div class="jm-bar" data-w="88"></div></div></td>
+                        <td><span class="jm-level-badge level-advanced">Advanced</span></td>
+                        <td>Pipeline security controls</td>
+                    </tr>
+                    <tr>
+                        <td class="jm-skill-name">AWS &amp; Azure Cloud Security</td>
+                        <td><div class="jm-bar-wrap"><div class="jm-bar" data-w="87"></div></div></td>
+                        <td><span class="jm-level-badge level-advanced">Advanced</span></td>
+                        <td>Multi-cloud environments</td>
+                    </tr>
+                    <tr>
+                        <td class="jm-skill-name">Stakeholder Communication</td>
+                        <td><div class="jm-bar-wrap"><div class="jm-bar" data-w="89"></div></div></td>
+                        <td><span class="jm-level-badge level-advanced">Advanced</span></td>
+                        <td>Board-level reporting</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- 3. Responsibilities alignment -->
+        <div class="jm-divider"></div>
+        <div class="jm-section">
+            <div class="jm-section-head">
+                <div class="jm-section-icon"><i class="fas fa-list-check"></i></div>
+                <h2>Responsibilities Alignment</h2>
+            </div>
+            <p class="jm-section-sub">How my experience maps to the key responsibilities outlined in the job description.</p>
+
+            <div class="jm-item">
+                <div class="jm-item-head">
+                    <div class="jm-check"><i class="fas fa-check"></i></div>
+                    <div class="jm-item-title">Enterprise Security Architecture Definition</div>
+                </div>
+                <div class="jm-item-body">
+                    During my 8 years at DNB, I was responsible for defining and governing enterprise security architecture across on-premises, cloud, and hybrid environments — including target-state architecture, multi-year roadmaps, and alignment with business strategy.
+                    <div class="jm-tags">
+                        <span class="jm-tag">Architecture Governance</span>
+                        <span class="jm-tag">Roadmap Planning</span>
+                        <span class="jm-tag">Hybrid Cloud</span>
+                    </div>
+                    <div class="jm-strength-row">
+                        <span class="jm-strength-label lbl-excellent">Excellent alignment</span>
+                        <div class="jm-strength-track"><div class="jm-strength-fill" data-w="95"></div></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="jm-item">
+                <div class="jm-item-head">
+                    <div class="jm-check"><i class="fas fa-check"></i></div>
+                    <div class="jm-item-title">Zero Trust Architecture &amp; Implementation</div>
+                </div>
+                <div class="jm-item-body">
+                    Contributed to the design of Zero Trust architectures, including identity-based access models and microsegmentation principles, aligned with CISA Zero Trust pillars and enterprise risk requirements.
+                    <div class="jm-tags">
+                        <span class="jm-tag">Zero Trust</span>
+                        <span class="jm-tag">Microsegmentation</span>
+                        <span class="jm-tag">Identity-centric Access</span>
+                    </div>
+                    <div class="jm-strength-row">
+                        <span class="jm-strength-label lbl-strong">Strong alignment</span>
+                        <div class="jm-strength-track"><div class="jm-strength-fill" data-w="84"></div></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="jm-item">
+                <div class="jm-item-head">
+                    <div class="jm-check"><i class="fas fa-check"></i></div>
+                    <div class="jm-item-title">Cloud Security &amp; Azure Infrastructure</div>
+                </div>
+                <div class="jm-item-body">
+                    Designed security controls for Azure IaaS/PaaS workloads, including governance models, workload protection, and secure landing zone design. Supported cloud modernisation within hybrid environments.
+                    <div class="jm-tags">
+                        <span class="jm-tag">Azure Security</span>
+                        <span class="jm-tag">Landing Zone Design</span>
+                        <span class="jm-tag">Cloud Governance</span>
+                    </div>
+                    <div class="jm-strength-row">
+                        <span class="jm-strength-label lbl-strong">Strong alignment</span>
+                        <div class="jm-strength-track"><div class="jm-strength-fill" data-w="88"></div></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="jm-item">
+                <div class="jm-item-head">
+                    <div class="jm-check"><i class="fas fa-check"></i></div>
+                    <div class="jm-item-title">Security Governance &amp; Compliance Frameworks</div>
+                </div>
+                <div class="jm-item-body">
+                    CISM-certified with hands-on experience implementing ISO 27001, NIST CSF 2.0, and GDPR in a regulated financial institution. Led security architecture governance and compliance-by-design practices.
+                    <div class="jm-tags">
+                        <span class="jm-tag">ISO 27001</span>
+                        <span class="jm-tag">NIST CSF 2.0</span>
+                        <span class="jm-tag">GDPR</span>
+                        <span class="jm-tag">Risk Management</span>
+                    </div>
+                    <div class="jm-strength-row">
+                        <span class="jm-strength-label lbl-excellent">Excellent alignment</span>
+                        <div class="jm-strength-track"><div class="jm-strength-fill" data-w="93"></div></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="jm-item">
+                <div class="jm-item-head">
+                    <div class="jm-check"><i class="fas fa-check"></i></div>
+                    <div class="jm-item-title">Identity &amp; Privileged Access Management</div>
+                </div>
+                <div class="jm-item-body">
+                    Involved in designing and modernising identity governance structures, including privileged access management principles and lifecycle automation. Contributed to enterprise-wide identity solutions.
+                    <div class="jm-tags">
+                        <span class="jm-tag">IAM</span>
+                        <span class="jm-tag">PAM Concepts</span>
+                        <span class="jm-tag">Identity Lifecycle</span>
+                    </div>
+                    <div class="jm-strength-row">
+                        <span class="jm-strength-label lbl-strong">Strong alignment</span>
+                        <div class="jm-strength-track"><div class="jm-strength-fill" data-w="82"></div></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="jm-item">
+                <div class="jm-item-head">
+                    <div class="jm-check"><i class="fas fa-check"></i></div>
+                    <div class="jm-item-title">Cross-functional Architecture Governance</div>
+                </div>
+                <div class="jm-item-body">
+                    Worked across infrastructure, cloud, application, and network teams — establishing architecture standards, review processes, and guardrails for secure design. Comfortable influencing without authority in large organisations.
+                    <div class="jm-tags">
+                        <span class="jm-tag">Architecture Review</span>
+                        <span class="jm-tag">Standards &amp; Patterns</span>
+                        <span class="jm-tag">Stakeholder Engagement</span>
+                    </div>
+                    <div class="jm-strength-row">
+                        <span class="jm-strength-label lbl-excellent">Excellent alignment</span>
+                        <div class="jm-strength-track"><div class="jm-strength-fill" data-w="92"></div></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="jm-item">
+                <div class="jm-item-head">
+                    <div class="jm-check"><i class="fas fa-check"></i></div>
+                    <div class="jm-item-title">Container &amp; Microservices Security</div>
+                </div>
+                <div class="jm-item-body">
+                    Strong background in Secure SDLC and DevSecOps — including threat modelling, secure design reviews, and embedding security controls into CI/CD pipelines. Experience with container security principles and Kubernetes security controls in cloud-native environments.
+                    <div class="jm-tags">
+                        <span class="jm-tag">Secure SDLC</span>
+                        <span class="jm-tag">DevSecOps</span>
+                        <span class="jm-tag">Threat Modelling</span>
+                        <span class="jm-tag">CI/CD Security</span>
+                        <span class="jm-tag">Container Security</span>
+                    </div>
+                    <div class="jm-strength-row">
+                        <span class="jm-strength-label lbl-excellent">Excellent alignment</span>
+                        <div class="jm-strength-track"><div class="jm-strength-fill" data-w="89"></div></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 4. What I bring -->
+        <div class="jm-divider"></div>
+        <div class="jm-section">
+            <div class="jm-section-head">
+                <div class="jm-section-icon"><i class="fas fa-star"></i></div>
+                <h2>What I Bring to This Role</h2>
+            </div>
+            <p class="jm-section-sub">Perspectives and experience that could add particular value at Aker Solutions.</p>
+            <div class="jm-strength-cards">
+                <div class="jm-strength-card">
+                    <div class="jm-strength-card-icon"><i class="fas fa-building-columns"></i></div>
+                    <h4>Large Enterprise Background</h4>
+                    <p>DNB is one of Scandinavia's largest financial institutions with strict regulatory requirements. This gave me experience managing security architecture for mission-critical environments at scale — a context comparable to Aker Solutions' operational complexity.</p>
+                </div>
+                <div class="jm-strength-card">
+                    <div class="jm-strength-card-icon"><i class="fas fa-certificate"></i></div>
+                    <h4>Governance-Focused Mindset</h4>
+                    <p>CISM certification reflects a focus on information security management and governance — not just technical controls. I bring a risk-informed, business-aligned perspective that can bridge security and operational leadership.</p>
+                </div>
+                <div class="jm-strength-card">
+                    <div class="jm-strength-card-icon"><i class="fas fa-arrows-spin"></i></div>
+                    <h4>Strategy Through to Delivery</h4>
+                    <p>Experience working from architecture strategy through to implementation — developing security architectures that are technically sound and achievable within real organisational constraints, timelines, and budgets.</p>
+                </div>
+                <div class="jm-strength-card">
+                    <div class="jm-strength-card-icon"><i class="fas fa-globe"></i></div>
+                    <h4>Multi-lingual Communication</h4>
+                    <p>Fluent in Norwegian, English, and Chinese. Comfortable presenting to senior stakeholders and working across diverse, international teams — relevant for a global organisation like Aker Solutions.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 5. Summary -->
+        <div class="jm-divider"></div>
+        <div class="jm-summary">
+            <h3><i class="fas fa-file-lines"></i> Summary</h3>
+            <p>
+                My background as an Enterprise Security Architect with 15+ years of experience and CISM certification provides a solid foundation for this role. The position's focus on security architecture, governance, cloud security, and cross-functional collaboration aligns well with the work I have been doing at DNB.
+            </p>
+            <p><strong>Key areas of alignment:</strong></p>
+            <ul>
+                <li><strong>Enterprise Security Architecture:</strong> 8 years designing and governing security architecture across a large, regulated institution</li>
+                <li><strong>Security Governance:</strong> CISM-certified; designed and supported the implementation of security control frameworks</li>
+                <li><strong>Cloud Security:</strong> Azure IaaS/PaaS experience within hybrid enterprise environments</li>
+                <li><strong>Compliance:</strong> Practical application of ISO 27001, NIST CSF 2.0, and GDPR in a financial services context</li>
+                <li><strong>Collaboration:</strong> Extensive experience engaging across business, IT, and executive stakeholder groups</li>
+            </ul>
+            <p>
+                I approach this position with confidence in the areas where my experience is directly relevant, and with transparency where I continue to develop — particularly in OT security and advanced container workloads.
+            </p>
+        </div>
+
+        <!-- CTA -->
+        <div class="jm-cta">
+            <h2>Interested in learning more?</h2>
+            <p>View my full CV or return to the portfolio for a broader overview of my background.</p>
+            <div class="jm-cta-btns">
+                <a href="cv.html" class="btn-primary"><i class="fas fa-file-pdf"></i> View Full CV</a>
+                <a href="index.html" class="btn-secondary"><i class="fas fa-house"></i> Back to Portfolio</a>
+            </div>
+        </div>
+
+    </div>
     </section>
 
     <script>
-        // Mobile menu toggle
-        const hamburger = document.querySelector('.hamburger');
-        const navMenu = document.querySelector('.nav-menu');
-
-        if (hamburger) {
-            hamburger.addEventListener('click', () => {
-                navMenu.style.display = navMenu.style.display === 'flex' ? 'none' : 'flex';
+        // Animate all bars when their parent section enters the viewport
+        var animated = false;
+        function runBars() {
+            if (animated) return;
+            animated = true;
+            document.querySelectorAll('[data-w]').forEach(function(el) {
+                el.style.width = el.getAttribute('data-w') + '%';
             });
         }
+        var obs = new IntersectionObserver(function(entries) {
+            entries.forEach(function(e) { if (e.isIntersecting) runBars(); });
+        }, { threshold: 0.15 });
+        var firstBar = document.querySelector('.jm-skills-table');
+        if (firstBar) obs.observe(firstBar);
+
+        // Mobile nav
+        var ham = document.querySelector('.hamburger');
+        var menu = document.querySelector('.nav-menu');
+        if (ham) ham.addEventListener('click', function() {
+            menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
+        });
     </script>
 </body>
 </html>
